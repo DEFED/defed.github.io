@@ -1,0 +1,1022 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="DOM," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等文中ele代表通过document.getElementById()等方法返回的某元素对象实例  
+
+ele.attributes
+返回当前元素的所有属性的集合
+返回NamedNodeMap，可通过数组下标或对象属性方式获取
+
+12345678910// html&amp;lt;body&amp;gt;    &amp;lt;p id=&quot;dem">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生DOM系列-Element对象">
+<meta property="og:url" content="http://yoursite.com/原生DOM系列-Element对象/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等文中ele代表通过document.getElementById()等方法返回的某元素对象实例  
+
+ele.attributes
+返回当前元素的所有属性的集合
+返回NamedNodeMap，可通过数组下标或对象属性方式获取
+
+12345678910// html&amp;lt;body&amp;gt;    &amp;lt;p id=&quot;dem">
+<meta property="og:updated_time" content="2016-09-27T09:06:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原生DOM系列-Element对象">
+<meta name="twitter:description" content="本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等文中ele代表通过document.getElementById()等方法返回的某元素对象实例  
+
+ele.attributes
+返回当前元素的所有属性的集合
+返回NamedNodeMap，可通过数组下标或对象属性方式获取
+
+12345678910// html&amp;lt;body&amp;gt;    &amp;lt;p id=&quot;dem">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/原生DOM系列-Element对象/"/>
+
+  <title> 原生DOM系列-Element对象 | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                原生DOM系列-Element对象
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-11T12:11:16+08:00" content="2016-08-11">
+              2016-08-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/DOM/" itemprop="url" rel="index">
+                    <span itemprop="name">DOM</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/原生DOM系列-Element对象/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="原生DOM系列-Element对象/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等<br>文中ele代表通过document.getElementById()等方法返回的某元素对象实例  </p>
+</blockquote>
+<h3 id="ele-attributes"><a href="#ele-attributes" class="headerlink" title="ele.attributes"></a>ele.attributes</h3><ul>
+<li>返回当前元素的所有属性的集合</li>
+<li>返回NamedNodeMap，可通过数组下标或对象属性方式获取</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">p</span> id=<span class="string">"demo"</span> class=<span class="string">"mod-demo"</span> data-a=<span class="string">"a"</span> style=<span class="string">"color: red"</span>&gt;test attributes&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line">let attrs = document.getElementById(<span class="string">'demo'</span>)<span class="selector-class">.attributes</span></div><div class="line">attrs[<span class="string">'id'</span>]<span class="selector-class">.name</span> <span class="comment">// 'id'</span></div><div class="line">attrs[<span class="number">0</span>]<span class="selector-class">.val</span> <span class="comment">// 'demo'</span></div><div class="line">attrs[<span class="string">'class'</span>]<span class="selector-class">.value</span> <span class="comment">// 'mod-demo'</span></div><div class="line">attrs[<span class="string">'data-a'</span>]<span class="selector-class">.value</span> <span class="comment">// 'a'</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="ele-children"><a href="#ele-children" class="headerlink" title="ele.children"></a>ele.children</h3><ul>
+<li>返回当前元素的所有子元素(不包含非元素类节点)</li>
+<li>返回HTMLCollection集合</li>
+<li>子元素集合即时更新</li>
+<li>只读属性</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"demo"</span>&gt;</span></span></div><div class="line">        <span class="comment">&lt;!--注释--&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>text<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">""</span>&gt;</span></div><div class="line">        text2</div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line"><span class="built_in">document</span>.getElementById(<span class="string">'demo'</span>).children.length <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<h3 id="ele-classList"><a href="#ele-classList" class="headerlink" title="ele.classList"></a>ele.classList</h3><ul>
+<li>只读属性</li>
+<li>返回DOMTokenList</li>
+<li>返回元素所有的class属性</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>classList</th>
+<th>className</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DOMTokenList</td>
+<td>空格分隔的字符串</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>可以通过add()/remove()等方法修改</li>
+</ul>
+<h4 id="add-string-string"><a href="#add-string-string" class="headerlink" title="add(string[, string])"></a>add(string[, string])</h4><ul>
+<li>给属性添加class</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="regexp">//</span> html</div><div class="line">&lt;body&gt;</div><div class="line">    &lt;p id=<span class="string">"demo"</span>&gt;classlist&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="regexp">//</span> js</div><div class="line">let demo = <span class="built_in">document</span>.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.add(<span class="string">'demo'</span>, <span class="string">'red'</span>) <span class="regexp">//</span> p标签上增加`<span class="javascript"><span class="class"><span class="keyword">class</span></span>=<span class="string">"demo red"</span></span>`</div></pre></td></tr></table></figure>
+<h4 id="remove-string-string"><a href="#remove-string-string" class="headerlink" title="remove(string[, string])"></a>remove(string[, string])</h4><ul>
+<li>删除指定的class</li>
+<li>如果删除不存在的class，则不发生变化</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">demo<span class="selector-class">.classList</span><span class="selector-class">.remove</span>(<span class="string">'red'</span>, <span class="string">'green'</span>) <span class="comment">// p标签上的class变成`class="demo"`</span></div></pre></td></tr></table></figure>
+<h4 id="item-num"><a href="#item-num" class="headerlink" title="item(num)"></a>item(num)</h4><ul>
+<li>根据索引返回class值</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">demo<span class="selector-class">.classList</span><span class="selector-class">.item</span>(<span class="number">0</span>) <span class="comment">// 'demo'</span></div></pre></td></tr></table></figure>
+<h4 id="toggle-string-force"><a href="#toggle-string-force" class="headerlink" title="toggle(string[, force])"></a>toggle(string[, force])</h4><ul>
+<li>进传入一个参数时，如果参数指定的class存在则移除并返回false，否则增加class并返回true</li>
+<li>传入第二个参数时，如果第二个参数为true，则增加class，为false则删除class</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">demo<span class="selector-class">.classList</span><span class="selector-class">.toggle</span>(<span class="string">'red'</span>) <span class="comment">// class中增加red</span></div><div class="line">demo<span class="selector-class">.classList</span><span class="selector-class">.toggle</span>(<span class="string">'red'</span>) <span class="comment">// class中的red又被删除</span></div><div class="line">demo<span class="selector-class">.classList</span><span class="selector-class">.toggle</span>(<span class="string">'red'</span>, false) <span class="comment">// 删除red，但此时已经没有red了，则什么也不做</span></div></pre></td></tr></table></figure>
+<h4 id="contains-string"><a href="#contains-string" class="headerlink" title="contains(string)"></a>contains(string)</h4><ul>
+<li>检查元素是否拥有指定的class</li>
+<li>返回true或false</li>
+</ul>
+<h3 id="ele-className"><a href="#ele-className" class="headerlink" title="ele.className"></a>ele.className</h3><ul>
+<li>返回字符串</li>
+<li>返回class属性的值</li>
+<li>使用className，而非class，主要因为class为js的保留字</li>
+</ul>
+<h3 id="ele-clientHeight-ele-clientWidth"><a href="#ele-clientHeight-ele-clientWidth" class="headerlink" title="ele.clientHeight || ele.clientWidth"></a>ele.clientHeight || ele.clientWidth</h3><ul>
+<li>返回元素内部的高度||宽度(单位像素)，包含内边距，但不包括水平||垂直滚动条、边框和外边距</li>
+<li>CSS height + CSS padding - 水平||垂直滚动条高度</li>
+</ul>
+<h3 id="ele-firstElementChild-ele-lastElementChild"><a href="#ele-firstElementChild-ele-lastElementChild" class="headerlink" title="ele.firstElementChild || ele.lastElementChild"></a>ele.firstElementChild || ele.lastElementChild</h3><ul>
+<li>返回第一个||最后一个子元素，没有则返回null</li>
+</ul>
+<h3 id="ele-id"><a href="#ele-id" class="headerlink" title="ele.id"></a>ele.id</h3><ul>
+<li>获取或者设置一个元素的id属性</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">p</span> id=<span class="string">"demo"</span>&gt;classlist&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">let demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo<span class="selector-class">.id</span> <span class="comment">// 'demo'</span></div><div class="line">demo<span class="selector-class">.id</span> = <span class="string">'test'</span></div><div class="line">demo<span class="selector-class">.id</span> <span class="comment">// 'test'</span></div></pre></td></tr></table></figure>
+<h3 id="ele-innerHTML"><a href="#ele-innerHTML" class="headerlink" title="ele.innerHTML"></a>ele.innerHTML</h3><ul>
+<li>获取或者设置元素的子元素内容</li>
+<li>字符串</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">p</span> id=<span class="string">"demo"</span>&gt;</div><div class="line">        abc</div><div class="line">        &lt;span&gt;text&lt;/span&gt;</div><div class="line">    &lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">let demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo<span class="selector-class">.innerHTML</span> <span class="comment">//  'abc &lt;span&gt;text&lt;/span&gt;'</span></div><div class="line">demo<span class="selector-class">.innerHTML</span> = <span class="string">'&lt;span class="new"&gt;new text&lt;/span&gt;'</span> <span class="comment">// demo中的内容改变为新赋值的元素</span></div></pre></td></tr></table></figure>
+<h3 id="ele-nextElementSibling-ele-previousElementSibling"><a href="#ele-nextElementSibling-ele-previousElementSibling" class="headerlink" title="ele.nextElementSibling || ele.previousElementSibling"></a>ele.nextElementSibling || ele.previousElementSibling</h3><ul>
+<li>返回下一个||上一个兄弟元素节点</li>
+<li>如果此节点为最后一个，则返回null</li>
+<li>该属性只读</li>
+</ul>
+<h3 id="ele-outerHTML"><a href="#ele-outerHTML" class="headerlink" title="ele.outerHTML"></a>ele.outerHTML</h3><ul>
+<li>返回包含当前元素及其所有后代节点所形成的序列化的HTML片段字符串</li>
+<li>可读可写</li>
+<li>给其赋值可以替换掉当前元素及其所有后代元素</li>
+<li>当一个元素因为修改自身的outerHTML属性而被替换时，指向该元素的变量仍然指向替换前的元素</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">p</span> id=<span class="string">"demo"</span>&gt;old&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">let demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo<span class="selector-class">.outerHTML</span> = <span class="string">'&lt;p id="newDemo"&gt;new&lt;/p&gt;'</span></div><div class="line">demo<span class="selector-class">.id</span> <span class="comment">// 'demo'</span></div></pre></td></tr></table></figure>
+<h3 id="ele-scrollHeight-ele-scrollWidth"><a href="#ele-scrollHeight-ele-scrollWidth" class="headerlink" title="ele.scrollHeight || ele.scrollWidth"></a>ele.scrollHeight || ele.scrollWidth</h3><ul>
+<li>返回元素的内容高度||宽度</li>
+<li>只读属性</li>
+<li>包含被overflow hidden的部分</li>
+<li>包括元素的padding，但不包括元素的margin</li>
+</ul>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断元素是否滚动到底</span></div><div class="line">ele.scrollHeight - ele.scrollTop === ele.clientHeight</div></pre></td></tr></table></figure>
+<h3 id="ele-scrollLeft"><a href="#ele-scrollLeft" class="headerlink" title="ele.scrollLeft"></a>ele.scrollLeft</h3><ul>
+<li>读取或设置元素滚动条到元素左边的距离</li>
+<li>如果元素不能滚动，则其值为0</li>
+<li>设置小于0的值时，其值为0</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ele<span class="selector-class">.scrollLeft</span> += <span class="number">20</span> <span class="comment">// 向右滚动20像素</span></div></pre></td></tr></table></figure>
+<h3 id="ele-tagName"><a href="#ele-tagName" class="headerlink" title="ele.tagName"></a>ele.tagName</h3><ul>
+<li>返回该元素的标签名</li>
+<li>字符串</li>
+</ul>
+<h3 id="ele-addEventListener-type-listener-useCapture"><a href="#ele-addEventListener-type-listener-useCapture" class="headerlink" title="ele.addEventListener(type, listener[ ,useCapture])"></a>ele.addEventListener(type, listener[ ,useCapture])</h3><ul>
+<li>继承自其父类EventTarget</li>
+<li>type 字符串，所监听的事件类型，如’click’</li>
+<li>listener 回调函数</li>
+<li>useCapture 指定在捕获阶段还是冒泡阶段触发事件回调，true为捕获阶段，false为冒泡阶段</li>
+<li>思考题：同ele.onclick的区别</li>
+</ul>
+<h3 id="ele-closest-selectors"><a href="#ele-closest-selectors" class="headerlink" title="ele.closest(selectors)"></a>ele.closest(selectors)</h3><ul>
+<li>selectors 选择器，如’.demo’ ‘#demo’等</li>
+<li>返回离当前元素最近的祖先元素(包含当前元素)</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// html</div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo1"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo1"</span>&gt;</span> <span class="comment">&lt;!-- 下面的js返回此元素 --&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">"demo"</span>&gt;</span>text<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line">// js</div><div class="line">let demo = document.getElementById('dmo')</div><div class="line">demo.closest('.demo1')</div></pre></td></tr></table></figure>
+<h3 id="ele-dispatchEvent-event"><a href="#ele-dispatchEvent-event" class="headerlink" title="ele.dispatchEvent(event)"></a>ele.dispatchEvent(event)</h3><ul>
+<li>event 被派发的事件，通过document.createEvent()进行创建，通过自身的initEvent()进行初始化</li>
+<li></li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;p id=<span class="string">"demo"</span>&gt;text&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line"><span class="keyword">let</span> demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.addEventListener(<span class="string">'alert'</span>, function()&#123;</div><div class="line">    alert(<span class="string">'自定义事件'</span>)</div><div class="line">&#125;, <span class="literal">false</span>)</div><div class="line"></div><div class="line"><span class="keyword">let</span> <span class="keyword">event</span> = document.createEvent(<span class="string">'HTMLEvents'</span>)</div><div class="line"><span class="keyword">event</span>.initEvent(<span class="string">'alert'</span>, <span class="literal">false</span>, <span class="literal">false</span>) <span class="comment">// 第二个参数:是否冒泡，第三个参数:是否可被取消</span></div><div class="line">demo.dispatchEvent(<span class="keyword">event</span>) <span class="comment">// 页面中alert弹出'自定义事件'</span></div></pre></td></tr></table></figure>
+<h3 id="ele-getAttribute-attrName"><a href="#ele-getAttribute-attrName" class="headerlink" title="ele.getAttribute(attrName)"></a>ele.getAttribute(attrName)</h3><ul>
+<li>attrName String，属性名</li>
+<li>返回元素上指定属性的值</li>
+<li>返回字符串或null</li>
+</ul>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="keyword">div</span> id=<span class="string">"demo"</span> data-id=<span class="string">"123"</span>&gt;&lt;/<span class="keyword">div</span>&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">let demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.getAttribute(<span class="string">'data-id'</span>) <span class="comment">// 123</span></div></pre></td></tr></table></figure>
+<h3 id="ele-getBoundingClientRect"><a href="#ele-getBoundingClientRect" class="headerlink" title="ele.getBoundingClientRect()"></a>ele.getBoundingClientRect()</h3><ul>
+<li>返回元素的大小机器相对于视口的位置</li>
+<li>返回值是DOMRect对象</li>
+</ul>
+<h3 id="ele-getElementsByClassName"><a href="#ele-getElementsByClassName" class="headerlink" title="ele.getElementsByClassName()"></a>ele.getElementsByClassName()</h3><ul>
+<li>同document.getElementsByClassName()</li>
+<li>见<a href="https://defed.github.io/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-Document%E5%AF%B9%E8%B1%A1/" target="_blank" rel="external">原生DOM系列-Document对象</a></li>
+</ul>
+<h3 id="ele-getElementsByTagName"><a href="#ele-getElementsByTagName" class="headerlink" title="ele.getElementsByTagName()"></a>ele.getElementsByTagName()</h3><ul>
+<li>同document.getElementsByTagName()</li>
+<li>见<a href="https://defed.github.io/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-Document%E5%AF%B9%E8%B1%A1/" target="_blank" rel="external">原生DOM系列-Document对象</a></li>
+</ul>
+<h3 id="ele-hasAttribute-attrName"><a href="#ele-hasAttribute-attrName" class="headerlink" title="ele.hasAttribute(attrName)"></a>ele.hasAttribute(attrName)</h3><ul>
+<li>返回该元素是否包含有指定的属性</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">p</span> id=<span class="string">"demo"</span> name=<span class="string">"123"</span>&gt;&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">let demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.hasAttribute(<span class="string">'name'</span>) <span class="comment">// true</span></div><div class="line">demo.hasAttribute(<span class="string">'age'</span>) <span class="comment">// false</span></div></pre></td></tr></table></figure>
+<h3 id="ele-insertAdjacentHTML-position-text"><a href="#ele-insertAdjacentHTML-position-text" class="headerlink" title="ele.insertAdjacentHTML(position, text)"></a>ele.insertAdjacentHTML(position, text)</h3><ul>
+<li>将html片段插入到指定的位置</li>
+<li>position：表示位置的字符串</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>beforebegin</th>
+<th>afterbegin</th>
+<th>beforeend</th>
+<th>afterend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>插入到ele的开始标签之前</td>
+<td>插入到ele的开始标签之后</td>
+<td>插入到ele的结束标签之前</td>
+<td>插入到ele的结束标签之后</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- beforebegin --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- afterbegin --&gt;</span></div><div class="line">child</div><div class="line"><span class="comment">&lt;!-- beforeend --&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- afterend --&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="ele-querySelector"><a href="#ele-querySelector" class="headerlink" title="ele.querySelector()"></a>ele.querySelector()</h3><ul>
+<li>同document.querySelector()</li>
+<li>见<a href="https://defed.github.io/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-Document%E5%AF%B9%E8%B1%A1/" target="_blank" rel="external">原生DOM系列-Document对象</a></li>
+</ul>
+<h3 id="ele-querySelectorAll"><a href="#ele-querySelectorAll" class="headerlink" title="ele.querySelectorAll()"></a>ele.querySelectorAll()</h3><ul>
+<li>同document.querySelectorAll()</li>
+<li>见<a href="https://defed.github.io/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-Document%E5%AF%B9%E8%B1%A1/" target="_blank" rel="external">原生DOM系列-Document对象</a></li>
+</ul>
+<h3 id="ele-remove"><a href="#ele-remove" class="headerlink" title="ele.remove()"></a>ele.remove()</h3><ul>
+<li>将自己从所在的DOM树种删除</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// html</div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"demo"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line">// js</div><div class="line">let demo = document.getElementById('demo')</div><div class="line">demo.remove() // <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"demo"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span>被删除</div></pre></td></tr></table></figure>
+<h3 id="ele-removeAttribute"><a href="#ele-removeAttribute" class="headerlink" title="ele.removeAttribute()"></a>ele.removeAttribute()</h3><ul>
+<li>删除元素上指定的属性</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;div id=<span class="string">"demo"</span> <span class="keyword">class</span>=<span class="string">"demo"</span>&gt;&lt;/div&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line"><span class="keyword">let</span> demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.removeAttribute(<span class="string">'class'</span>) <span class="comment">// &lt;div id="demo"&gt;&lt;/div&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="ele-removeEventListener-type-listener-userCaptre"><a href="#ele-removeEventListener-type-listener-userCaptre" class="headerlink" title="ele.removeEventListener(type, listener[, userCaptre])"></a>ele.removeEventListener(type, listener[, userCaptre])</h3><ul>
+<li>删除通过ele.addEventListener()方法添加的事件</li>
+<li>type：事件类型，如：<code>click</code>、<code>showdialog(自定义)</code></li>
+<li>listener：需要被删除的函数</li>
+<li>userCaptre：true 移除冒泡阶段的事件；false 移除捕获阶段的事件</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> demo = <span class="built_in">document</span>.getElementById(<span class="string">'demo'</span>)</div><div class="line"><span class="keyword">let</span> listener = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    alert(<span class="number">1</span>)</div><div class="line">&#125;</div><div class="line">demo.addEventListener(<span class="string">'click'</span>, listener, <span class="literal">false</span>)</div><div class="line">demo.removeEventListener(<span class="string">'click'</span>, listener, <span class="literal">true</span>) <span class="comment">// 无法移除，因为移除的是捕获阶段的事件</span></div><div class="line">demo.removeEventListener(<span class="string">'click'</span>, listener, <span class="literal">false</span>) <span class="comment">// 被正确移除</span></div><div class="line"></div><div class="line">demo.addEventListener(<span class="string">'click'</span>, () =&gt; &#123;</div><div class="line">    alert(<span class="number">2</span>)</div><div class="line">&#125;, <span class="literal">false</span>) <span class="comment">// 此事件无法被移除，因为是绑定的匿名回调</span></div></pre></td></tr></table></figure>
+<h3 id="ele-scrollIntoView-bool-obj"><a href="#ele-scrollIntoView-bool-obj" class="headerlink" title="ele.scrollIntoView(bool||obj)"></a>ele.scrollIntoView(bool||obj)</h3><ul>
+<li>让当前的元素滚动到浏览器窗口的可视区域内</li>
+<li>如果参数为bool值<ul>
+<li>true 元素的顶端和可视区的顶端对齐，不传则默认为true的行为</li>
+<li>false 元素的底端和可视区的底端对齐</li>
+</ul>
+</li>
+<li>如果参数为obj。目前大部分浏览器尚不支持。可仅做了解</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attribute">behavior</span>: <span class="string">"auto"</span>  | <span class="string">"instant"</span> | <span class="string">"smooth"</span>,</div><div class="line">    block:    <span class="string">"start"</span> | <span class="string">"end"</span>, // 该参数等同于bool值得行为</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    <span class="params">...</span>.这里有很多元素，把demo元素挤出了可视区的下边缘</div><div class="line">    &lt;p id=<span class="string">"demo"</span>&gt;我要滚动啦&lt;/p&gt;</div><div class="line">    <span class="params">...</span>.这里也有很多元素，滚到底部是，demo元素被挤出可视区的上边缘</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js 元素不在可视区内</span></div><div class="line"><span class="keyword">let</span> demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.scrollIntoView(<span class="literal">false</span>) <span class="comment">// 元素出现在可视区的下边缘</span></div><div class="line">demo.scrollIntoView(<span class="literal">true</span>) <span class="comment">// 元素出现在可视区的上边缘</span></div></pre></td></tr></table></figure>
+<h3 id="ele-setAttribute-name-value"><a href="#ele-setAttribute-name-value" class="headerlink" title="ele.setAttribute(name, value)"></a>ele.setAttribute(name, value)</h3><ul>
+<li>添加一个新属性到元素上</li>
+<li>或者改变元素上已有属性的值</li>
+</ul>
+<figure class="highlight cal"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// html</div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="keyword">div</span> id=<span class="string">"demo"</span> class=<span class="string">"demo"</span>&gt;&lt;/<span class="keyword">div</span>&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line">// js</div><div class="line">let demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.setAttribute(<span class="string">'test'</span>, <span class="string">'test'</span>) // &lt;<span class="keyword">div</span> id=<span class="string">"demo"</span> class=<span class="string">"demo"</span> test=<span class="string">"test"</span>&gt;&lt;/<span class="keyword">div</span>&gt;</div><div class="line">demo.setAttribute(<span class="string">'class'</span>, <span class="string">'ele-demo'</span>) // &lt;<span class="keyword">div</span> id=<span class="string">"demo"</span> class=<span class="string">"ele-demo"</span> test=<span class="string">"test"</span>&gt;&lt;/<span class="keyword">div</span>&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>表单元素的部分属性无法通过该方法得到想要的结果，这些属性应该使用prop相关方法操作</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"demo"</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">checked</span>=<span class="string">"checked"</span> /&gt;</span></span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line"><span class="keyword">let</span> demo = <span class="built_in">document</span>.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.setAttribute(<span class="string">'checked'</span>, <span class="literal">null</span>) <span class="comment">// 元素的属性值会被设置为null，但页面中checkbox依然是选中状态</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DOM/" rel="tag">#DOM</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Vue源码解读-方法与事件绑定/" rel="next" title="Vue源码解读-方法与事件绑定">
+                <i class="fa fa-chevron-left"></i> Vue源码解读-方法与事件绑定
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/原生DOM系列-Window对象/" rel="prev" title="原生DOM系列-Window对象">
+                原生DOM系列-Window对象 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-attributes"><span class="nav-number">1.</span> <span class="nav-text">ele.attributes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-children"><span class="nav-number">2.</span> <span class="nav-text">ele.children</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-classList"><span class="nav-number">3.</span> <span class="nav-text">ele.classList</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#add-string-string"><span class="nav-number">3.1.</span> <span class="nav-text">add(string[, string])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#remove-string-string"><span class="nav-number">3.2.</span> <span class="nav-text">remove(string[, string])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#item-num"><span class="nav-number">3.3.</span> <span class="nav-text">item(num)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toggle-string-force"><span class="nav-number">3.4.</span> <span class="nav-text">toggle(string[, force])</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#contains-string"><span class="nav-number">3.5.</span> <span class="nav-text">contains(string)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-className"><span class="nav-number">4.</span> <span class="nav-text">ele.className</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-clientHeight-ele-clientWidth"><span class="nav-number">5.</span> <span class="nav-text">ele.clientHeight || ele.clientWidth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-firstElementChild-ele-lastElementChild"><span class="nav-number">6.</span> <span class="nav-text">ele.firstElementChild || ele.lastElementChild</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-id"><span class="nav-number">7.</span> <span class="nav-text">ele.id</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-innerHTML"><span class="nav-number">8.</span> <span class="nav-text">ele.innerHTML</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-nextElementSibling-ele-previousElementSibling"><span class="nav-number">9.</span> <span class="nav-text">ele.nextElementSibling || ele.previousElementSibling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-outerHTML"><span class="nav-number">10.</span> <span class="nav-text">ele.outerHTML</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-scrollHeight-ele-scrollWidth"><span class="nav-number">11.</span> <span class="nav-text">ele.scrollHeight || ele.scrollWidth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-scrollLeft"><span class="nav-number">12.</span> <span class="nav-text">ele.scrollLeft</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-tagName"><span class="nav-number">13.</span> <span class="nav-text">ele.tagName</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-addEventListener-type-listener-useCapture"><span class="nav-number">14.</span> <span class="nav-text">ele.addEventListener(type, listener[ ,useCapture])</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-closest-selectors"><span class="nav-number">15.</span> <span class="nav-text">ele.closest(selectors)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-dispatchEvent-event"><span class="nav-number">16.</span> <span class="nav-text">ele.dispatchEvent(event)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-getAttribute-attrName"><span class="nav-number">17.</span> <span class="nav-text">ele.getAttribute(attrName)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-getBoundingClientRect"><span class="nav-number">18.</span> <span class="nav-text">ele.getBoundingClientRect()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-getElementsByClassName"><span class="nav-number">19.</span> <span class="nav-text">ele.getElementsByClassName()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-getElementsByTagName"><span class="nav-number">20.</span> <span class="nav-text">ele.getElementsByTagName()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-hasAttribute-attrName"><span class="nav-number">21.</span> <span class="nav-text">ele.hasAttribute(attrName)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-insertAdjacentHTML-position-text"><span class="nav-number">22.</span> <span class="nav-text">ele.insertAdjacentHTML(position, text)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-querySelector"><span class="nav-number">23.</span> <span class="nav-text">ele.querySelector()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-querySelectorAll"><span class="nav-number">24.</span> <span class="nav-text">ele.querySelectorAll()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-remove"><span class="nav-number">25.</span> <span class="nav-text">ele.remove()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-removeAttribute"><span class="nav-number">26.</span> <span class="nav-text">ele.removeAttribute()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-removeEventListener-type-listener-userCaptre"><span class="nav-number">27.</span> <span class="nav-text">ele.removeEventListener(type, listener[, userCaptre])</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-scrollIntoView-bool-obj"><span class="nav-number">28.</span> <span class="nav-text">ele.scrollIntoView(bool||obj)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ele-setAttribute-name-value"><span class="nav-number">29.</span> <span class="nav-text">ele.setAttribute(name, value)</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = '原生DOM系列-Element对象/';
+      var disqus_title = "原生DOM系列-Element对象";
+      var disqus_url = 'http://yoursite.com/原生DOM系列-Element对象/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

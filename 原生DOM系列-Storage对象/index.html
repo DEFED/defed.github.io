@@ -1,0 +1,860 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="DOM,storage," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等Stroage包含两种机制：localStorage和sessionStorage  
+
+localStorage
+在当前域名下存取数据隐私模式下不可用长期保存数据，页面关闭也不消失无过期时间(但可自行实现过期逻辑)  
+
+length
+整数
+存储在localStorage中的数据项的数量
+
+1localStorage.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生DOM系列-Storage对象">
+<meta property="og:url" content="http://yoursite.com/原生DOM系列-Storage对象/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等Stroage包含两种机制：localStorage和sessionStorage  
+
+localStorage
+在当前域名下存取数据隐私模式下不可用长期保存数据，页面关闭也不消失无过期时间(但可自行实现过期逻辑)  
+
+length
+整数
+存储在localStorage中的数据项的数量
+
+1localStorage.">
+<meta property="og:updated_time" content="2016-09-27T09:06:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原生DOM系列-Storage对象">
+<meta name="twitter:description" content="本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等Stroage包含两种机制：localStorage和sessionStorage  
+
+localStorage
+在当前域名下存取数据隐私模式下不可用长期保存数据，页面关闭也不消失无过期时间(但可自行实现过期逻辑)  
+
+length
+整数
+存储在localStorage中的数据项的数量
+
+1localStorage.">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/原生DOM系列-Storage对象/"/>
+
+  <title> 原生DOM系列-Storage对象 | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                原生DOM系列-Storage对象
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-02T11:52:16+08:00" content="2016-09-02">
+              2016-09-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/DOM/" itemprop="url" rel="index">
+                    <span itemprop="name">DOM</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/原生DOM系列-Storage对象/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="原生DOM系列-Storage对象/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等<br>Stroage包含两种机制：localStorage和sessionStorage  </p>
+</blockquote>
+<h3 id="localStorage"><a href="#localStorage" class="headerlink" title="localStorage"></a>localStorage</h3><blockquote>
+<p>在当前域名下存取数据<br>隐私模式下不可用<br>长期保存数据，页面关闭也不消失无过期时间(但可自行实现过期逻辑)  </p>
+</blockquote>
+<h4 id="length"><a href="#length" class="headerlink" title="length"></a>length</h4><ul>
+<li>整数</li>
+<li>存储在localStorage中的数据项的数量</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">localStorage.<span class="built_in">length</span></div></pre></td></tr></table></figure>
+<h4 id="key-index"><a href="#key-index" class="headerlink" title="key(index)"></a>key(index)</h4><ul>
+<li>从localStorage中获取第index个数据项的键名</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">localStorage.<span class="type">key</span>(<span class="number">0</span>) <span class="comment">// 获取localStorage中第一个元素</span></div><div class="line">localStorage.<span class="type">key</span>(localStorage.length - <span class="number">1</span>) <span class="comment">// 获取localStorage中最后一个元素</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="getItem-key"><a href="#getItem-key" class="headerlink" title="getItem(key)"></a>getItem(key)</h4><ul>
+<li>从localStorage中取出键名为key的值</li>
+</ul>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">localStorage.getItem<span class="comment">('a')</span> <span class="comment">// 拿到a的值，如果没有则返回null</span></div></pre></td></tr></table></figure>
+<h4 id="setItem-key-val"><a href="#setItem-key-val" class="headerlink" title="setItem(key, val)"></a>setItem(key, val)</h4><ul>
+<li>将键名为key，值为val的数据项添加到localStorage中</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">local</span>Storage.setItem(<span class="string">'a'</span>, 1) // <span class="built_in">local</span>Storage中将在最后面添加此键值</div></pre></td></tr></table></figure>
+<h4 id="removeItem-key"><a href="#removeItem-key" class="headerlink" title="removeItem(key)"></a>removeItem(key)</h4><ul>
+<li>从localStorage中删除键名为key的数据项</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">local</span>Storage.removeItem(<span class="string">'a'</span>) // <span class="built_in">local</span>Storage中的key为<span class="string">'a'</span>的数据将被删除</div></pre></td></tr></table></figure>
+<h4 id="clear"><a href="#clear" class="headerlink" title="clear()"></a>clear()</h4><ul>
+<li>清空localStorage</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">localStorage.<span class="built_in">clear</span>() <span class="comment">// localStorage中的所有数据都将被删除</span></div></pre></td></tr></table></figure>
+<h4 id="storage事件"><a href="#storage事件" class="headerlink" title="storage事件"></a>storage事件</h4><ul>
+<li>当storage中存储的数据发生变化时，会在window对象上触发storage事件。</li>
+<li>重复设置相同的键值对不会触发</li>
+<li>做出改变的当前页面也不会触发</li>
+<li>storage事件是实现跨页面通信的一种方式(postMessage大家也可以试试)</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">window.addEventListener(<span class="string">'storage'</span>, (e) =&gt; &#123;</div><div class="line">    e<span class="selector-class">.key</span> <span class="comment">// 改变的键</span></div><div class="line">    e<span class="selector-class">.oldValue</span> <span class="comment">// 旧值，如果是第一次设置，则为null</span></div><div class="line">    e<span class="selector-class">.newValue</span> <span class="comment">// 新值</span></div><div class="line">    e<span class="selector-class">.url</span> <span class="comment">// 做出改变的页面url</span></div><div class="line">    e<span class="selector-class">.storageArea</span> <span class="comment">// localStorage中的所有键值对</span></div><div class="line">&#125;, false)</div></pre></td></tr></table></figure>
+<h3 id="sessionStorage"><a href="#sessionStorage" class="headerlink" title="sessionStorage"></a>sessionStorage</h3><blockquote>
+<p>仅作用于当前页面<br>页面刷新不会导致数据丢失<br>页面跳转之后又返回也不会导致数据丢失<br>页面关闭后数据消失<br>除不会触发storage事件外，sessionStorage存在同localStorage相同的属性和方法(都继承自Stroage对象)  </p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DOM/" rel="tag">#DOM</a>
+          
+            <a href="/tags/storage/" rel="tag">#storage</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/原生DOM系列-History对象/" rel="next" title="原生DOM系列-History对象">
+                <i class="fa fa-chevron-left"></i> 原生DOM系列-History对象
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Canvas的基本用法/" rel="prev" title="Canvas的基本用法">
+                Canvas的基本用法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#localStorage"><span class="nav-number">1.</span> <span class="nav-text">localStorage</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#length"><span class="nav-number">1.1.</span> <span class="nav-text">length</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#key-index"><span class="nav-number">1.2.</span> <span class="nav-text">key(index)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#getItem-key"><span class="nav-number">1.3.</span> <span class="nav-text">getItem(key)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setItem-key-val"><span class="nav-number">1.4.</span> <span class="nav-text">setItem(key, val)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#removeItem-key"><span class="nav-number">1.5.</span> <span class="nav-text">removeItem(key)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#clear"><span class="nav-number">1.6.</span> <span class="nav-text">clear()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#storage事件"><span class="nav-number">1.7.</span> <span class="nav-text">storage事件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sessionStorage"><span class="nav-number">2.</span> <span class="nav-text">sessionStorage</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = '原生DOM系列-Storage对象/';
+      var disqus_title = "原生DOM系列-Storage对象";
+      var disqus_url = 'http://yoursite.com/原生DOM系列-Storage对象/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

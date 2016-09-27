@@ -301,6 +301,1028 @@
     </entry>
     
     <entry>
+      <title><![CDATA[Canvas的基本用法]]></title>
+      <url>http://yoursite.com/Canvas%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>canvas系列</p>
+</blockquote>
+<h3 id="canvas元素"><a href="#canvas元素" class="headerlink" title="canvas元素"></a>canvas元素</h3><ul>
+<li>当不使用元素属性设置canvas的宽高时，默认初始化宽度300px和高度150px</li>
+<li>可以通过css定义canvas的大小，但css指定的尺寸和canvas初始比例不一致时，会出现扭曲，因此建议始终通过width和height属性来指定canvas大小</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">canvas</span> id=<span class="string">"demo"</span> <span class="attribute">width</span>=<span class="string">"300"</span> height=<span class="string">"150"</span>&gt;</div><div class="line">    您使用的浏览器不支持canvas，请升级浏览器</div><div class="line">&lt;/canvas&gt;</div></pre></td></tr></table></figure>
+<h3 id="获取渲染上下文"><a href="#获取渲染上下文" class="headerlink" title="获取渲染上下文"></a>获取渲染上下文</h3><ul>
+<li>canvas元素创造了一个固定大小的画布</li>
+<li>并提供了一个渲染上下文，用来绘制或处理需要展示的内容</li>
+<li>如何获取渲染上下文</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> demo = <span class="built_in">document</span>.getElementById(<span class="string">'demo'</span>)</div><div class="line"><span class="keyword">let</span> ctx = demo.getContext(<span class="string">'2d'</span>)</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li>检查浏览器支持情况</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">if</span><span class="params">(demo.getContext)</span></span>&#123;</div><div class="line">    ctx = demo.getContext(<span class="string">'2d'</span>)</div><div class="line">&#125;<span class="keyword">else</span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="绘制图形"><a href="#绘制图形" class="headerlink" title="绘制图形"></a>绘制图形</h3><ul>
+<li>坐标原点：左上角</li>
+<li>X轴向右为正方向</li>
+<li>Y轴向下为正方向</li>
+</ul>
+<h4 id="矩形"><a href="#矩形" class="headerlink" title="矩形"></a>矩形</h4><blockquote>
+<p>canvas唯一支持的不通过路径进行绘制的图形</p>
+</blockquote>
+<h5 id="ctx-fillRect-x-y-width-height"><a href="#ctx-fillRect-x-y-width-height" class="headerlink" title="ctx.fillRect(x, y, width, height)"></a>ctx.fillRect(x, y, width, height)</h5><blockquote>
+<p>绘制填充的矩形</p>
+</blockquote>
+<ul>
+<li>x: x轴坐标</li>
+<li>y: y轴坐标</li>
+<li>width: 矩形的宽度</li>
+<li>height: 矩形的高度</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ctx.fillStyle = 'green'</div><div class="line">ctx.fillRect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>) <span class="comment">// 在坐标(0, 0)的位置开始绘制一个宽高都是100px的矩形</span></div></pre></td></tr></table></figure>
+<p><img src="http://i2.buimg.com/1949/7aab1d95d8c92bed.jpg" alt="矩形"></p>
+<h5 id="ctx-strokeRect-x-y-width-height"><a href="#ctx-strokeRect-x-y-width-height" class="headerlink" title="ctx.strokeRect(x, y, width, height)"></a>ctx.strokeRect(x, y, width, height)</h5><blockquote>
+<p>绘制一个矩形的边框</p>
+</blockquote>
+<ul>
+<li>参数同fillRect()</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ctx.strokeStyle = 'blue'</div><div class="line">ctx.strokeRect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>) <span class="comment">// 为前面绘制的矩形用蓝色进行描边</span></div></pre></td></tr></table></figure>
+<p><img src="http://i2.buimg.com/1949/87a445c38e90807c.jpg" alt="xx"></p>
+<h5 id="ctx-clearRect-x-y-width-height"><a href="#ctx-clearRect-x-y-width-height" class="headerlink" title="ctx.clearRect(x, y, width, height)"></a>ctx.clearRect(x, y, width, height)</h5><blockquote>
+<p>清除指定矩形区域，让清楚的部分完全透明</p>
+</blockquote>
+<ul>
+<li>参数同fillRect()</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ctx.clearRect(<span class="number">15</span>, <span class="number">15</span>, <span class="number">90</span>, <span class="number">90</span>)</div></pre></td></tr></table></figure>
+<p><img src="http://i2.buimg.com/1949/14c248b6ba9fc2ce.jpg" alt="xx"></p>
+<h4 id="路径"><a href="#路径" class="headerlink" title="路径"></a>路径</h4><blockquote>
+<p>图形的基本元素是路径<br>创建路径需要如下步骤  </p>
+</blockquote>
+<ul>
+<li>创建路径的起点</li>
+<li>使用画图命令画出路径</li>
+<li>把路径封闭(非必需)</li>
+<li>通过路径来渲染图形</li>
+</ul>
+<h5 id="ctx-beginPath"><a href="#ctx-beginPath" class="headerlink" title="ctx.beginPath()"></a>ctx.beginPath()</h5><blockquote>
+<p>开始绘制路径  </p>
+</blockquote>
+<h5 id="ctx-moveTo-x-y"><a href="#ctx-moveTo-x-y" class="headerlink" title="ctx.moveTo(x, y)"></a>ctx.moveTo(x, y)</h5><blockquote>
+<p>将🖌️移动到指定的坐标点<br>准备开始绘制路径<br>可以在绘制路径过程中不断执行此方法，从而绘制出不连续的路径  </p>
+</blockquote>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">ctx.beginPath()</div><div class="line">ctx.arc(<span class="number">75</span>, <span class="number">75</span>, <span class="number">50</span>, <span class="number">0</span>, Math.<span class="literal">PI</span> * <span class="number">2</span>, true) <span class="comment">// arc方法请往下看</span></div><div class="line">ctx.moveTo(<span class="number">110</span>, <span class="number">75</span>)</div><div class="line">ctx.arc(<span class="number">75</span>, <span class="number">75</span>, <span class="number">35</span>, <span class="number">0</span>, Math.<span class="literal">PI</span>, false)</div><div class="line">ctx.moveTo(<span class="number">65</span>, <span class="number">65</span>)</div><div class="line">ctx.arc(<span class="number">60</span>, <span class="number">65</span>, <span class="number">5</span>, <span class="number">0</span>, Math.<span class="literal">PI</span> * <span class="number">2</span>, true)</div><div class="line">ctx.moveTo(<span class="number">95</span>, <span class="number">65</span>)</div><div class="line">ctx.arc(<span class="number">90</span>, <span class="number">65</span>, <span class="number">5</span>, <span class="number">0</span>, Math.<span class="literal">PI</span> * <span class="number">2</span>, true)</div><div class="line">ctx.strokeStyle = 'green'</div><div class="line">ctx.stroke()</div></pre></td></tr></table></figure>
+<p><img src="http://i1.piimg.com/1949/6c37dfb5af1ea051.jpg" alt="xx"></p>
+<h5 id="ctx-lineTo-x-y"><a href="#ctx-lineTo-x-y" class="headerlink" title="ctx.lineTo(x, y)"></a>ctx.lineTo(x, y)</h5><blockquote>
+<p>绘制一条从当前位置到指定坐标点的直线</p>
+</blockquote>
+<ul>
+<li>x, y: 结束位置的坐标点</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">10</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">110</span>, <span class="number">110</span>)</div><div class="line">ctx.lineTo(<span class="number">110</span>, <span class="number">10</span>)</div><div class="line">ctx.closePath()</div><div class="line">ctx.fillStyle = 'red'</div><div class="line">ctx.fill()</div><div class="line">ctx.stroke()</div></pre></td></tr></table></figure>
+<p><img src="http://i1.piimg.com/1949/ebe4581785363ee5.jpg" alt="xx"></p>
+<h5 id="ctx-arc-x-y-radius-startAngle-endAngle-anticlockwise"><a href="#ctx-arc-x-y-radius-startAngle-endAngle-anticlockwise" class="headerlink" title="ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise)"></a>ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise)</h5><ul>
+<li>x, y: 圆弧的圆心的坐标</li>
+<li>radius: 圆弧的半径</li>
+<li>startAngle: 从startAngle的<code>弧度</code>开始，以x轴为基准</li>
+<li>endAngle: 到endAngle的<code>弧度</code>结束，以x轴为基准</li>
+<li>anticlockwise: 绘制的方向，默认顺时针。<code>true 逆时针</code>，<code>false 顺时针</code></li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">for(let i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++)&#123;</div><div class="line">    for(let j = <span class="number">0</span>; j &lt; <span class="number">6</span>; j++)&#123;</div><div class="line">        let raduis = <span class="number">10</span></div><div class="line">        let x = (raduis + <span class="number">2</span>) * (j + <span class="number">1</span>) * <span class="number">2</span></div><div class="line">        let y = (raduis + <span class="number">2</span>) * (i + <span class="number">1</span>) * <span class="number">2</span></div><div class="line">        let startAngle = <span class="number">0</span></div><div class="line">        let endAngle = (Math.<span class="literal">PI</span> / <span class="number">180</span>) * (i + <span class="number">1</span>) * (j + <span class="number">1</span>) * <span class="number">10</span></div><div class="line">        ctx.beginPath()</div><div class="line">        ctx.arc(x, y, raduis, startAngle, endAngle)</div><div class="line">        ctx.strokeStyle = 'green'</div><div class="line">        ctx.stroke()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://i2.buimg.com/574382/cf830b62408422dd.jpg" alt="xx"></p>
+<h5 id="ctx-quadraticCurveTo-cp1x-cp1y-x-y"><a href="#ctx-quadraticCurveTo-cp1x-cp1y-x-y" class="headerlink" title="ctx.quadraticCurveTo(cp1x, cp1y, x, y)"></a>ctx.quadraticCurveTo(cp1x, cp1y, x, y)</h5><ul>
+<li>从当前位置开始绘制二次贝赛尔曲线</li>
+<li>cp1x, cp1y: 控制点的坐标</li>
+<li>x, y: 结束点的坐标</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ctx.moveTo(<span class="number">50</span>, <span class="number">50</span>)</div><div class="line">ctx.quadraticCurveTo(<span class="number">0</span>, <span class="number">30</span>, <span class="number">50</span>, <span class="number">100</span>)</div><div class="line">ctx.quadraticCurveTo(<span class="number">100</span>, <span class="number">30</span>, <span class="number">50</span>, <span class="number">50</span>)</div><div class="line">ctx.fill()</div></pre></td></tr></table></figure>
+<p><img src="http://i1.piimg.com/574382/0bd26d3e169855be.jpg" alt="xx"></p>
+<h5 id="ctx-bezierCurveTo-cp1x-cp1y-cp2x-cp2y-x-y"><a href="#ctx-bezierCurveTo-cp1x-cp1y-cp2x-cp2y-x-y" class="headerlink" title="ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)"></a>ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)</h5><ul>
+<li>绘制三次贝赛尔曲线</li>
+<li>三次贝赛尔曲线有两个控制点(cp1x, cp1y)/(cp2x, cp2y)</li>
+</ul>
+<h5 id="ctx-rect-x-y-width-height"><a href="#ctx-rect-x-y-width-height" class="headerlink" title="ctx.rect(x, y, width, height)"></a>ctx.rect(x, y, width, height)</h5><ul>
+<li>绘制一条矩形的路径</li>
+<li>和fillRect和strokeRect的区别是: rect画的仅仅是一条路径，没有渲染！！！</li>
+<li>绘制圆角矩形</li>
+</ul>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">function roundedRect(ctx, x, y, <span class="built_in">width</span>, <span class="built_in">height</span>, <span class="built_in">radius</span>)&#123;</div><div class="line">    ctx.beginPath()</div><div class="line">    ctx.moveTo(x, y + <span class="built_in">radius</span>)</div><div class="line">    ctx.lineTo(x, y + <span class="built_in">height</span> - <span class="built_in">radius</span>)</div><div class="line">    ctx.quadraticCurveTo(x, y + <span class="built_in">height</span>, x + <span class="built_in">radius</span>, y + <span class="built_in">height</span>)</div><div class="line">    ctx.lineTo(x + <span class="built_in">width</span> - <span class="built_in">radius</span>, y + <span class="built_in">height</span>)</div><div class="line">    ctx.quadraticCurveTo(x + <span class="built_in">width</span>, y + <span class="built_in">height</span>, x + <span class="built_in">width</span>, y + <span class="built_in">height</span> - <span class="built_in">radius</span>)</div><div class="line">    ctx.lineTo(x + <span class="built_in">width</span>, y + <span class="built_in">radius</span>)</div><div class="line">    ctx.quadraticCurveTo(x + <span class="built_in">width</span>, y, x + <span class="built_in">width</span> - <span class="built_in">radius</span>, y)</div><div class="line">    ctx.lineTo(x + <span class="built_in">radius</span>, y)</div><div class="line">    ctx.quadraticCurveTo(x, y, x, y + <span class="built_in">radius</span>)</div><div class="line">    ctx.stroke()</div><div class="line">&#125;</div><div class="line">roundedRect(ctx, <span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>, <span class="number">10</span>)</div></pre></td></tr></table></figure>
+<p><img src="http://i2.buimg.com/574382/7b3db1e31500096c.jpg" alt="xx"></p>
+<h5 id="ctx-path2D"><a href="#ctx-path2D" class="headerlink" title="ctx.path2D()"></a>ctx.path2D()</h5><blockquote>
+<p>用于缓存或记录绘画命令<br>方便快速的回顾路径<br>所有的路径方法都可以在path2D的实例中使用  </p>
+</blockquote>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">let rectangle = new Path2D()</div><div class="line">rectangle.rect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">50</span>, <span class="number">50</span>)</div><div class="line"></div><div class="line">let circle = new Path2D()</div><div class="line">circle.moveTo(<span class="number">125</span>, <span class="number">35</span>)</div><div class="line">circle.arc(<span class="number">100</span>, <span class="number">35</span>, <span class="number">25</span>, <span class="number">0</span>, <span class="number">2</span> * Math.<span class="literal">PI</span>)</div><div class="line"></div><div class="line">ctx.stroke(rectangle)</div><div class="line">ctx.fill(circle)</div></pre></td></tr></table></figure>
+<p><img src="http://i4.piimg.com/574382/567f82ae195b55a2.jpg" alt="xx"></p>
+<h3 id="样式和颜色"><a href="#样式和颜色" class="headerlink" title="样式和颜色"></a>样式和颜色</h3><h4 id="色彩"><a href="#色彩" class="headerlink" title="色彩"></a>色彩</h4><h5 id="ctx-fillStyle"><a href="#ctx-fillStyle" class="headerlink" title="ctx.fillStyle"></a>ctx.fillStyle</h5><ul>
+<li>设置填充颜色</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ctx<span class="selector-class">.fillStyle</span> = <span class="string">'green'</span></div><div class="line">ctx<span class="selector-class">.fillStyle</span> = <span class="string">'#00ff00'</span></div><div class="line">ctx<span class="selector-class">.fillStyle</span> = <span class="string">'rgb(0, 255, 0)'</span></div><div class="line">ctx<span class="selector-class">.fillStyle</span> = <span class="string">'rgba(0, 255, 0, 0.5)'</span></div></pre></td></tr></table></figure>
+<h5 id="ctx-strokeStyle"><a href="#ctx-strokeStyle" class="headerlink" title="ctx.strokeStyle"></a>ctx.strokeStyle</h5><ul>
+<li>设置描边颜色</li>
+</ul>
+<h4 id="透明度"><a href="#透明度" class="headerlink" title="透明度"></a>透明度</h4><h5 id="ctx-globalAlpha"><a href="#ctx-globalAlpha" class="headerlink" title="ctx.globalAlpha"></a>ctx.globalAlpha</h5><ul>
+<li>设置图形和图片的透明度</li>
+<li>取值在0-1之间，默认值为1，即不透明</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ctx.fillStyle = 'blue'</div><div class="line">ctx.fillRect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>)</div><div class="line">ctx.globalAlpha = <span class="number">0.5</span></div><div class="line">ctx.fillStyle = 'green'</div><div class="line">ctx.fillRect(<span class="number">50</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">100</span>)</div></pre></td></tr></table></figure>
+<p><img src="http://i1.piimg.com/574382/0cf50444001a3184.jpg" alt="xx"></p>
+<h4 id="线型"><a href="#线型" class="headerlink" title="线型"></a>线型</h4><h5 id="ctx-lineWidth"><a href="#ctx-lineWidth" class="headerlink" title="ctx.lineWidth"></a>ctx.lineWidth</h5><ul>
+<li>设置或获取线段的粗细</li>
+<li>取值正数，默认为1</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ctx.lineWidth = <span class="number">5</span></div><div class="line">ctx.fillStyle = 'gray'</div><div class="line">ctx.fillRect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>)</div><div class="line">ctx.strokeRect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>)</div></pre></td></tr></table></figure>
+<h5 id="ctx-lineCap"><a href="#ctx-lineCap" class="headerlink" title="ctx.lineCap"></a>ctx.lineCap</h5><ul>
+<li>设置线段末端的样式</li>
+<li>枚举值：<code>butt(默认)</code> <code>round</code> <code>square</code></li>
+<li>绘制相同长度的线段时，不同lineCap的长度不同，<code>round</code>和<code>square</code>比<code>butt</code>长出<code>lineWidth/2</code></li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">ctx.lineWidth = <span class="number">10</span></div><div class="line"></div><div class="line"><span class="comment">// 绘制lineCap为butt的线段</span></div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">10</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">10</span>, <span class="number">100</span>)</div><div class="line">ctx.stroke()</div><div class="line"></div><div class="line"><span class="comment">// 绘制lineCap为round的线段</span></div><div class="line">ctx.lineCap = 'round'</div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">40</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">40</span>, <span class="number">100</span>)</div><div class="line">ctx.stroke()</div><div class="line"></div><div class="line"><span class="comment">// 绘制lineCap为square的线段</span></div><div class="line">ctx.lineCap = 'square'</div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">80</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">80</span>, <span class="number">100</span>)</div><div class="line">ctx.stroke()</div></pre></td></tr></table></figure>
+<h5 id="ctx-lineJoin"><a href="#ctx-lineJoin" class="headerlink" title="ctx.lineJoin"></a>ctx.lineJoin</h5><ul>
+<li>指定两个相连路径的连接部分的样式</li>
+<li>枚举值: <code>bevel</code> <code>round</code> <code>miter(默认)</code></li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">ctx.lineWidth = <span class="number">10</span></div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">10</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">60</span>, <span class="number">60</span>)</div><div class="line">ctx.lineTo(<span class="number">110</span>, <span class="number">10</span>)</div><div class="line">ctx.stroke()</div><div class="line"></div><div class="line">ctx.lineJoin = 'round'</div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">150</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">200</span>, <span class="number">60</span>)</div><div class="line">ctx.lineTo(<span class="number">250</span>, <span class="number">10</span>)</div><div class="line">ctx.stroke()</div><div class="line"></div><div class="line">ctx.lineJoin = 'bevel'</div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">300</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">350</span>, <span class="number">60</span>)</div><div class="line">ctx.lineTo(<span class="number">400</span>, <span class="number">10</span>)</div><div class="line">ctx.stroke()</div></pre></td></tr></table></figure>
+<h5 id="ctx-miterLimit"><a href="#ctx-miterLimit" class="headerlink" title="ctx.miterLimit"></a>ctx.miterLimit</h5><ul>
+<li>当lineJoin被设置为<code>miter</code>时，两条线段的外侧会延伸，直至相交</li>
+<li>miterLimit是设置向外延伸的最大值，一旦超过这个最大值，这不再延伸，而是lineJoin变为<code>bevel</code>模式</li>
+</ul>
+<h4 id="虚线"><a href="#虚线" class="headerlink" title="虚线"></a>虚线</h4><h5 id="ctx-setLineDash-arr"><a href="#ctx-setLineDash-arr" class="headerlink" title="ctx.setLineDash(arr)"></a>ctx.setLineDash(arr)</h5><ul>
+<li>设置虚线样式</li>
+<li>arr: 虚线线段长度和间距长度的数组，数组长度可为2或者3。如<code>[10, 20]</code> <code>[10, 20, 30]</code></li>
+<li>如果数组元素的数量是奇数，数组元素会被复制并重复一次</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ctx.lineWidth = <span class="number">10</span></div><div class="line">ctx.setLineDash([<span class="number">10</span>, <span class="number">20</span>， <span class="number">30</span>])</div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">20</span>, <span class="number">20</span>)</div><div class="line">ctx.lineTo(<span class="number">500</span>, <span class="number">500</span>)</div><div class="line">ctx.stroke()</div></pre></td></tr></table></figure>
+<h5 id="ctx-getLineDash"><a href="#ctx-getLineDash" class="headerlink" title="ctx.getLineDash()"></a>ctx.getLineDash()</h5><ul>
+<li>返回值：一组描述交替绘制线段和间距（坐标空间单位）长度的数字</li>
+</ul>
+<h5 id="ctx-lineDashOffset"><a href="#ctx-lineDashOffset" class="headerlink" title="ctx.lineDashOffset"></a>ctx.lineDashOffset</h5><ul>
+<li>设置虚线偏移量</li>
+</ul>
+<h4 id="渐变"><a href="#渐变" class="headerlink" title="渐变"></a>渐变</h4><h5 id="ctx-createLinearGradient-x0-y0-x1-y1"><a href="#ctx-createLinearGradient-x0-y0-x1-y1" class="headerlink" title="ctx.createLinearGradient(x0, y0, x1, y1)"></a>ctx.createLinearGradient(x0, y0, x1, y1)</h5><ul>
+<li>创建沿参数坐标指定的直线的渐变</li>
+<li>x0, y0: 起点坐标</li>
+<li>x1, y1: 重点坐标</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">let gradient = ctx.createLinearGradient(<span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>, <span class="number">200</span>)</div><div class="line">gradient.addColorStop(<span class="number">0</span>, 'red')</div><div class="line">gradient.addColorStop(<span class="number">0.5</span>, 'green')</div><div class="line">gradient.addColorStop(<span class="number">1</span>, 'blue')</div><div class="line">ctx.fillStyle = gradient</div><div class="line">ctx.fillRect(<span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>, <span class="number">200</span>)</div></pre></td></tr></table></figure>
+<h5 id="ctx-createRadialGradient-x1-y1-r1-x2-y2-r2"><a href="#ctx-createRadialGradient-x1-y1-r1-x2-y2-r2" class="headerlink" title="ctx.createRadialGradient(x1, y1, r1, x2, y2, r2)"></a>ctx.createRadialGradient(x1, y1, r1, x2, y2, r2)</h5><ul>
+<li>根据参数确定两个圆的坐标，绘制放射性渐变</li>
+<li>r1: 第一个圆的半径</li>
+<li>r2: 第二个圆的半径</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+<h5 id="ctx-addColorStop-position-color"><a href="#ctx-addColorStop-position-color" class="headerlink" title="ctx.addColorStop(position, color)"></a>ctx.addColorStop(position, color)</h5><ul>
+<li>设置渐变过程中某个位置的颜色</li>
+<li>postion: 位置。取值<code>0-1</code>之间</li>
+<li>color: 有效的颜色的字符串，如<code>&#39;#fff&#39;</code> <code>&#39;rgba(255, 255, 255, 0.1)&#39;</code></li>
+</ul>
+<h4 id="图案样式"><a href="#图案样式" class="headerlink" title="图案样式"></a>图案样式</h4><h5 id="ctx-createPattern-image-type"><a href="#ctx-createPattern-image-type" class="headerlink" title="ctx.createPattern(image, type)"></a>ctx.createPattern(image, type)</h5><ul>
+<li>创建模式</li>
+<li>image: 如下类型的元素<ul>
+<li>HTMLImageElement(img)</li>
+<li>HTMLVideoElement(video)</li>
+<li>HTMLCanvasElement(canvas)</li>
+<li>ImageBitmap</li>
+<li>ImageData</li>
+<li>Blob</li>
+</ul>
+</li>
+<li>type: 枚举值<code>repeat(默认)</code> <code>repeat-x</code> <code>repeat-y</code> <code>no-repeat</code></li>
+</ul>
+<h5 id="ctx-shadowOffsetX-ctx-shadowOffsetY"><a href="#ctx-shadowOffsetX-ctx-shadowOffsetY" class="headerlink" title="ctx.shadowOffsetX / ctx.shadowOffsetY"></a>ctx.shadowOffsetX / ctx.shadowOffsetY</h5><ul>
+<li>设置阴影在水平和垂直方向的偏移距离</li>
+</ul>
+<h5 id="ctx-shadowBlur"><a href="#ctx-shadowBlur" class="headerlink" title="ctx.shadowBlur"></a>ctx.shadowBlur</h5><ul>
+<li>设置阴影模糊的程度</li>
+<li>取值：非负数，默认值为0</li>
+</ul>
+<h5 id="ctx-shadowColor"><a href="#ctx-shadowColor" class="headerlink" title="ctx.shadowColor"></a>ctx.shadowColor</h5><ul>
+<li>设置阴影的颜色</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ctx<span class="selector-class">.shadowOffsetX</span> = <span class="number">10</span></div><div class="line">ctx<span class="selector-class">.shadowOffsetY</span> = <span class="number">10</span></div><div class="line">ctx<span class="selector-class">.shadowBlur</span> = <span class="number">10</span></div><div class="line">ctx<span class="selector-class">.shadowColor</span> = <span class="string">'green'</span></div><div class="line">ctx.strokeRect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>)</div></pre></td></tr></table></figure>
+<h3 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h3><h4 id="绘制文本"><a href="#绘制文本" class="headerlink" title="绘制文本"></a>绘制文本</h4><h5 id="ctx-fillText-text-x-y-maxWidth"><a href="#ctx-fillText-text-x-y-maxWidth" class="headerlink" title="ctx.fillText(text, x, y[, maxWidth])"></a>ctx.fillText(text, x, y[, maxWidth])</h5><ul>
+<li>以填充的方式绘制文字</li>
+<li>text: 被绘制的文字</li>
+<li>x, y: 绘制的起点</li>
+<li>maxWidth: 最大宽度，可选</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ctx</span><span class="selector-class">.fillText</span>(<span class="string">'Canvas'</span>, <span class="number">50</span>, <span class="number">50</span>)</div></pre></td></tr></table></figure>
+<h5 id="ctx-strokeText-text-x-y-maxWidth"><a href="#ctx-strokeText-text-x-y-maxWidth" class="headerlink" title="ctx.strokeText(text, x, y[, maxWidth])"></a>ctx.strokeText(text, x, y[, maxWidth])</h5><ul>
+<li>以描边的方式绘制文字</li>
+<li>参数同fillText</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ctx</span><span class="selector-class">.strokeText</span>(<span class="string">'Canvas'</span>, <span class="number">50</span>, <span class="number">50</span>)</div></pre></td></tr></table></figure>
+<h4 id="设置样式"><a href="#设置样式" class="headerlink" title="设置样式"></a>设置样式</h4><h5 id="ctx-font"><a href="#ctx-font" class="headerlink" title="ctx.font"></a>ctx.font</h5><ul>
+<li>设置文字字体。默认：10px sans-serif</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ctx<span class="selector-class">.font</span> = <span class="string">'50px 微软雅黑'</span></div></pre></td></tr></table></figure>
+<h5 id="ctx-textAlign"><a href="#ctx-textAlign" class="headerlink" title="ctx.textAlign"></a>ctx.textAlign</h5><ul>
+<li>设置文字的对齐方式</li>
+<li>对齐是指当执行fillText或者strokeText时，相对于参数X的位置，如取值为<code>center</code>时，文本的开始位置将是<code>x - 文字的长度 * 50%</code></li>
+<li>取值: 枚举<code>start(默认)</code> <code>end</code> <code>left</code> <code>right</code> <code>center</code></li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ctx<span class="selector-class">.textAlign</span> = <span class="string">'end'</span> <span class="comment">// 从文字的结束位置开始绘制文字</span></div><div class="line">ctx<span class="selector-class">.textAlign</span> = <span class="string">'left'</span> <span class="comment">// 文本左对齐</span></div><div class="line">ctx<span class="selector-class">.textAlign</span> = <span class="string">'center'</span> <span class="comment">// 绘制文字时，从中间向两边绘制</span></div></pre></td></tr></table></figure>
+<h5 id="ctx-textBaseline"><a href="#ctx-textBaseline" class="headerlink" title="ctx.textBaseline"></a>ctx.textBaseline</h5><ul>
+<li>设置文字的基线，即文字垂直方向的绘制基准</li>
+<li>取值: 枚举<code>top</code> <code>hanging</code> <code>middle</code> <code>alphabetic(默认)</code> <code>ideographic</code> <code>bottom</code></li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ctx<span class="selector-class">.textBaseline</span> = <span class="string">'top'</span> <span class="comment">// 文本基线位于文本的顶部</span></div><div class="line">ctx<span class="selector-class">.textBaseline</span> = <span class="string">'hanging'</span> <span class="comment">// 文本基线是悬挂基线？</span></div><div class="line">ctx<span class="selector-class">.textBaseline</span> = <span class="string">'middle'</span> <span class="comment">// 基线位于文本中间</span></div><div class="line">ctx<span class="selector-class">.textBaseline</span> = <span class="string">'alphabetic'</span> <span class="comment">// 基线位于文字的基线</span></div></pre></td></tr></table></figure>
+<h5 id="ctx-direction"><a href="#ctx-direction" class="headerlink" title="ctx.direction"></a>ctx.direction</h5><ul>
+<li>设置文字的方向</li>
+<li>取值: ltr 从左向右(默认) / rtl 从右向左</li>
+</ul>
+<h4 id="文本测量"><a href="#文本测量" class="headerlink" title="文本测量"></a>文本测量</h4><h5 id="ctx-measureText-text"><a href="#ctx-measureText-text" class="headerlink" title="ctx.measureText(text)"></a>ctx.measureText(text)</h5><ul>
+<li>测量文本并获取当前文本相关属性的对象</li>
+<li>测量相同文本的返回值会根据前期设置的不同而返回值不同</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ctx<span class="selector-class">.font</span> = <span class="string">'20px 微软雅黑'</span></div><div class="line">ctx.measureText(<span class="string">'Canvas'</span>) <span class="comment">// &#123;width: 74.61994934082031&#125;</span></div><div class="line"></div><div class="line">ctx<span class="selector-class">.font</span> = <span class="string">'50px 微软雅黑'</span></div><div class="line">ctx.measureText(<span class="string">'Canvas'</span>) <span class="comment">// &#123;width: 186.54995727539062&#125;</span></div></pre></td></tr></table></figure>
+<h3 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h3><h4 id="绘制图片"><a href="#绘制图片" class="headerlink" title="绘制图片"></a>绘制图片</h4><h5 id="drawImage-image-x-y-width-height"><a href="#drawImage-image-x-y-width-height" class="headerlink" title="drawImage(image, x, y, width, height)"></a>drawImage(image, x, y, width, height)</h5><ul>
+<li>绘制图片到画布上</li>
+<li>x, y: 绘制的起点</li>
+<li>width, height: 绘制的宽高(压缩图片)</li>
+</ul>
+<h5 id="drawImage-image-sourceX-sourceY-sourceWidth-sourceHeight-distX-distY-distWidth-distHeight"><a href="#drawImage-image-sourceX-sourceY-sourceWidth-sourceHeight-distX-distY-distWidth-distHeight" class="headerlink" title="drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, distX, distY, distWidth, distHeight)"></a>drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, distX, distY, distWidth, distHeight)</h5><ul>
+<li>对图片进行切片之后绘制到画布上</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">let <span class="selector-tag">img</span> = new Image()</div><div class="line"><span class="comment">// img.setAttribute('crossOrigin', '')</span></div><div class="line"><span class="selector-tag">img</span><span class="selector-class">.onload</span> = () =&gt; &#123;</div><div class="line">    ctx.drawImage(<span class="selector-tag">img</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">500</span>, <span class="number">500</span>, <span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>)</div><div class="line">&#125;</div><div class="line"><span class="selector-tag">img</span><span class="selector-class">.src</span> = <span class="string">'http://i1.piimg.com/574382/0cf50444001a3184.jpg'</span></div></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[原生DOM系列-Storage对象]]></title>
+      <url>http://yoursite.com/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-Storage%E5%AF%B9%E8%B1%A1/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等<br>Stroage包含两种机制：localStorage和sessionStorage  </p>
+</blockquote>
+<h3 id="localStorage"><a href="#localStorage" class="headerlink" title="localStorage"></a>localStorage</h3><blockquote>
+<p>在当前域名下存取数据<br>隐私模式下不可用<br>长期保存数据，页面关闭也不消失无过期时间(但可自行实现过期逻辑)  </p>
+</blockquote>
+<h4 id="length"><a href="#length" class="headerlink" title="length"></a>length</h4><ul>
+<li>整数</li>
+<li>存储在localStorage中的数据项的数量</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">localStorage.<span class="built_in">length</span></div></pre></td></tr></table></figure>
+<h4 id="key-index"><a href="#key-index" class="headerlink" title="key(index)"></a>key(index)</h4><ul>
+<li>从localStorage中获取第index个数据项的键名</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">localStorage.<span class="type">key</span>(<span class="number">0</span>) <span class="comment">// 获取localStorage中第一个元素</span></div><div class="line">localStorage.<span class="type">key</span>(localStorage.length - <span class="number">1</span>) <span class="comment">// 获取localStorage中最后一个元素</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="getItem-key"><a href="#getItem-key" class="headerlink" title="getItem(key)"></a>getItem(key)</h4><ul>
+<li>从localStorage中取出键名为key的值</li>
+</ul>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">localStorage.getItem<span class="comment">('a')</span> <span class="comment">// 拿到a的值，如果没有则返回null</span></div></pre></td></tr></table></figure>
+<h4 id="setItem-key-val"><a href="#setItem-key-val" class="headerlink" title="setItem(key, val)"></a>setItem(key, val)</h4><ul>
+<li>将键名为key，值为val的数据项添加到localStorage中</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">local</span>Storage.setItem(<span class="string">'a'</span>, 1) // <span class="built_in">local</span>Storage中将在最后面添加此键值</div></pre></td></tr></table></figure>
+<h4 id="removeItem-key"><a href="#removeItem-key" class="headerlink" title="removeItem(key)"></a>removeItem(key)</h4><ul>
+<li>从localStorage中删除键名为key的数据项</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">local</span>Storage.removeItem(<span class="string">'a'</span>) // <span class="built_in">local</span>Storage中的key为<span class="string">'a'</span>的数据将被删除</div></pre></td></tr></table></figure>
+<h4 id="clear"><a href="#clear" class="headerlink" title="clear()"></a>clear()</h4><ul>
+<li>清空localStorage</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">localStorage.<span class="built_in">clear</span>() <span class="comment">// localStorage中的所有数据都将被删除</span></div></pre></td></tr></table></figure>
+<h4 id="storage事件"><a href="#storage事件" class="headerlink" title="storage事件"></a>storage事件</h4><ul>
+<li>当storage中存储的数据发生变化时，会在window对象上触发storage事件。</li>
+<li>重复设置相同的键值对不会触发</li>
+<li>做出改变的当前页面也不会触发</li>
+<li>storage事件是实现跨页面通信的一种方式(postMessage大家也可以试试)</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">window.addEventListener(<span class="string">'storage'</span>, (e) =&gt; &#123;</div><div class="line">    e<span class="selector-class">.key</span> <span class="comment">// 改变的键</span></div><div class="line">    e<span class="selector-class">.oldValue</span> <span class="comment">// 旧值，如果是第一次设置，则为null</span></div><div class="line">    e<span class="selector-class">.newValue</span> <span class="comment">// 新值</span></div><div class="line">    e<span class="selector-class">.url</span> <span class="comment">// 做出改变的页面url</span></div><div class="line">    e<span class="selector-class">.storageArea</span> <span class="comment">// localStorage中的所有键值对</span></div><div class="line">&#125;, false)</div></pre></td></tr></table></figure>
+<h3 id="sessionStorage"><a href="#sessionStorage" class="headerlink" title="sessionStorage"></a>sessionStorage</h3><blockquote>
+<p>仅作用于当前页面<br>页面刷新不会导致数据丢失<br>页面跳转之后又返回也不会导致数据丢失<br>页面关闭后数据消失<br>除不会触发storage事件外，sessionStorage存在同localStorage相同的属性和方法(都继承自Stroage对象)  </p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[原生DOM系列-History对象]]></title>
+      <url>http://yoursite.com/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-History%E5%AF%B9%E8%B1%A1/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等<br>提供操作浏览器会话历史的接口<br>历史记录中包括当前页面中通过iframe加载的页面的历史记录  </p>
+</blockquote>
+<h3 id="length"><a href="#length" class="headerlink" title="length"></a>length</h3><ul>
+<li>返回一个整形</li>
+<li>历史纪录的数量</li>
+</ul>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">let</span> <span class="built_in">length</span> = history.<span class="built_in">length</span></div></pre></td></tr></table></figure>
+<h3 id="state"><a href="#state" class="headerlink" title="state"></a>state</h3><ul>
+<li>调用pushState和replaceState方法时，同页面一起被写入到history中的数据</li>
+<li>可用于保存当前页面的一些状态信息</li>
+<li>可以直接通过history.state获取</li>
+<li>也可以在事件触发时获取</li>
+</ul>
+<figure class="highlight pf"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">history.<span class="keyword">state</span></div><div class="line"></div><div class="line">window.addEventListener('popstate', (e) =&gt; &#123;</div><div class="line">    e.<span class="keyword">state</span></div><div class="line">&#125;, false)</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="back"><a href="#back" class="headerlink" title="back()"></a>back()</h3><ul>
+<li>与点击浏览器上的返回按钮相同</li>
+<li>如果不是在最早的历史记录页面中执行(也就是还存在可以返回的页面)，可触发popstate事件</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">history.<span class="keyword">back</span>()</div></pre></td></tr></table></figure>
+<h3 id="forward"><a href="#forward" class="headerlink" title="forward()"></a>forward()</h3><ul>
+<li>与点击浏览器上的前进按钮相同</li>
+<li>如果不是在最近的历史记录页面中执行(也就是还存在可以前进的页面)，可触发popstate事件</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">history</span><span class="selector-class">.forward</span>()</div></pre></td></tr></table></figure>
+<h3 id="go-num"><a href="#go-num" class="headerlink" title="go(num)"></a>go(num)</h3><ul>
+<li>页面跳转到历史记录的第n个页面</li>
+<li>num &gt; 0 则向前跳转</li>
+<li>num &lt; 0 则向后跳转</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">history</span>.<span class="keyword">go</span>(-<span class="number">1</span>) // 等同于<span class="keyword">history</span>.back()</div><div class="line"><span class="keyword">history</span>.<span class="keyword">go</span>(<span class="number">1</span>) // 等同于<span class="keyword">history</span>.forward()</div></pre></td></tr></table></figure>
+<h3 id="pushState-state-title-url"><a href="#pushState-state-title-url" class="headerlink" title="pushState(state, title, url)"></a>pushState(state, title, url)</h3><ul>
+<li>state：需要存储到history中的信息</li>
+<li>title：存入history中的页面的title</li>
+<li>url：要跳转的url地址，<code>不能跨域</code></li>
+<li>当前页面路径和url所指定的路径都会被存入history中，使用url代替当前页面的路径</li>
+<li>pushState并不触发事件</li>
+<li>页面不会刷新</li>
+</ul>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">history</span>.pushState(&#123;</div><div class="line">    <span class="string">'a'</span>: <span class="string">'a'</span></div><div class="line">&#125;, <span class="string">'页面标题(可传空字符串)'</span>, <span class="string">'相同域名和端口下的不同地址'</span>)</div></pre></td></tr></table></figure>
+<h3 id="replaceState-state-title-url"><a href="#replaceState-state-title-url" class="headerlink" title="replaceState(state, title, url)"></a>replaceState(state, title, url)</h3><ul>
+<li>当前页面的路径不会被存入history中，只有replaceState中指定的url存在于history中</li>
+<li>地址栏中当前页面的路径被替换掉</li>
+<li>页面不会重新刷新</li>
+<li>也不触发事件</li>
+</ul>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">history</span>.pushState(&#123;</div><div class="line">    <span class="string">'a'</span>: <span class="string">'a'</span></div><div class="line">&#125;, <span class="string">'页面标题(可传空字符串)'</span>, <span class="string">'相同域名和端口下的不同地址'</span>)</div></pre></td></tr></table></figure>
+<h3 id="popstate事件"><a href="#popstate事件" class="headerlink" title="popstate事件"></a>popstate事件</h3><ul>
+<li>用户点击前进后退时触发</li>
+<li>调用history的back()/forward()/go()时触发</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.addEventListener(<span class="string">'popstate'</span>, <span class="function"><span class="params">(e)</span> =&gt;</span> &#123;</div><div class="line">    let curState = history.state <span class="regexp">//</span> e.state</div><div class="line">    <span class="built_in">console</span>.log(e)</div><div class="line">&#125;, <span class="literal">false</span>)</div><div class="line"></div><div class="line"><span class="built_in">window</span>.onpopstate = <span class="function"><span class="params">(e)</span> =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(e)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[原生DOM系列-Window对象]]></title>
+      <url>http://yoursite.com/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-Window%E5%AF%B9%E8%B1%A1/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等<br>Window对象包含window、document等属性<br>也就是说window属性和document属性同属于Window对象<br>该文档中过滤掉了部分特别常用的属性或方法，如alert/console等<br>同时也过滤掉了部分特别不常用的属性或方法<br>内容尚不完整，请下周继续收看！！  </p>
+</blockquote>
+<h3 id="window属性"><a href="#window属性" class="headerlink" title="window属性"></a>window属性</h3><ul>
+<li>window属性指向当前Window对象</li>
+<li>全局环境下window属性同其它属性和this的关系</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span> === <span class="keyword">this</span> <span class="regexp">//</span> <span class="keyword">this</span>和<span class="built_in">window</span>同指向Window对象</div><div class="line"><span class="built_in">window</span>.<span class="keyword">this</span> <span class="regexp">//</span> <span class="literal">undefined</span>。<span class="keyword">this</span>并非Window对象的属性</div><div class="line"><span class="built_in">window</span> === parent <span class="regexp">//</span> 顶层<span class="built_in">window</span>中，parent属性指向当前Window对象</div><div class="line"><span class="built_in">window</span>.parent === <span class="built_in">window</span> <span class="regexp">//</span> parent是Window对象的属性</div><div class="line"><span class="built_in">window</span> === top <span class="regexp">//</span> 顶层<span class="built_in">window</span>中，top属性都指向当前Window对象</div><div class="line"><span class="built_in">window</span>.top === top <span class="regexp">//</span> top是Window对象的属性</div><div class="line"><span class="built_in">window</span> === self <span class="regexp">//</span> self和<span class="built_in">window</span>一样指向当前Window对象</div><div class="line"><span class="built_in">window</span>.self === self <span class="regexp">//</span> self是Window对象的属性</div><div class="line"><span class="built_in">window</span> === <span class="built_in">document</span>.defaultView</div><div class="line"><span class="built_in">window</span> === frames <span class="regexp">//</span> 是不是很奇怪。其实iframes会被解析挂载到<span class="built_in">window</span>对象上，<span class="built_in">window</span>对象是一个类数组对象</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="self"><a href="#self" class="headerlink" title="self"></a>self</h3><ul>
+<li>指向当前window对象</li>
+</ul>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">self</span> === window</div></pre></td></tr></table></figure>
+<h3 id="parent"><a href="#parent" class="headerlink" title="parent"></a>parent</h3><ul>
+<li>parent属性指向包含当前Window对象的Window对象</li>
+</ul>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设当前html文档中包含一个name等于frame1的iframe</span></div><div class="line">frames[<span class="string">'frame1'</span>].<span class="keyword">parent</span> === <span class="keyword">window</span></div></pre></td></tr></table></figure>
+<h3 id="top"><a href="#top" class="headerlink" title="top"></a>top</h3><ul>
+<li>top属性指向最顶层Window对象</li>
+</ul>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设当前html文档中包含一个name等于frame1的iframe</span></div><div class="line"><span class="comment">// frame1文档中有包含frmae2文档</span></div><div class="line">frames.frame1.top === frames.frame1.frames.frame2.top</div></pre></td></tr></table></figure>
+<h3 id="frames"><a href="#frames" class="headerlink" title="frames"></a>frames</h3><ul>
+<li>当前文档中所有包含的iframe的集合</li>
+<li>frames对象指向当前Window对象，真正的iframe集合以数组和Window对象属性的形式挂载到Window对象上。</li>
+</ul>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 假设当前html文档中包含一个name等于frame1的iframe</div><div class="line">frames[<span class="number">0</span>] === frames[<span class="string">'frame1'</span>]</div><div class="line">frames[<span class="number">0</span>] === window[<span class="number">0</span>]</div><div class="line">frames[<span class="number">0</span>] === window[<span class="string">'frame1'</span>]</div></pre></td></tr></table></figure>
+<h3 id="closed"><a href="#closed" class="headerlink" title="closed"></a>closed</h3><ul>
+<li>返回窗口是否已被关闭</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 打开一个窗口</span></div><div class="line"><span class="selector-tag">var</span> demo = window.open(<span class="string">''</span>, <span class="string">''</span>, <span class="string">'width=200,height=100'</span>)</div><div class="line">demo<span class="selector-class">.closed</span> <span class="comment">// false</span></div><div class="line"></div><div class="line"><span class="comment">// 关闭打开的窗口</span></div><div class="line">demo<span class="selector-class">.closed</span> <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h3 id="document"><a href="#document" class="headerlink" title="document"></a>document</h3><ul>
+<li>对Document对象的只读引用</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.<span class="built_in">document</span> = <span class="number">1</span> <span class="comment">// 不会报错，但不生效</span></div><div class="line"><span class="built_in">document</span> <span class="comment">// Document对象</span></div></pre></td></tr></table></figure>
+<ul>
+<li>详见<code>原生DOM系列-Document对象</code></li>
+</ul>
+<h3 id="history"><a href="#history" class="headerlink" title="history"></a>history</h3><ul>
+<li>对History对象的只读引用</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">window<span class="selector-class">.history</span> = <span class="number">1</span> <span class="comment">// 不会报错，但不生效</span></div><div class="line">history <span class="comment">// History对象</span></div></pre></td></tr></table></figure>
+<ul>
+<li>详见<code>原生DOM系列-History对象</code></li>
+</ul>
+<h3 id="innerHeight-amp-innerWidth"><a href="#innerHeight-amp-innerWidth" class="headerlink" title="innerHeight &amp; innerWidth"></a>innerHeight &amp; innerWidth</h3><ul>
+<li>只读属性</li>
+<li>返回窗口的文档显示区高度和宽度，不包括菜单栏、工具栏和滚动条等高度</li>
+<li>IE不支持该属性，以clientHeight &amp; clientWidth代替</li>
+</ul>
+<h3 id="length"><a href="#length" class="headerlink" title="length"></a>length</h3><ul>
+<li>设置或返回窗口中得iframe数量</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设当前html文档中包含一个name等于frame1的iframe</span></div><div class="line">window<span class="selector-class">.length</span> <span class="comment">// 1</span></div><div class="line">length = <span class="number">10</span></div><div class="line">window<span class="selector-class">.lenght</span> <span class="comment">// 10</span></div></pre></td></tr></table></figure>
+<h3 id="location"><a href="#location" class="headerlink" title="location"></a>location</h3><ul>
+<li>对Location对象的引用</li>
+<li>详见<code>原生DOM系列-Location对象</code></li>
+</ul>
+<h3 id="name"><a href="#name" class="headerlink" title="name"></a>name</h3><ul>
+<li>设置或返回窗口的名称</li>
+</ul>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">window.<span class="keyword">name</span> == <span class="string">'123'</span></div><div class="line"><span class="keyword">name</span> <span class="comment">// '123'</span></div></pre></td></tr></table></figure>
+<h3 id="navigatory"><a href="#navigatory" class="headerlink" title="navigatory"></a>navigatory</h3><ul>
+<li>对Navigator对象的引用</li>
+<li>详见<code>原生DOM系列-Navigator对象</code></li>
+</ul>
+<h3 id="opener"><a href="#opener" class="headerlink" title="opener"></a>opener</h3><ul>
+<li>返回对创建该窗口的Window对象的引用</li>
+<li>可以通过该属性调用创建者Window对象的属性和方法，从而控制创建者窗口的内容变化</li>
+<li>如果被打开的页面和当前页面不在同一个域下，被打开的页面中opener为空</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 当前窗口(open.html)中执行</span></div><div class="line">let demo = open(<span class="string">'opened.html'</span>, <span class="string">''</span>, <span class="string">'width=200,height=100'</span>)</div><div class="line"></div><div class="line"><span class="comment">// opened.html中执行</span></div><div class="line">opener<span class="selector-class">.document</span><span class="selector-class">.write</span>(<span class="string">'haha'</span>)</div><div class="line"></div><div class="line"><span class="comment">// open.html中的内容会变成'haha'</span></div></pre></td></tr></table></figure>
+<h3 id="outerHeight-amp-outerWidth"><a href="#outerHeight-amp-outerWidth" class="headerlink" title="outerHeight &amp; outerWidth"></a>outerHeight &amp; outerWidth</h3><ul>
+<li>返回整个窗口的高度和宽度</li>
+<li>IE中不支持，也不存在替代属性</li>
+<li>移动端这些属性会一直返回0</li>
+</ul>
+<h3 id="screen"><a href="#screen" class="headerlink" title="screen"></a>screen</h3><ul>
+<li>对Screen对象的只读引用</li>
+<li>Screen对象获取打开当前浏览器的屏幕的相关信息</li>
+</ul>
+<h3 id="screenLeft-amp-screenTop-amp-screenX-amp-screenY"><a href="#screenLeft-amp-screenTop-amp-screenX-amp-screenY" class="headerlink" title="screenLeft &amp; screenTop &amp; screenX &amp; screenY"></a>screenLeft &amp; screenTop &amp; screenX &amp; screenY</h3><ul>
+<li>只读属性</li>
+<li>返回浏览器窗口在屏幕上的x坐标和y坐标</li>
+<li>移动端无实际意义，因为移动端浏览器窗口始终是全屏幕打开的，这些数据会一直都是0</li>
+</ul>
+<h3 id="close"><a href="#close" class="headerlink" title="close()"></a>close()</h3><ul>
+<li>仅能对通过js打开的窗口有用</li>
+<li>移动端无效</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let demo = <span class="built_in">open</span>(<span class="string">''</span>, <span class="string">''</span>, <span class="string">'widht=200,height=100'</span>)</div><div class="line">demo.<span class="built_in">close</span>() <span class="comment">// demo窗口打开之后立即被关闭</span></div></pre></td></tr></table></figure>
+<h3 id="open"><a href="#open" class="headerlink" title="open()"></a>open()</h3><ul>
+<li>打开一个新的浏览器窗口或查找一个已命名的窗口</li>
+<li>移动端无效</li>
+</ul>
+<h3 id="scrollBy-xnum-ynum"><a href="#scrollBy-xnum-ynum" class="headerlink" title="scrollBy(xnum, ynum)"></a>scrollBy(xnum, ynum)</h3><ul>
+<li>按x/y轴滚动指定的像素数</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">scrollBy</span><span class="params">(<span class="number">0</span>, <span class="number">100</span>)</span></span> <span class="comment">// 向下滚动100px</span></div><div class="line"><span class="function"><span class="title">scrollBy</span><span class="params">(<span class="number">100</span>, <span class="number">0</span>)</span></span> <span class="comment">// 向右滚动100px</span></div></pre></td></tr></table></figure>
+<h3 id="scrollTo-xpos-ypos"><a href="#scrollTo-xpos-ypos" class="headerlink" title="scrollTo(xpos, ypos)"></a>scrollTo(xpos, ypos)</h3><ul>
+<li>将内容滚动到文档的指定坐标位置</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">scrollTo</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>)</span></span> <span class="comment">// 滚动到最上面，最左边</span></div><div class="line"><span class="function"><span class="title">scrollTo</span><span class="params">(<span class="number">0</span>, document.body.scroll)</span></span> <span class="comment">// 滚动到最上面，最左边</span></div></pre></td></tr></table></figure>
+<p>…未完待续！！</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[原生DOM系列-Element对象]]></title>
+      <url>http://yoursite.com/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-Element%E5%AF%B9%E8%B1%A1/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等<br>文中ele代表通过document.getElementById()等方法返回的某元素对象实例  </p>
+</blockquote>
+<h3 id="ele-attributes"><a href="#ele-attributes" class="headerlink" title="ele.attributes"></a>ele.attributes</h3><ul>
+<li>返回当前元素的所有属性的集合</li>
+<li>返回NamedNodeMap，可通过数组下标或对象属性方式获取</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">p</span> id=<span class="string">"demo"</span> class=<span class="string">"mod-demo"</span> data-a=<span class="string">"a"</span> style=<span class="string">"color: red"</span>&gt;test attributes&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line">let attrs = document.getElementById(<span class="string">'demo'</span>)<span class="selector-class">.attributes</span></div><div class="line">attrs[<span class="string">'id'</span>]<span class="selector-class">.name</span> <span class="comment">// 'id'</span></div><div class="line">attrs[<span class="number">0</span>]<span class="selector-class">.val</span> <span class="comment">// 'demo'</span></div><div class="line">attrs[<span class="string">'class'</span>]<span class="selector-class">.value</span> <span class="comment">// 'mod-demo'</span></div><div class="line">attrs[<span class="string">'data-a'</span>]<span class="selector-class">.value</span> <span class="comment">// 'a'</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="ele-children"><a href="#ele-children" class="headerlink" title="ele.children"></a>ele.children</h3><ul>
+<li>返回当前元素的所有子元素(不包含非元素类节点)</li>
+<li>返回HTMLCollection集合</li>
+<li>子元素集合即时更新</li>
+<li>只读属性</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"demo"</span>&gt;</span></span></div><div class="line">        <span class="comment">&lt;!--注释--&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">p</span>&gt;</span>text<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">""</span>&gt;</span></div><div class="line">        text2</div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line"><span class="built_in">document</span>.getElementById(<span class="string">'demo'</span>).children.length <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<h3 id="ele-classList"><a href="#ele-classList" class="headerlink" title="ele.classList"></a>ele.classList</h3><ul>
+<li>只读属性</li>
+<li>返回DOMTokenList</li>
+<li>返回元素所有的class属性</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>classList</th>
+<th>className</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DOMTokenList</td>
+<td>空格分隔的字符串</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>可以通过add()/remove()等方法修改</li>
+</ul>
+<h4 id="add-string-string"><a href="#add-string-string" class="headerlink" title="add(string[, string])"></a>add(string[, string])</h4><ul>
+<li>给属性添加class</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="regexp">//</span> html</div><div class="line">&lt;body&gt;</div><div class="line">    &lt;p id=<span class="string">"demo"</span>&gt;classlist&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="regexp">//</span> js</div><div class="line">let demo = <span class="built_in">document</span>.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.add(<span class="string">'demo'</span>, <span class="string">'red'</span>) <span class="regexp">//</span> p标签上增加`<span class="javascript"><span class="class"><span class="keyword">class</span></span>=<span class="string">"demo red"</span></span>`</div></pre></td></tr></table></figure>
+<h4 id="remove-string-string"><a href="#remove-string-string" class="headerlink" title="remove(string[, string])"></a>remove(string[, string])</h4><ul>
+<li>删除指定的class</li>
+<li>如果删除不存在的class，则不发生变化</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">demo<span class="selector-class">.classList</span><span class="selector-class">.remove</span>(<span class="string">'red'</span>, <span class="string">'green'</span>) <span class="comment">// p标签上的class变成`class="demo"`</span></div></pre></td></tr></table></figure>
+<h4 id="item-num"><a href="#item-num" class="headerlink" title="item(num)"></a>item(num)</h4><ul>
+<li>根据索引返回class值</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">demo<span class="selector-class">.classList</span><span class="selector-class">.item</span>(<span class="number">0</span>) <span class="comment">// 'demo'</span></div></pre></td></tr></table></figure>
+<h4 id="toggle-string-force"><a href="#toggle-string-force" class="headerlink" title="toggle(string[, force])"></a>toggle(string[, force])</h4><ul>
+<li>进传入一个参数时，如果参数指定的class存在则移除并返回false，否则增加class并返回true</li>
+<li>传入第二个参数时，如果第二个参数为true，则增加class，为false则删除class</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">demo<span class="selector-class">.classList</span><span class="selector-class">.toggle</span>(<span class="string">'red'</span>) <span class="comment">// class中增加red</span></div><div class="line">demo<span class="selector-class">.classList</span><span class="selector-class">.toggle</span>(<span class="string">'red'</span>) <span class="comment">// class中的red又被删除</span></div><div class="line">demo<span class="selector-class">.classList</span><span class="selector-class">.toggle</span>(<span class="string">'red'</span>, false) <span class="comment">// 删除red，但此时已经没有red了，则什么也不做</span></div></pre></td></tr></table></figure>
+<h4 id="contains-string"><a href="#contains-string" class="headerlink" title="contains(string)"></a>contains(string)</h4><ul>
+<li>检查元素是否拥有指定的class</li>
+<li>返回true或false</li>
+</ul>
+<h3 id="ele-className"><a href="#ele-className" class="headerlink" title="ele.className"></a>ele.className</h3><ul>
+<li>返回字符串</li>
+<li>返回class属性的值</li>
+<li>使用className，而非class，主要因为class为js的保留字</li>
+</ul>
+<h3 id="ele-clientHeight-ele-clientWidth"><a href="#ele-clientHeight-ele-clientWidth" class="headerlink" title="ele.clientHeight || ele.clientWidth"></a>ele.clientHeight || ele.clientWidth</h3><ul>
+<li>返回元素内部的高度||宽度(单位像素)，包含内边距，但不包括水平||垂直滚动条、边框和外边距</li>
+<li>CSS height + CSS padding - 水平||垂直滚动条高度</li>
+</ul>
+<h3 id="ele-firstElementChild-ele-lastElementChild"><a href="#ele-firstElementChild-ele-lastElementChild" class="headerlink" title="ele.firstElementChild || ele.lastElementChild"></a>ele.firstElementChild || ele.lastElementChild</h3><ul>
+<li>返回第一个||最后一个子元素，没有则返回null</li>
+</ul>
+<h3 id="ele-id"><a href="#ele-id" class="headerlink" title="ele.id"></a>ele.id</h3><ul>
+<li>获取或者设置一个元素的id属性</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">p</span> id=<span class="string">"demo"</span>&gt;classlist&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">let demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo<span class="selector-class">.id</span> <span class="comment">// 'demo'</span></div><div class="line">demo<span class="selector-class">.id</span> = <span class="string">'test'</span></div><div class="line">demo<span class="selector-class">.id</span> <span class="comment">// 'test'</span></div></pre></td></tr></table></figure>
+<h3 id="ele-innerHTML"><a href="#ele-innerHTML" class="headerlink" title="ele.innerHTML"></a>ele.innerHTML</h3><ul>
+<li>获取或者设置元素的子元素内容</li>
+<li>字符串</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">p</span> id=<span class="string">"demo"</span>&gt;</div><div class="line">        abc</div><div class="line">        &lt;span&gt;text&lt;/span&gt;</div><div class="line">    &lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">let demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo<span class="selector-class">.innerHTML</span> <span class="comment">//  'abc &lt;span&gt;text&lt;/span&gt;'</span></div><div class="line">demo<span class="selector-class">.innerHTML</span> = <span class="string">'&lt;span class="new"&gt;new text&lt;/span&gt;'</span> <span class="comment">// demo中的内容改变为新赋值的元素</span></div></pre></td></tr></table></figure>
+<h3 id="ele-nextElementSibling-ele-previousElementSibling"><a href="#ele-nextElementSibling-ele-previousElementSibling" class="headerlink" title="ele.nextElementSibling || ele.previousElementSibling"></a>ele.nextElementSibling || ele.previousElementSibling</h3><ul>
+<li>返回下一个||上一个兄弟元素节点</li>
+<li>如果此节点为最后一个，则返回null</li>
+<li>该属性只读</li>
+</ul>
+<h3 id="ele-outerHTML"><a href="#ele-outerHTML" class="headerlink" title="ele.outerHTML"></a>ele.outerHTML</h3><ul>
+<li>返回包含当前元素及其所有后代节点所形成的序列化的HTML片段字符串</li>
+<li>可读可写</li>
+<li>给其赋值可以替换掉当前元素及其所有后代元素</li>
+<li>当一个元素因为修改自身的outerHTML属性而被替换时，指向该元素的变量仍然指向替换前的元素</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">p</span> id=<span class="string">"demo"</span>&gt;old&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">let demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo<span class="selector-class">.outerHTML</span> = <span class="string">'&lt;p id="newDemo"&gt;new&lt;/p&gt;'</span></div><div class="line">demo<span class="selector-class">.id</span> <span class="comment">// 'demo'</span></div></pre></td></tr></table></figure>
+<h3 id="ele-scrollHeight-ele-scrollWidth"><a href="#ele-scrollHeight-ele-scrollWidth" class="headerlink" title="ele.scrollHeight || ele.scrollWidth"></a>ele.scrollHeight || ele.scrollWidth</h3><ul>
+<li>返回元素的内容高度||宽度</li>
+<li>只读属性</li>
+<li>包含被overflow hidden的部分</li>
+<li>包括元素的padding，但不包括元素的margin</li>
+</ul>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 判断元素是否滚动到底</span></div><div class="line">ele.scrollHeight - ele.scrollTop === ele.clientHeight</div></pre></td></tr></table></figure>
+<h3 id="ele-scrollLeft"><a href="#ele-scrollLeft" class="headerlink" title="ele.scrollLeft"></a>ele.scrollLeft</h3><ul>
+<li>读取或设置元素滚动条到元素左边的距离</li>
+<li>如果元素不能滚动，则其值为0</li>
+<li>设置小于0的值时，其值为0</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ele<span class="selector-class">.scrollLeft</span> += <span class="number">20</span> <span class="comment">// 向右滚动20像素</span></div></pre></td></tr></table></figure>
+<h3 id="ele-tagName"><a href="#ele-tagName" class="headerlink" title="ele.tagName"></a>ele.tagName</h3><ul>
+<li>返回该元素的标签名</li>
+<li>字符串</li>
+</ul>
+<h3 id="ele-addEventListener-type-listener-useCapture"><a href="#ele-addEventListener-type-listener-useCapture" class="headerlink" title="ele.addEventListener(type, listener[ ,useCapture])"></a>ele.addEventListener(type, listener[ ,useCapture])</h3><ul>
+<li>继承自其父类EventTarget</li>
+<li>type 字符串，所监听的事件类型，如’click’</li>
+<li>listener 回调函数</li>
+<li>useCapture 指定在捕获阶段还是冒泡阶段触发事件回调，true为捕获阶段，false为冒泡阶段</li>
+<li>思考题：同ele.onclick的区别</li>
+</ul>
+<h3 id="ele-closest-selectors"><a href="#ele-closest-selectors" class="headerlink" title="ele.closest(selectors)"></a>ele.closest(selectors)</h3><ul>
+<li>selectors 选择器，如’.demo’ ‘#demo’等</li>
+<li>返回离当前元素最近的祖先元素(包含当前元素)</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// html</div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo1"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo1"</span>&gt;</span> <span class="comment">&lt;!-- 下面的js返回此元素 --&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">"demo"</span>&gt;</span>text<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line">// js</div><div class="line">let demo = document.getElementById('dmo')</div><div class="line">demo.closest('.demo1')</div></pre></td></tr></table></figure>
+<h3 id="ele-dispatchEvent-event"><a href="#ele-dispatchEvent-event" class="headerlink" title="ele.dispatchEvent(event)"></a>ele.dispatchEvent(event)</h3><ul>
+<li>event 被派发的事件，通过document.createEvent()进行创建，通过自身的initEvent()进行初始化</li>
+<li></li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;p id=<span class="string">"demo"</span>&gt;text&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line"><span class="keyword">let</span> demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.addEventListener(<span class="string">'alert'</span>, function()&#123;</div><div class="line">    alert(<span class="string">'自定义事件'</span>)</div><div class="line">&#125;, <span class="literal">false</span>)</div><div class="line"></div><div class="line"><span class="keyword">let</span> <span class="keyword">event</span> = document.createEvent(<span class="string">'HTMLEvents'</span>)</div><div class="line"><span class="keyword">event</span>.initEvent(<span class="string">'alert'</span>, <span class="literal">false</span>, <span class="literal">false</span>) <span class="comment">// 第二个参数:是否冒泡，第三个参数:是否可被取消</span></div><div class="line">demo.dispatchEvent(<span class="keyword">event</span>) <span class="comment">// 页面中alert弹出'自定义事件'</span></div></pre></td></tr></table></figure>
+<h3 id="ele-getAttribute-attrName"><a href="#ele-getAttribute-attrName" class="headerlink" title="ele.getAttribute(attrName)"></a>ele.getAttribute(attrName)</h3><ul>
+<li>attrName String，属性名</li>
+<li>返回元素上指定属性的值</li>
+<li>返回字符串或null</li>
+</ul>
+<figure class="highlight axapta"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="keyword">div</span> id=<span class="string">"demo"</span> data-id=<span class="string">"123"</span>&gt;&lt;/<span class="keyword">div</span>&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">let demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.getAttribute(<span class="string">'data-id'</span>) <span class="comment">// 123</span></div></pre></td></tr></table></figure>
+<h3 id="ele-getBoundingClientRect"><a href="#ele-getBoundingClientRect" class="headerlink" title="ele.getBoundingClientRect()"></a>ele.getBoundingClientRect()</h3><ul>
+<li>返回元素的大小机器相对于视口的位置</li>
+<li>返回值是DOMRect对象</li>
+</ul>
+<h3 id="ele-getElementsByClassName"><a href="#ele-getElementsByClassName" class="headerlink" title="ele.getElementsByClassName()"></a>ele.getElementsByClassName()</h3><ul>
+<li>同document.getElementsByClassName()</li>
+<li>见<a href="https://defed.github.io/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-Document%E5%AF%B9%E8%B1%A1/" target="_blank" rel="external">原生DOM系列-Document对象</a></li>
+</ul>
+<h3 id="ele-getElementsByTagName"><a href="#ele-getElementsByTagName" class="headerlink" title="ele.getElementsByTagName()"></a>ele.getElementsByTagName()</h3><ul>
+<li>同document.getElementsByTagName()</li>
+<li>见<a href="https://defed.github.io/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-Document%E5%AF%B9%E8%B1%A1/" target="_blank" rel="external">原生DOM系列-Document对象</a></li>
+</ul>
+<h3 id="ele-hasAttribute-attrName"><a href="#ele-hasAttribute-attrName" class="headerlink" title="ele.hasAttribute(attrName)"></a>ele.hasAttribute(attrName)</h3><ul>
+<li>返回该元素是否包含有指定的属性</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">p</span> id=<span class="string">"demo"</span> name=<span class="string">"123"</span>&gt;&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">let demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.hasAttribute(<span class="string">'name'</span>) <span class="comment">// true</span></div><div class="line">demo.hasAttribute(<span class="string">'age'</span>) <span class="comment">// false</span></div></pre></td></tr></table></figure>
+<h3 id="ele-insertAdjacentHTML-position-text"><a href="#ele-insertAdjacentHTML-position-text" class="headerlink" title="ele.insertAdjacentHTML(position, text)"></a>ele.insertAdjacentHTML(position, text)</h3><ul>
+<li>将html片段插入到指定的位置</li>
+<li>position：表示位置的字符串</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>beforebegin</th>
+<th>afterbegin</th>
+<th>beforeend</th>
+<th>afterend</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>插入到ele的开始标签之前</td>
+<td>插入到ele的开始标签之后</td>
+<td>插入到ele的结束标签之前</td>
+<td>插入到ele的结束标签之后</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- beforebegin --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- afterbegin --&gt;</span></div><div class="line">child</div><div class="line"><span class="comment">&lt;!-- beforeend --&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- afterend --&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="ele-querySelector"><a href="#ele-querySelector" class="headerlink" title="ele.querySelector()"></a>ele.querySelector()</h3><ul>
+<li>同document.querySelector()</li>
+<li>见<a href="https://defed.github.io/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-Document%E5%AF%B9%E8%B1%A1/" target="_blank" rel="external">原生DOM系列-Document对象</a></li>
+</ul>
+<h3 id="ele-querySelectorAll"><a href="#ele-querySelectorAll" class="headerlink" title="ele.querySelectorAll()"></a>ele.querySelectorAll()</h3><ul>
+<li>同document.querySelectorAll()</li>
+<li>见<a href="https://defed.github.io/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-Document%E5%AF%B9%E8%B1%A1/" target="_blank" rel="external">原生DOM系列-Document对象</a></li>
+</ul>
+<h3 id="ele-remove"><a href="#ele-remove" class="headerlink" title="ele.remove()"></a>ele.remove()</h3><ul>
+<li>将自己从所在的DOM树种删除</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// html</div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"demo"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line">// js</div><div class="line">let demo = document.getElementById('demo')</div><div class="line">demo.remove() // <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"demo"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span>被删除</div></pre></td></tr></table></figure>
+<h3 id="ele-removeAttribute"><a href="#ele-removeAttribute" class="headerlink" title="ele.removeAttribute()"></a>ele.removeAttribute()</h3><ul>
+<li>删除元素上指定的属性</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;div id=<span class="string">"demo"</span> <span class="keyword">class</span>=<span class="string">"demo"</span>&gt;&lt;/div&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line"><span class="keyword">let</span> demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.removeAttribute(<span class="string">'class'</span>) <span class="comment">// &lt;div id="demo"&gt;&lt;/div&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="ele-removeEventListener-type-listener-userCaptre"><a href="#ele-removeEventListener-type-listener-userCaptre" class="headerlink" title="ele.removeEventListener(type, listener[, userCaptre])"></a>ele.removeEventListener(type, listener[, userCaptre])</h3><ul>
+<li>删除通过ele.addEventListener()方法添加的事件</li>
+<li>type：事件类型，如：<code>click</code>、<code>showdialog(自定义)</code></li>
+<li>listener：需要被删除的函数</li>
+<li>userCaptre：true 移除冒泡阶段的事件；false 移除捕获阶段的事件</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> demo = <span class="built_in">document</span>.getElementById(<span class="string">'demo'</span>)</div><div class="line"><span class="keyword">let</span> listener = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    alert(<span class="number">1</span>)</div><div class="line">&#125;</div><div class="line">demo.addEventListener(<span class="string">'click'</span>, listener, <span class="literal">false</span>)</div><div class="line">demo.removeEventListener(<span class="string">'click'</span>, listener, <span class="literal">true</span>) <span class="comment">// 无法移除，因为移除的是捕获阶段的事件</span></div><div class="line">demo.removeEventListener(<span class="string">'click'</span>, listener, <span class="literal">false</span>) <span class="comment">// 被正确移除</span></div><div class="line"></div><div class="line">demo.addEventListener(<span class="string">'click'</span>, () =&gt; &#123;</div><div class="line">    alert(<span class="number">2</span>)</div><div class="line">&#125;, <span class="literal">false</span>) <span class="comment">// 此事件无法被移除，因为是绑定的匿名回调</span></div></pre></td></tr></table></figure>
+<h3 id="ele-scrollIntoView-bool-obj"><a href="#ele-scrollIntoView-bool-obj" class="headerlink" title="ele.scrollIntoView(bool||obj)"></a>ele.scrollIntoView(bool||obj)</h3><ul>
+<li>让当前的元素滚动到浏览器窗口的可视区域内</li>
+<li>如果参数为bool值<ul>
+<li>true 元素的顶端和可视区的顶端对齐，不传则默认为true的行为</li>
+<li>false 元素的底端和可视区的底端对齐</li>
+</ul>
+</li>
+<li>如果参数为obj。目前大部分浏览器尚不支持。可仅做了解</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="attribute">behavior</span>: <span class="string">"auto"</span>  | <span class="string">"instant"</span> | <span class="string">"smooth"</span>,</div><div class="line">    block:    <span class="string">"start"</span> | <span class="string">"end"</span>, // 该参数等同于bool值得行为</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    <span class="params">...</span>.这里有很多元素，把demo元素挤出了可视区的下边缘</div><div class="line">    &lt;p id=<span class="string">"demo"</span>&gt;我要滚动啦&lt;/p&gt;</div><div class="line">    <span class="params">...</span>.这里也有很多元素，滚到底部是，demo元素被挤出可视区的上边缘</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js 元素不在可视区内</span></div><div class="line"><span class="keyword">let</span> demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.scrollIntoView(<span class="literal">false</span>) <span class="comment">// 元素出现在可视区的下边缘</span></div><div class="line">demo.scrollIntoView(<span class="literal">true</span>) <span class="comment">// 元素出现在可视区的上边缘</span></div></pre></td></tr></table></figure>
+<h3 id="ele-setAttribute-name-value"><a href="#ele-setAttribute-name-value" class="headerlink" title="ele.setAttribute(name, value)"></a>ele.setAttribute(name, value)</h3><ul>
+<li>添加一个新属性到元素上</li>
+<li>或者改变元素上已有属性的值</li>
+</ul>
+<figure class="highlight cal"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// html</div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="keyword">div</span> id=<span class="string">"demo"</span> class=<span class="string">"demo"</span>&gt;&lt;/<span class="keyword">div</span>&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line">// js</div><div class="line">let demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.setAttribute(<span class="string">'test'</span>, <span class="string">'test'</span>) // &lt;<span class="keyword">div</span> id=<span class="string">"demo"</span> class=<span class="string">"demo"</span> test=<span class="string">"test"</span>&gt;&lt;/<span class="keyword">div</span>&gt;</div><div class="line">demo.setAttribute(<span class="string">'class'</span>, <span class="string">'ele-demo'</span>) // &lt;<span class="keyword">div</span> id=<span class="string">"demo"</span> class=<span class="string">"ele-demo"</span> test=<span class="string">"test"</span>&gt;&lt;/<span class="keyword">div</span>&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>表单元素的部分属性无法通过该方法得到想要的结果，这些属性应该使用prop相关方法操作</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"demo"</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">checked</span>=<span class="string">"checked"</span> /&gt;</span></span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line"><span class="keyword">let</span> demo = <span class="built_in">document</span>.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.setAttribute(<span class="string">'checked'</span>, <span class="literal">null</span>) <span class="comment">// 元素的属性值会被设置为null，但页面中checkbox依然是选中状态</span></div></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Vue源码解读-方法与事件绑定]]></title>
+      <url>http://yoursite.com/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB-%E6%96%B9%E6%B3%95%E4%B8%8E%E4%BA%8B%E4%BB%B6%E7%BB%91%E5%AE%9A/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>version: 1.0.24<br>对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头<br>本文主要分析Vue源码中对方法与事件绑定的实现  </p>
+</blockquote>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>Vue中的事件有<code>Dom事件</code>和<code>Vue事件（自定义事件）</code>两种，所以可将事件的绑定总结为一下几种类型：</p>
+<ul>
+<li>类型一：在模板中通过<code>v-on</code>指令绑定的Dom事件</li>
+<li>类型二：在模板中通过<code>v-on</code>指令绑定的自定义事件</li>
+<li>类型三：在<code>vue options</code>中通过<code>events</code>绑定的自定义事件</li>
+<li>类型四：通过<code>$on</code>方法绑定的自定义事件</li>
+</ul>
+<p>下面就析上述几种类型事件的绑定做具体的分析</p>
+<a id="more"></a>
+<h3 id="类型一：在模板中通过v-on指令绑定的Dom事件"><a href="#类型一：在模板中通过v-on指令绑定的Dom事件" class="headerlink" title="类型一：在模板中通过v-on指令绑定的Dom事件"></a>类型一：在模板中通过<code>v-on</code>指令绑定的Dom事件</h3><p>采用此方式作为事件处理的原因及优点可参考Vue文档中<a href="http://cn.vuejs.org/guide/events.html#u4E3A_u4EC0_u4E48_u5728_HTML__u4E2D_u76D1_u542C_u4E8B_u4EF6_3F" target="_blank" rel="external">为什么在 HTML 中监听事件?</a></p>
+<p>模板中的<code>v-on</code>作为指令的一种，要通过模板编译（compile）和指令注册（directives）来实现, 其中涉及这两部分的内容将在其解读中再做分析。</p>
+<p>先来看编译中的部分 <code>compile/compile.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> onRE = <span class="regexp">/^v-on:|^@/</span></div><div class="line"></div><div class="line"><span class="comment">//编译元素中的指令</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">compileDirectives</span> (<span class="params">attrs, options</span>) </span>&#123;</div><div class="line">  ...</div><div class="line"></div><div class="line">  <span class="comment">//关于“事件绑定”的处理</span></div><div class="line">  <span class="keyword">if</span> (onRE.test(name)) &#123;</div><div class="line">    arg = name.replace(onRE, <span class="string">''</span>)</div><div class="line">    <span class="comment">//添加一个“on”指令, publicDirectives.on为该指令的所有“钩子函数”等属性和方法</span></div><div class="line">    <span class="comment">//“钩子函数”的介绍可参考Vue文档中自定义指令的介绍</span></div><div class="line">    pushDir(<span class="string">'on'</span>, publicDirectives.on)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>继续往下走，“on”指令中定义中的<code>update</code>方法进行了“事件的绑定”（其实只是调用了最后一步中的on方法），  <code>directives/public/on.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line">update (handler) &#123;</div><div class="line">  <span class="comment">// "v-on"属性值为空的容错处理,</span></div><div class="line">  <span class="comment">// 例如 @mousedown.prevent</span></div><div class="line">  <span class="keyword">if</span> (!<span class="keyword">this</span>.descriptor.raw) &#123;</div><div class="line">    handler = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;&#125;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// "v-on"属性值不为空但不是函数，报错</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">typeof</span> handler !== <span class="string">'function'</span>) &#123;</div><div class="line">    process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp; warn(</div><div class="line">      <span class="string">'v-on:'</span> + <span class="keyword">this</span>.arg + <span class="string">'="'</span> +</div><div class="line">      <span class="keyword">this</span>.expression + <span class="string">'" expects a function value, '</span> +</div><div class="line">      <span class="string">'got '</span> + handler,</div><div class="line">      <span class="keyword">this</span>.vm</div><div class="line">    )</div><div class="line">    <span class="keyword">return</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// 事件修饰符（modifiers）处理</span></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.modifiers.stop) &#123;</div><div class="line">    <span class="comment">// 返回一个新的方法，先执行event.stopPropagation()，再执行事件绑定事件</span></div><div class="line">    handler = stopFilter(handler)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.modifiers.prevent) &#123;</div><div class="line">    <span class="comment">// 返回一个新的方法，先执行event.preventDefault()，再执行事件绑定事件</span></div><div class="line">    handler = preventFilter(handler)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.modifiers.self) &#123;</div><div class="line">    <span class="comment">// 返回一个新的方法，如果触发元素为当前元素，才执行事件绑定事件</span></div><div class="line">    handler = selfFilter(handler)</div><div class="line">  &#125;</div><div class="line"></div><div class="line"></div><div class="line">  <span class="comment">// 事件按键修饰符处理</span></div><div class="line">  <span class="keyword">var</span> keys = <span class="built_in">Object</span>.keys(<span class="keyword">this</span>.modifiers)</div><div class="line">    .filter(<span class="function"><span class="keyword">function</span> (<span class="params">key</span>) </span>&#123;</div><div class="line"></div><div class="line">      <span class="comment">//排除事件修饰符</span></div><div class="line">      <span class="keyword">return</span> key !== <span class="string">'stop'</span> &amp;&amp;</div><div class="line">        key !== <span class="string">'prevent'</span> &amp;&amp;</div><div class="line">        key !== <span class="string">'self'</span> &amp;&amp;</div><div class="line">        key !== <span class="string">'capture'</span></div><div class="line">    &#125;)</div><div class="line"></div><div class="line"></div><div class="line">  <span class="keyword">if</span> (keys.length) &#123;</div><div class="line">    <span class="comment">// 返回一个新的方法，如果触发元素的keyCode等于按键修饰符中的code，才执行事件绑定事件</span></div><div class="line">    handler = keyFilter(handler, keys)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// 避免重复绑定，先解绑</span></div><div class="line">  <span class="keyword">this</span>.reset()</div><div class="line"></div><div class="line">  <span class="keyword">this</span>.handler = handler</div><div class="line"></div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.iframeBind) &#123;</div><div class="line">    <span class="comment">//处理iframe中的事件绑定</span></div><div class="line">    <span class="keyword">this</span>.iframeBind()</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="comment">//调用on方法进行事件绑定</span></div><div class="line">    on(</div><div class="line">      <span class="keyword">this</span>.el,</div><div class="line">      <span class="keyword">this</span>.arg,</div><div class="line">      <span class="keyword">this</span>.handler,</div><div class="line">      <span class="keyword">this</span>.modifiers.capture</div><div class="line">    )</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后一步进行“真正的事件绑定”，  <code>util/dom.js</code><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">on</span> (<span class="params">el, event, cb, useCapture</span>) </span>&#123;</div><div class="line">  el.addEventListener(event, cb, useCapture)</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="类型二：在模板中通过v-on指令绑定的自定义事件"><a href="#类型二：在模板中通过v-on指令绑定的自定义事件" class="headerlink" title="类型二：在模板中通过v-on指令绑定的自定义事件"></a>类型二：在模板中通过<code>v-on</code>指令绑定的自定义事件</h3><h3 id="类型三：在vue-options中通过events绑定的自定义事件"><a href="#类型三：在vue-options中通过events绑定的自定义事件" class="headerlink" title="类型三：在vue options中通过events绑定的自定义事件"></a>类型三：在<code>vue options</code>中通过<code>events</code>绑定的自定义事件</h3><h3 id="类型四：通过-on方法绑定的自定义事件"><a href="#类型四：通过-on方法绑定的自定义事件" class="headerlink" title="类型四：通过$on方法绑定的自定义事件"></a>类型四：通过<code>$on</code>方法绑定的自定义事件</h3><p>这三种类型都是关于自定义事件的绑定，放在一起看，<code>instance/internal/events.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> eventRE = <span class="regexp">/^v-on:|^@/</span></div><div class="line"></div><div class="line"><span class="comment">//vue的初始化方法_init中会调用该方法来初始化事件绑定</span></div><div class="line">Vue.prototype._initEvents = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> options = <span class="keyword">this</span>.$options</div><div class="line">  <span class="comment">//对于类型二的事件绑定，如&lt;child v-on:child-msg="handleIt"&gt;&lt;/child&gt;</span></div><div class="line">  <span class="keyword">if</span> (options._asComponent) &#123;</div><div class="line">    registerComponentEvents(<span class="keyword">this</span>, options.el)</div><div class="line">  &#125;</div><div class="line">  <span class="comment">//对于类型三的事件绑定</span></div><div class="line">  registerCallbacks(<span class="keyword">this</span>, <span class="string">'$on'</span>, options.events)</div><div class="line">  <span class="comment">//绑定watch事件</span></div><div class="line">  registerCallbacks(<span class="keyword">this</span>, <span class="string">'$watch'</span>, options.watch)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//从上面的判断可以看出，这种类型只针对于子组件</span></div><div class="line"><span class="comment">//作用是在子组件中触发事件，父组件中的方法执行</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">registerComponentEvents</span> (<span class="params">vm, el</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> attrs = el.attributes</div><div class="line">  <span class="keyword">var</span> name, value, handler</div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = attrs.length; i &lt; l; i++) &#123;</div><div class="line">    name = attrs[i].name</div><div class="line">    <span class="keyword">if</span> (eventRE.test(name)) &#123;</div><div class="line">      name = name.replace(eventRE, <span class="string">''</span>)</div><div class="line"></div><div class="line">      value = attrs[i].value</div><div class="line">      <span class="comment">//此处用来区分“内联语句”，如果只是一个方法名需加上'apply', 使其可调用</span></div><div class="line">      <span class="keyword">if</span> (isSimplePath(value)) &#123;</div><div class="line">        value += <span class="string">'.apply(this, $arguments)'</span></div><div class="line">      &#125;</div><div class="line">      <span class="comment">//将表达式转换成一个function，具体可参考《Vue源码解读-get-set的内部实现》</span></div><div class="line">      handler = (vm._scope || vm._context).$<span class="built_in">eval</span>(value, <span class="literal">true</span>)</div><div class="line">      <span class="comment">//标记方法属于父组件</span></div><div class="line">      handler._fromParent = <span class="literal">true</span></div><div class="line">      <span class="comment">//调用$on, 同类型四</span></div><div class="line">      vm.$on(name.replace(eventRE), handler)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//遍历options.events，逐一进行绑定</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">registerCallbacks</span> (<span class="params">vm, action, hash</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (!hash) <span class="keyword">return</span></div><div class="line">  <span class="keyword">var</span> handlers, key, i, j</div><div class="line">  <span class="keyword">for</span> (key <span class="keyword">in</span> hash) &#123;</div><div class="line">    handlers = hash[key]</div><div class="line">    <span class="keyword">if</span> (isArray(handlers)) &#123;</div><div class="line">      <span class="keyword">for</span> (i = <span class="number">0</span>, j = handlers.length; i &lt; j; i++) &#123;</div><div class="line">        register(vm, action, key, handlers[i])</div><div class="line">      &#125;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      register(vm, action, key, handlers)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">register</span> (<span class="params">vm, action, key, handler, options</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> type = <span class="keyword">typeof</span> handler</div><div class="line">  <span class="keyword">if</span> (type === <span class="string">'function'</span>) &#123;</div><div class="line">    <span class="comment">//如果handler是函数，直接绑定</span></div><div class="line">    vm[action](key, handler, options)</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (type === <span class="string">'string'</span>) &#123;</div><div class="line">    <span class="comment">//如果handler是字符串，从"options.methods"中找出该方法进行绑定，如果没有就报错</span></div><div class="line">    <span class="keyword">var</span> methods = vm.$options.methods</div><div class="line">    <span class="keyword">var</span> method = methods &amp;&amp; methods[handler]</div><div class="line">    <span class="keyword">if</span> (method) &#123;</div><div class="line">      vm[action](key, method, options)</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      process.env.NODE_ENV !== <span class="string">'production'</span> &amp;&amp; warn(</div><div class="line">        <span class="string">'Unknown method: "'</span> + handler + <span class="string">'" when '</span> +</div><div class="line">        <span class="string">'registering callback for '</span> + action +</div><div class="line">        <span class="string">': "'</span> + key + <span class="string">'".'</span>,</div><div class="line">        vm</div><div class="line">      )</div><div class="line">    &#125;</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span> (handler &amp;&amp; type === <span class="string">'object'</span>) &#123;</div><div class="line">    <span class="comment">//watch事件</span></div><div class="line">    register(vm, action, key, handler.handler, handler)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[原生DOM系列-Document对象]]></title>
+      <url>http://yoursite.com/%E5%8E%9F%E7%94%9FDOM%E7%B3%BB%E5%88%97-Document%E5%AF%B9%E8%B1%A1/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等<br>代表整个HTML文档<br>Window对象的属性，可以通过<code>docuemnt</code>或<code>window.document</code>访问<br>document对象可以方便我们通过js操作html  </p>
+</blockquote>
+<h3 id="document-all"><a href="#document-all" class="headerlink" title="document.all"></a>document.all</h3><ul>
+<li>获取文档中的所有HTML元素的引用</li>
+<li>是一个类数组对象</li>
+<li>已被document.getElementById()等API所取代，目前不常用项目中</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">document</span><span class="selector-class">.all</span><span class="selector-attr">[i]</span></div><div class="line"><span class="selector-tag">document</span><span class="selector-class">.all</span><span class="selector-attr">[name]</span></div><div class="line"><span class="selector-tag">document</span><span class="selector-class">.all</span><span class="selector-class">.tags</span><span class="selector-attr">[tagname]</span></div></pre></td></tr></table></figure>
+<h3 id="document-anchors"><a href="#document-anchors" class="headerlink" title="document.anchors"></a>document.anchors</h3><ul>
+<li>获取文档中所有锚点的引用</li>
+<li>类数组对象</li>
+<li>包含name属性的a元素会被返回</li>
+</ul>
+<a id="more"></a>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> name=<span class="string">"anchor1"</span>&gt;anchor1&lt;/a&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> name=<span class="string">"anchor2"</span>&gt;anchor2&lt;/a&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> name=<span class="string">"anchor3"</span> href=<span class="string">"xxx"</span>&gt;anchor3&lt;/a&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> id=<span class="string">"anchor4"</span>&gt;anchor4&lt;/a&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">document<span class="selector-class">.anchors</span> <span class="comment">// [anchor1 DOM对象, anchor2 DOM对象, anchor3 DOM对象]</span></div><div class="line">document<span class="selector-class">.anchors</span>[<span class="string">'anchor1'</span>] <span class="comment">// anchor1 DOM对象</span></div><div class="line">document<span class="selector-class">.anchors</span>[<span class="number">0</span>] <span class="comment">// anchor1 DOM对象</span></div></pre></td></tr></table></figure>
+<h3 id="document-forms"><a href="#document-forms" class="headerlink" title="document.forms"></a>document.forms</h3><ul>
+<li>返回文档中所有的form的DOM对象的引用</li>
+<li>返回类数组对象</li>
+<li>包含id或name属性的form元素会被返回</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">form</span> id=<span class="string">"form1"</span>&gt;&lt;/form&gt;</div><div class="line">    &lt;<span class="selector-tag">form</span> name=<span class="string">"form2"</span>&gt;&lt;/form&gt;</div><div class="line">    &lt;<span class="selector-tag">form</span> id=<span class="string">"form2"</span>&gt;&lt;/form&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">document<span class="selector-class">.forms</span> <span class="comment">// [form1 DOM对象, form2(name) DOM对象, form2(id) DOM对象]</span></div><div class="line">document<span class="selector-class">.forms</span>[<span class="string">'form2'</span>] <span class="comment">// 返回id为form2元素，id和name的值同名时，id的优先级更高</span></div><div class="line">document<span class="selector-class">.forms</span>[<span class="number">1</span>] <span class="comment">// name为form2 DOM对象</span></div></pre></td></tr></table></figure>
+<h3 id="document-links"><a href="#document-links" class="headerlink" title="document.links"></a>document.links</h3><ul>
+<li>返回文档中所有的a的DOM对象</li>
+<li>返回类数组对象</li>
+<li>既包含name属性，又包含href属性的a元素，既会被收集到links中，又会被收集到anchors中</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> name=<span class="string">"anchor1"</span>&gt;&lt;/a&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> name=<span class="string">"anchor2"</span> href=<span class="string">"xxx"</span>&gt;&lt;/a&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> id=<span class="string">"link1"</span> href=<span class="string">"http://www.xxx.com"</span>&gt;&lt;/a&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> name=<span class="string">"link1"</span> href=<span class="string">"http://www.xxx.com"</span>&gt;&lt;/a&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">document<span class="selector-class">.links</span><span class="selector-class">.length</span> <span class="comment">// 3</span></div><div class="line">document<span class="selector-class">.links</span>[<span class="string">'link1'</span>] <span class="comment">// id为link1的a元素</span></div></pre></td></tr></table></figure>
+<h3 id="document-images"><a href="#document-images" class="headerlink" title="document.images"></a>document.images</h3><ul>
+<li>返回文档中的所有image元素的集合</li>
+<li>类数组对象</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">img</span> src=<span class="string">""</span>&gt;</div><div class="line">    &lt;<span class="selector-tag">img</span> src=<span class="string">"xxx"</span>&gt;</div><div class="line">    &lt;img&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">document<span class="selector-class">.images</span><span class="selector-class">.length</span> <span class="comment">// 3</span></div></pre></td></tr></table></figure>
+<h3 id="document-scripts"><a href="#document-scripts" class="headerlink" title="document.scripts"></a>document.scripts</h3><ul>
+<li>返回当前文档中所有script元素的集合</li>
+<li>只读属性</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// html</div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">""</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line">// body</div><div class="line">document.scripts.length // 2</div></pre></td></tr></table></figure>
+<h3 id="document-body"><a href="#document-body" class="headerlink" title="document.body"></a>document.body</h3><ul>
+<li>返回当前文档的body元素</li>
+<li>可读写</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">document<span class="selector-class">.body</span> <span class="comment">// 返回当前文档的body元素</span></div><div class="line">document<span class="selector-class">.body</span> = document.createElement(<span class="string">'body'</span>)</div><div class="line">document<span class="selector-class">.body</span> <span class="comment">// 返回新创建的body元素</span></div></pre></td></tr></table></figure>
+<h3 id="document-cookie"><a href="#document-cookie" class="headerlink" title="document.cookie"></a>document.cookie</h3><ul>
+<li>返回与当前文档相关的所有cookie组成的字符串。如: <code>a=1; b=2</code></li>
+<li>可进行增删改查操作</li>
+<li>和普通对象属性的读写操作不同</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设目前页面中存在如下cookie: `a=1; b=2`</span></div><div class="line"></div><div class="line"><span class="comment">// 增加cookie</span></div><div class="line"><span class="built_in">document</span>.cookie <span class="comment">// 'a=1; b=2'</span></div><div class="line"><span class="built_in">document</span>.cookie = <span class="string">'c=3'</span> <span class="comment">// 'c=3'</span></div><div class="line"><span class="built_in">document</span>.cookie <span class="comment">// 'a=1; b=2; c=3'</span></div><div class="line"></div><div class="line"><span class="comment">// 修改cookie</span></div><div class="line"><span class="keyword">let</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>()</div><div class="line">d.setTime(<span class="built_in">Date</span>.now() + <span class="number">1</span> * <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>)</div><div class="line">d.toUTCString()</div><div class="line"><span class="built_in">document</span>.cookie = <span class="string">'c=4; expires='</span> + d <span class="comment">// 设置10天之后过期</span></div><div class="line"><span class="built_in">document</span>.cookie <span class="comment">// 'a=1; b=2; c=4'</span></div><div class="line"></div><div class="line"><span class="comment">// 读取cookie</span></div><div class="line"><span class="keyword">let</span> cookieName = <span class="string">'c'</span></div><div class="line"><span class="keyword">let</span> cookieReg = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'(^| )'</span> + cookieName + <span class="string">'=([^;]*)(;|$)'</span>)</div><div class="line"><span class="built_in">document</span>.cookie.match(cookieReg)[<span class="number">2</span>] <span class="comment">// 3</span></div><div class="line"></div><div class="line"><span class="comment">// 删除cookie</span></div><div class="line"><span class="keyword">let</span> n = <span class="keyword">new</span> <span class="built_in">Date</span>()</div><div class="line">n.setTime(<span class="built_in">Date</span>.now() - <span class="number">1</span> * <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>)</div><div class="line">n.toUTCString()</div><div class="line"><span class="built_in">document</span>.cookie = <span class="string">'c=0; expires='</span> + n</div><div class="line"><span class="built_in">document</span>.cookie <span class="comment">// 'a=1; b=2'</span></div></pre></td></tr></table></figure>
+<h3 id="document-domain"><a href="#document-domain" class="headerlink" title="document.domain"></a>document.domain</h3><ul>
+<li>返回文档的域名</li>
+<li>可读可写，但写入是有限制的</li>
+<li>一级域名相同的请求，但二级、或三级域名不同，可以通过设置domain来达到跨域的效果</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设当前页面的域名为http://a.b.c.com</span></div><div class="line">docuemnt<span class="selector-class">.domain</span> <span class="comment">// 'a.b.c.com'</span></div><div class="line">document<span class="selector-class">.domain</span> = <span class="string">'b.c.com'</span></div><div class="line">document<span class="selector-class">.domain</span> <span class="comment">// 'b.c.com'</span></div><div class="line">document<span class="selector-class">.domain</span> = <span class="string">'c.com'</span></div><div class="line">document<span class="selector-class">.domain</span> <span class="comment">// 'c.com'</span></div><div class="line">document<span class="selector-class">.domain</span> = <span class="string">'com'</span> <span class="comment">// 报错</span></div><div class="line">document<span class="selector-class">.domain</span> = <span class="string">'d.b.c.com'</span> <span class="comment">// 报错</span></div><div class="line">document<span class="selector-class">.domain</span> = <span class="string">'a.b.d.com'</span> <span class="comment">//报错</span></div><div class="line"></div><div class="line"><span class="comment">// a.b.com下面的a.html引入c.b.com下面的b.html</span></div><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">iframe</span> name=<span class="string">"demo"</span> src=<span class="string">"http://c.b.com/b.html"</span>&gt;&lt;/iframe&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">frames[<span class="string">'demo'</span>]<span class="selector-class">.document</span> <span class="comment">// 报跨域错误</span></div><div class="line"></div><div class="line"><span class="comment">// 在a.b.com下a.html和c.b.com下的b.html页面同时设置domain可以解除跨域限制</span></div><div class="line">document<span class="selector-class">.domain</span> = <span class="string">'b.com'</span></div><div class="line">`</div></pre></td></tr></table></figure>
+<h3 id="document-lastModified"><a href="#document-lastModified" class="headerlink" title="document.lastModified"></a>document.lastModified</h3><ul>
+<li>返回文档最后被修改的日期和时间</li>
+<li>字符串</li>
+</ul>
+<h3 id="document-referrer"><a href="#document-referrer" class="headerlink" title="document.referrer"></a>document.referrer</h3><ul>
+<li>返回加载当前文档的文档的URL</li>
+<li>如果不是通过其他文档加载的当前文档，比如从地址栏中直接输入，则referrer为空字符串</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设从http://a.b.com/a.html页面打开了http://c.d.com/b.html页面</span></div><div class="line"><span class="comment">// 在http://c.d.com/b.html中获取referrer</span></div><div class="line">document<span class="selector-class">.referrer</span> <span class="comment">// http://a.b.com/a.html</span></div></pre></td></tr></table></figure>
+<h3 id="document-title"><a href="#document-title" class="headerlink" title="document.title"></a>document.title</h3><ul>
+<li>返回当前文档的标题</li>
+<li>可读可写</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设当前页面的title为'我是一个document demo'</span></div><div class="line">document<span class="selector-class">.title</span> <span class="comment">// '我是一个document demo'</span></div><div class="line">document<span class="selector-class">.title</span> = <span class="string">'123'</span> <span class="comment">// 标签上的title显示为123</span></div><div class="line">document<span class="selector-class">.title</span> <span class="comment">// '123'</span></div></pre></td></tr></table></figure>
+<h3 id="document-URL"><a href="#document-URL" class="headerlink" title="document.URL"></a>document.URL</h3><ul>
+<li>返回当前文档的实际URL</li>
+<li>和location.href的区别</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>document.URL</th>
+<th>location.href</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>只读</td>
+<td>可读写</td>
+</tr>
+<tr>
+<td>重定向之后的url</td>
+<td>未重定向之前的url</td>
+</tr>
+</tbody>
+</table>
+<h3 id="document-getElementById-id"><a href="#document-getElementById-id" class="headerlink" title="document.getElementById(id)"></a>document.getElementById(id)</h3><ul>
+<li>返回对拥有指定ID的第一个对象的引用</li>
+</ul>
+<h3 id="document-getElementsByName-name"><a href="#document-getElementsByName-name" class="headerlink" title="document.getElementsByName(name)"></a>document.getElementsByName(name)</h3><ul>
+<li>返回带有指定name属性的对象的集合</li>
+</ul>
+<h3 id="document-getElementsByTagName-tagname"><a href="#document-getElementsByTagName-tagname" class="headerlink" title="document.getElementsByTagName(tagname)"></a>document.getElementsByTagName(tagname)</h3><ul>
+<li>返回指定标签名的对象集合</li>
+<li>传入特殊字符串<code>*</code>将返回文档中所有元素的集合</li>
+<li>tagname不区分大小写</li>
+</ul>
+<h3 id="document-characterSet"><a href="#document-characterSet" class="headerlink" title="document.characterSet"></a>document.characterSet</h3><ul>
+<li>返回用于渲染当前文档的字符编码类型</li>
+</ul>
+<h3 id="document-charset"><a href="#document-charset" class="headerlink" title="document.charset"></a>document.charset</h3><ul>
+<li>characterSet的别名，同characterSet</li>
+</ul>
+<h3 id="document-contentType"><a href="#document-contentType" class="headerlink" title="document.contentType"></a>document.contentType</h3><ul>
+<li>返回当前文档的Content-Type(MIME)类型</li>
+<li>该属性的返回值是浏览器检测到的,不一定是直接读取HTTP响应头中的或者HTML中meta标签指定的值</li>
+</ul>
+<h3 id="document-doctype"><a href="#document-doctype" class="headerlink" title="document.doctype"></a>document.doctype</h3><ul>
+<li>返回当前文档关联的文档类型定义的对象</li>
+<li>如果文档没有设置DTD(文档类型定义)，则该属性返回null</li>
+<li>只读</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">// 假设文档设置<span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line">document.doctype // <span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line">document.doctype.name // html</div></pre></td></tr></table></figure>
+<h3 id="document-documentElement"><a href="#document-documentElement" class="headerlink" title="document.documentElement"></a>document.documentElement</h3><ul>
+<li>只读属性</li>
+<li>返回文档的根元素，如HTML文档的html元素</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.documentElement === <span class="built_in">document</span>.children[<span class="number">0</span>]</div></pre></td></tr></table></figure>
+<h3 id="document-documentURI"><a href="#document-documentURI" class="headerlink" title="document.documentURI"></a>document.documentURI</h3><ul>
+<li>返回文档地址字符串</li>
+<li>只读属性</li>
+<li>DOM4规范</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>document.URL</th>
+<th>document.documentURI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>只用于html文档</td>
+<td>用于所有类型的文档</td>
+</tr>
+</tbody>
+</table>
+<h3 id="document-implementation"><a href="#document-implementation" class="headerlink" title="document.implementation"></a>document.implementation</h3><h3 id="document-styleSheets"><a href="#document-styleSheets" class="headerlink" title="document.styleSheets"></a>document.styleSheets</h3><ul>
+<li>只读属性</li>
+<li>返回一个由StyleSheet对象组成的StyleSheetList</li>
+<li>类数组对象</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.styleSheets.item(<span class="number">0</span>) === <span class="built_in">document</span>.styleSheets[<span class="number">0</span>]</div></pre></td></tr></table></figure>
+<h3 id="document-styleSheetSets"><a href="#document-styleSheetSets" class="headerlink" title="document.styleSheetSets"></a>document.styleSheetSets</h3><ul>
+<li>返回目前可用的样式表集合</li>
+</ul>
+<h3 id="document-children"><a href="#document-children" class="headerlink" title="document.children"></a>document.children</h3><ul>
+<li>返回document的所有直接子元素节点</li>
+<li>不包含DTD、注释、纯文本等</li>
+<li>只读属性</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// html</div><div class="line"><span class="meta">&lt;!Doctype html&gt;</span></div><div class="line"><span class="comment">&lt;!--comments--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div><div class="line"><span class="comment">&lt;!--comments--&gt;</span></div><div class="line"></div><div class="line">// js</div><div class="line">document.children // [html DOM]</div></pre></td></tr></table></figure>
+<h3 id="document-firstElementChild-amp-amp-document-lastElementChild"><a href="#document-firstElementChild-amp-amp-document-lastElementChild" class="headerlink" title="document.firstElementChild &amp;&amp; document.lastElementChild"></a>document.firstElementChild &amp;&amp; document.lastElementChild</h3><ul>
+<li>只读属性</li>
+<li>返回document的第一个&amp;&amp;最后一个子元素节点</li>
+<li>所有的元素节点都有此属性</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// html</div><div class="line"><span class="meta">&lt;!Doctype html&gt;</span></div><div class="line"><span class="comment">&lt;!--comments--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div><div class="line"><span class="comment">&lt;!--comments--&gt;</span></div><div class="line"></div><div class="line">// js</div><div class="line">document.firstElementChild // html DOM</div><div class="line">document.lastElementChild // html DOM</div></pre></td></tr></table></figure>
+<h3 id="document-activeElement"><a href="#document-activeElement" class="headerlink" title="document.activeElement"></a>document.activeElement</h3><ul>
+<li>返回页面中获得焦点的元素</li>
+<li>只读属性</li>
+<li>大部分情况下返回input||textarea元素</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 获取输入框中被选中的文字</span></div><div class="line">let ele = document<span class="selector-class">.activeElement</span></div><div class="line">ele<span class="selector-class">.value</span><span class="selector-class">.substring</span>(ele<span class="selector-class">.selectionStart</span>, selectionEnd) <span class="comment">// 返回输入框中被选中的文本</span></div></pre></td></tr></table></figure>
+<h3 id="document-defaultView"><a href="#document-defaultView" class="headerlink" title="document.defaultView"></a>document.defaultView</h3><ul>
+<li>返回当前document对象所关联的window对象</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.defaultView === <span class="built_in">window</span></div></pre></td></tr></table></figure>
+<h3 id="document-designMode"><a href="#document-designMode" class="headerlink" title="document.designMode"></a>document.designMode</h3><ul>
+<li>控制整个文档是否可编辑</li>
+<li>默认为’off’</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    <span class="selector-tag">i</span> am editable</div><div class="line">&lt;/body&gt;</div><div class="line">document<span class="selector-class">.designMode</span> = <span class="string">'on'</span> <span class="comment">// 整个文档可编辑</span></div></pre></td></tr></table></figure>
+<h3 id="document-dir"><a href="#document-dir" class="headerlink" title="document.dir"></a>document.dir</h3><ul>
+<li>返回文档中html元素上<code>dir</code>属性指定的文字的朝向，如果没指定，则返回空字符串</li>
+<li>‘ltr’ || ‘rtl’</li>
+<li>可读写</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;<span class="selector-tag">html</span> dir=<span class="string">"ltr"</span>&gt;</div><div class="line">&lt;/html&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">document<span class="selector-class">.dir</span> <span class="comment">// 'ltr'</span></div><div class="line">document<span class="selector-class">.dir</span> = <span class="string">'rtl'</span> <span class="comment">// 文字变成从右向左排版</span></div></pre></td></tr></table></figure>
+<h3 id="document-head"><a href="#document-head" class="headerlink" title="document.head"></a>document.head</h3><ul>
+<li>返回文档中的head元素</li>
+<li>只读属性</li>
+</ul>
+<h3 id="document-location"><a href="#document-location" class="headerlink" title="document.location"></a>document.location</h3><ul>
+<li>返回一个location对象</li>
+<li>同window.location</li>
+</ul>
+<h3 id="document-readyState"><a href="#document-readyState" class="headerlink" title="document.readyState"></a>document.readyState</h3><ul>
+<li>状态列表</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>loading</td>
+<td>文档加载</td>
+</tr>
+<tr>
+<td>interactive</td>
+<td>文档结束渲染但在加载内嵌资源</td>
+</tr>
+<tr>
+<td>complete</td>
+<td>文档加载完成时</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// 模拟DOMContentLoaded</span></div><div class="line">    <span class="keyword">if</span>(<span class="built_in">document</span>.readyState === <span class="string">'interactive'</span>)&#123;</div><div class="line">        domContentLoadedCallback()</div><div class="line">    <span class="comment">// 模拟onload</span></div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">document</span>.readState === <span class="string">'complete'</span>)&#123;</div><div class="line">        onloadCallback()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="document-onreadystatechange"><a href="#document-onreadystatechange" class="headerlink" title="document.onreadystatechange"></a>document.onreadystatechange</h3><ul>
+<li>事件</li>
+<li>当document.readyState属性发生变化时触发</li>
+</ul>
+<h3 id="document-createAttribute"><a href="#document-createAttribute" class="headerlink" title="document.createAttribute()"></a>document.createAttribute()</h3><ul>
+<li>创建并返回一个新的属性节点</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;<span class="selector-tag">body</span></div><div class="line">    &lt;<span class="selector-tag">p</span> id=<span class="string">"demo"</span>&gt;<span class="selector-tag">i</span> am <span class="selector-tag">a</span> demo&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">let <span class="selector-tag">p</span> = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">let attr = document.createAttribute(<span class="string">'test'</span>)</div><div class="line">attr<span class="selector-class">.nodeValue</span> = <span class="string">'haha'</span></div><div class="line"><span class="selector-tag">p</span>.setAttributeNode(attr)</div><div class="line"><span class="selector-tag">p</span>.getAttribute(<span class="string">'test'</span>) <span class="comment">// 'haha'</span></div></pre></td></tr></table></figure>
+<h3 id="document-createComment"><a href="#document-createComment" class="headerlink" title="document.createComment()"></a>document.createComment()</h3><ul>
+<li>创建并返回一个注释节点</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> comment = <span class="built_in">document</span>.createComment(<span class="string">'我是一条注释'</span>)</div><div class="line"><span class="built_in">document</span>.body.appendChild(comment) <span class="comment">// 会在文档body结束标签之前插入一条注释</span></div></pre></td></tr></table></figure>
+<h3 id="document-createDocumentFragment"><a href="#document-createDocumentFragment" class="headerlink" title="document.createDocumentFragment()"></a>document.createDocumentFragment()</h3><ul>
+<li>返回一个空文档片段对象的引用</li>
+<li>不是DOM树的一部分</li>
+<li>通常的使用场景是创建一个文档片段，然后将创建的DOM元素插入到文档片段中，最后把文档片段插入到DOM树中。在DOM树中，文档片段会被替换为它所有的子元素</li>
+<li>因为文档片段存在与内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能的作用(better performance)</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> docfrag = <span class="built_in">document</span>.createDocumentFragment()</div><div class="line"><span class="keyword">let</span> pEle = <span class="built_in">document</span>.createElement(<span class="string">'p'</span>)</div><div class="line">pEle.textContent = <span class="string">'I am from fragment'</span></div><div class="line">docfrag.appendChild(pEle)</div><div class="line"><span class="built_in">document</span>.body.appendChild(docfrag) <span class="comment">// body结束标签之前插入一个p标签，内容为'I am from fragment'</span></div></pre></td></tr></table></figure>
+<h3 id="document-createElement"><a href="#document-createElement" class="headerlink" title="document.createElement()"></a>document.createElement()</h3><ul>
+<li>创建并返回一个指定的HTML元素</li>
+<li>如果创建一个未指定的元素时，返回HTMLUnkownElement</li>
+</ul>
+<h3 id="document-createRange"><a href="#document-createRange" class="headerlink" title="document.createRange()"></a>document.createRange()</h3><ul>
+<li>返回一个Range对象</li>
+</ul>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">let</span> <span class="built_in">range</span> = document.createRange()</div><div class="line"><span class="built_in">range</span>.setStart(startNode, startOffset)</div><div class="line"><span class="built_in">range</span>.setEnd(endNode, endOffset)</div></pre></td></tr></table></figure>
+<h3 id="document-createTextNode"><a href="#document-createTextNode" class="headerlink" title="document.createTextNode()"></a>document.createTextNode()</h3><ul>
+<li>创建并返回一个文本节点</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> textNode = <span class="built_in">document</span>.createTextNode(<span class="string">'创建了一个文本节点'</span>)</div><div class="line"><span class="built_in">document</span>.body.appendChild(textNode) <span class="comment">// body结束标签之前插入这行文字</span></div></pre></td></tr></table></figure>
+<h3 id="document-createEvent-type"><a href="#document-createEvent-type" class="headerlink" title="document.createEvent(type)"></a>document.createEvent(type)</h3><ul>
+<li>type string，代表被创建的事件的类型。可能的参数有：’UIEvents’/‘MouseEvents’/‘MutationEvents’/‘HTMLEvents’</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;p id=<span class="string">"demo"</span>&gt;text&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line"><span class="keyword">let</span> demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.addEventListener(<span class="string">'alert'</span>, function()&#123;</div><div class="line">    alert(<span class="string">'自定义事件'</span>)</div><div class="line">&#125;, <span class="literal">false</span>)</div><div class="line"></div><div class="line"><span class="keyword">let</span> <span class="keyword">event</span> = document.createEvent(<span class="string">'HTMLEvents'</span>)</div><div class="line"><span class="keyword">event</span>.initEvent(<span class="string">'alert'</span>, <span class="literal">false</span>, <span class="literal">false</span>)</div><div class="line">demo.dispatchEvent(<span class="keyword">event</span>) <span class="comment">// 页面中alert弹出'自定义事件'</span></div></pre></td></tr></table></figure>
+<h3 id="document-elementFromPoint"><a href="#document-elementFromPoint" class="headerlink" title="document.elementFromPoint()"></a>document.elementFromPoint()</h3><ul>
+<li>返回当前文档上处于指定坐标位置最顶层的元素。最顶层的元素一定是html啊，哥有点惶恐</li>
+<li>坐标是相对于包含该文档的浏览器窗口的左上角为原点来计算的, 通常 x 和 y 坐标都应为正数</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let ele = document.elementFromPoint()</div><div class="line">ele<span class="selector-class">.style</span><span class="selector-class">.backgroundColor</span> = <span class="string">'red'</span> <span class="comment">// html被整个添加红色背景</span></div></pre></td></tr></table></figure>
+<h3 id="document-getElementsByClassName"><a href="#document-getElementsByClassName" class="headerlink" title="document.getElementsByClassName()"></a>document.getElementsByClassName()</h3><ul>
+<li>返回一个类数组对象</li>
+<li>包含所有指定class名称的元素</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"demo"</span>&gt;</span>link<span class="tag">&lt;/&gt;</span></span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"demo"</span>&gt;</span>p<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo1"</span>&gt;</span>div<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line"><span class="built_in">document</span>.getElementsByClassName(<span class="string">'demo'</span>) <span class="comment">// [a DOM, p DOM]</span></div></pre></td></tr></table></figure>
+<h3 id="document-getElementsByTagName"><a href="#document-getElementsByTagName" class="headerlink" title="document.getElementsByTagName()"></a>document.getElementsByTagName()</h3><ul>
+<li>返回一个包括所有给定标签名称的元素的HTMLCollection</li>
+<li>返回的HTMLCollection是实时的</li>
+<li>可以指定特殊字符<code>*</code>获取所有元素</li>
+</ul>
+<h3 id="document-importNode-externalNode-deep"><a href="#document-importNode-externalNode-deep" class="headerlink" title="document.importNode(externalNode, deep)"></a>document.importNode(externalNode, deep)</h3><ul>
+<li>externalNode 外部文档的节点</li>
+<li>deep 是否深度拷贝节点，默认我true</li>
+<li>节点不会从外部文档中删除，返回的是一个拷贝节点</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">let node = frames[<span class="string">'frame'</span>]<span class="selector-class">.document</span><span class="selector-class">.getElementsByTagName</span>(<span class="string">'p'</span>)[<span class="number">0</span>] <span class="comment">// 获取名为frame的iframe中的第一个p元素</span></div><div class="line">let copy = document.importNode(node) <span class="comment">// 将元素导入当前window对象中</span></div><div class="line">document<span class="selector-class">.body</span><span class="selector-class">.appendChild</span>(copy) <span class="comment">// 将带入的元素插入文档</span></div></pre></td></tr></table></figure>
+<h3 id="document-getElementById-id-1"><a href="#document-getElementById-id-1" class="headerlink" title="document.getElementById(id)"></a>document.getElementById(id)</h3><ul>
+<li>id 大小写敏感的字符串，代表了所要查找的元素的唯一ID</li>
+</ul>
+<h3 id="document-querySelector-selectors"><a href="#document-querySelector-selectors" class="headerlink" title="document.querySelector(selectors)"></a>document.querySelector(selectors)</h3><ul>
+<li>selectors 一个或多个CSS选择器字符串，如果多个则以逗号分隔</li>
+<li>返回当前文档中第一个匹配特定选择器的元素</li>
+<li>如果没有匹配到，返回null</li>
+<li>如果匹配到多个，则返回第一个元素</li>
+<li>CSS 伪类不会返回任何元素</li>
+<li>如果要匹配的ID或选择器不符合CSS语法（比如不恰当地使用了冒号或者空格），你必须用反斜杠将这些字符转义</li>
+</ul>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">&lt;<span class="built-in">div</span> id=<span class="string">"foo\bar"</span>&gt;&lt;/<span class="built-in">div</span>&gt;</div><div class="line">&lt;<span class="built-in">div</span> class=<span class="string">"foo:bar"</span>&gt;&lt;/<span class="built-in">div</span>&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">document.querySelector(<span class="string">'#foo\bar'</span>) <span class="comment">// 匹配不到元素</span></div><div class="line">document.querySelector(<span class="string">'#foo\\\\bar'</span>) <span class="comment">// 匹配'#foo\bar'</span></div><div class="line">document.querySelector(<span class="string">'#foo:bar'</span>) <span class="comment">// 匹配不到元素</span></div><div class="line">document.querySelector(<span class="string">'.foo\\:bar'</span>) <span class="comment">// 匹配'.foo:bar'</span></div></pre></td></tr></table></figure>
+<h3 id="document-querySelectorAll-selectors"><a href="#document-querySelectorAll-selectors" class="headerlink" title="document.querySelectorAll(selectors)"></a>document.querySelectorAll(selectors)</h3><ul>
+<li>selectors 同querySelector</li>
+<li>同querySelector不同的是：返回所有匹配到的元素</li>
+</ul>
+<h3 id="document-getElementsByName-name-1"><a href="#document-getElementsByName-name-1" class="headerlink" title="document.getElementsByName(name)"></a>document.getElementsByName(name)</h3><ul>
+<li>name 元素的name属性</li>
+<li>返回一个所有匹配到的元素的集合</li>
+</ul>
+<h3 id="document-getSelection"><a href="#document-getSelection" class="headerlink" title="document.getSelection()"></a>document.getSelection()</h3><ul>
+<li>同window.getSelection()</li>
+<li>返回一个Selection对象，表示用户选择的文本</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> selection = <span class="built_in">document</span>.getSelection()</div><div class="line">selection.toString() <span class="comment">// 返回被选中的字符串</span></div></pre></td></tr></table></figure>
+<h3 id="document-hasFocus"><a href="#document-hasFocus" class="headerlink" title="document.hasFocus()"></a>document.hasFocus()</h3><ul>
+<li>返回一个布尔值，表明当前文档或者当前文档的子节点是否获得了焦点</li>
+<li>该方法可以用来判断当前文档中的活动元素是否获得了焦点</li>
+<li>在浏览器中查看当前文档是，返回true；查看其它文档，或者浏览器在后台运行时返回false</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Vue源码解读-对参数Data的处理]]></title>
       <url>http://yoursite.com/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB-%E5%AF%B9%E5%8F%82%E6%95%B0data%E7%9A%84%E5%A4%84%E7%90%86/</url>
       <content type="html"><![CDATA[<blockquote>
@@ -557,22 +1579,6 @@
     </entry>
     
     <entry>
-      <title><![CDATA[Vue源码解读-源码入口]]></title>
-      <url>http://yoursite.com/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB-%E6%BA%90%E7%A0%81%E5%85%A5%E5%8F%A3/</url>
-      <content type="html"><![CDATA[<blockquote>
-<p>version: 1.0.24<br>对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头<br>从入口开始解读Vue源码，让你循序渐进的了解Vue的设计思路及执行过程。<br>Vue源码使用部分ES6语法和功能<br><code>/src/index.js</code></p>
-</blockquote>
-<h3 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h3><p>导入Vue类的初始化入口，并在Vue类上扩展静态方法  </p>
-<a id="more"></a>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'./instance/vue'</span> <span class="comment">// 请阅读 Vue源码解析-类的初始化入口</span></div><div class="line"><span class="keyword">import</span> installGlobalAPI <span class="keyword">from</span> <span class="string">'./global-api'</span> <span class="comment">// 将工具类方法扩展到Vue类上，请阅读Vue源码解析-类方法</span></div><div class="line">installGlobalAPI(Vue)</div><div class="line"><span class="comment">// 指定Vue的当前版本号</span></div><div class="line">Vue.version = <span class="string">'1.0.24'</span></div><div class="line"><span class="comment">// 导出Vue类，类的初始化全部完成</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> Vue</div></pre></td></tr></table></figure>
-<h3 id="相关源码解析文章"><a href="#相关源码解析文章" class="headerlink" title="相关源码解析文章"></a>相关源码解析文章</h3><ul>
-<li><a href="/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB-%E7%B1%BB%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E5%85%A5%E5%8F%A3/">Vue源码解析-类的初始化入口</a></li>
-<li><a href="./Vue源码解析-类方法.md">Vue源码解析-类方法</a></li>
-</ul>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[Vue源码解读-实例化入口]]></title>
       <url>http://yoursite.com/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB-%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%85%A5%E5%8F%A3/</url>
       <content type="html"><![CDATA[<blockquote>
@@ -590,6 +1596,22 @@
 </ul>
 <figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Vue.prototype._callHook = function (hook) &#123;</div><div class="line">    <span class="comment">// 触发声明周期`前`事件，如：`pre-hook:init`，希望在当前阶段之前被执行的逻辑可以绑定在此事件中</span></div><div class="line">    <span class="keyword">this</span>.$emit(<span class="string">'pre-hook:'</span> + hook)</div><div class="line">    <span class="keyword">var</span> handlers = <span class="keyword">this</span>.$options[hook]</div><div class="line">    <span class="comment">// 在当前实例中遍历执行绑定的当前阶段的处理逻辑</span></div><div class="line">    <span class="keyword">if</span> (handlers) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, j = handlers.length; i &lt; j; i++) &#123;</div><div class="line">            handlers[i].call(<span class="keyword">this</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 触发声明周期`后`事件，如：`hook:init`，希望在当前阶段的所有钩子函数全部被执行完成之后被执行的逻辑可以绑定在此事件中</span></div><div class="line">    <span class="keyword">this</span>.$emit(<span class="string">'hook:'</span> + hook)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="相关源码解读文章"><a href="#相关源码解读文章" class="headerlink" title="相关源码解读文章"></a>相关源码解读文章</h3><p><a href="">Vue源码解读-生命周期</a>  </p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Vue源码解读-源码入口]]></title>
+      <url>http://yoursite.com/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB-%E6%BA%90%E7%A0%81%E5%85%A5%E5%8F%A3/</url>
+      <content type="html"><![CDATA[<blockquote>
+<p>version: 1.0.24<br>对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头<br>从入口开始解读Vue源码，让你循序渐进的了解Vue的设计思路及执行过程。<br>Vue源码使用部分ES6语法和功能<br><code>/src/index.js</code></p>
+</blockquote>
+<h3 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h3><p>导入Vue类的初始化入口，并在Vue类上扩展静态方法  </p>
+<a id="more"></a>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">'./instance/vue'</span> <span class="comment">// 请阅读 Vue源码解析-类的初始化入口</span></div><div class="line"><span class="keyword">import</span> installGlobalAPI <span class="keyword">from</span> <span class="string">'./global-api'</span> <span class="comment">// 将工具类方法扩展到Vue类上，请阅读Vue源码解析-类方法</span></div><div class="line">installGlobalAPI(Vue)</div><div class="line"><span class="comment">// 指定Vue的当前版本号</span></div><div class="line">Vue.version = <span class="string">'1.0.24'</span></div><div class="line"><span class="comment">// 导出Vue类，类的初始化全部完成</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> Vue</div></pre></td></tr></table></figure>
+<h3 id="相关源码解析文章"><a href="#相关源码解析文章" class="headerlink" title="相关源码解析文章"></a>相关源码解析文章</h3><ul>
+<li><a href="/Vue%E6%BA%90%E7%A0%81%E8%A7%A3%E8%AF%BB-%E7%B1%BB%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%E5%85%A5%E5%8F%A3/">Vue源码解析-类的初始化入口</a></li>
+<li><a href="./Vue源码解析-类方法.md">Vue源码解析-类方法</a></li>
+</ul>
 ]]></content>
     </entry>
     

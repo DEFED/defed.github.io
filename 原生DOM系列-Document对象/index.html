@@ -1,0 +1,1110 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="DOM,document," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等代表整个HTML文档Window对象的属性，可以通过docuemnt或window.document访问document对象可以方便我们通过js操作html  
+
+document.all
+获取文档中的所有HTML元素的引用
+是一个类数组对象
+已被document.getElementById()等API所取代，目前不常">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生DOM系列-Document对象">
+<meta property="og:url" content="http://yoursite.com/原生DOM系列-Document对象/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等代表整个HTML文档Window对象的属性，可以通过docuemnt或window.document访问document对象可以方便我们通过js操作html  
+
+document.all
+获取文档中的所有HTML元素的引用
+是一个类数组对象
+已被document.getElementById()等API所取代，目前不常">
+<meta property="og:updated_time" content="2016-09-27T09:06:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原生DOM系列-Document对象">
+<meta name="twitter:description" content="本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等代表整个HTML文档Window对象的属性，可以通过docuemnt或window.document访问document对象可以方便我们通过js操作html  
+
+document.all
+获取文档中的所有HTML元素的引用
+是一个类数组对象
+已被document.getElementById()等API所取代，目前不常">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/原生DOM系列-Document对象/"/>
+
+  <title> 原生DOM系列-Document对象 | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                原生DOM系列-Document对象
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-05T16:38:58+08:00" content="2016-08-05">
+              2016-08-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/DOM/" itemprop="url" rel="index">
+                    <span itemprop="name">DOM</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/原生DOM系列-Document对象/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="原生DOM系列-Document对象/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等<br>代表整个HTML文档<br>Window对象的属性，可以通过<code>docuemnt</code>或<code>window.document</code>访问<br>document对象可以方便我们通过js操作html  </p>
+</blockquote>
+<h3 id="document-all"><a href="#document-all" class="headerlink" title="document.all"></a>document.all</h3><ul>
+<li>获取文档中的所有HTML元素的引用</li>
+<li>是一个类数组对象</li>
+<li>已被document.getElementById()等API所取代，目前不常用项目中</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">document</span><span class="selector-class">.all</span><span class="selector-attr">[i]</span></div><div class="line"><span class="selector-tag">document</span><span class="selector-class">.all</span><span class="selector-attr">[name]</span></div><div class="line"><span class="selector-tag">document</span><span class="selector-class">.all</span><span class="selector-class">.tags</span><span class="selector-attr">[tagname]</span></div></pre></td></tr></table></figure>
+<h3 id="document-anchors"><a href="#document-anchors" class="headerlink" title="document.anchors"></a>document.anchors</h3><ul>
+<li>获取文档中所有锚点的引用</li>
+<li>类数组对象</li>
+<li>包含name属性的a元素会被返回</li>
+</ul>
+<a id="more"></a>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> name=<span class="string">"anchor1"</span>&gt;anchor1&lt;/a&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> name=<span class="string">"anchor2"</span>&gt;anchor2&lt;/a&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> name=<span class="string">"anchor3"</span> href=<span class="string">"xxx"</span>&gt;anchor3&lt;/a&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> id=<span class="string">"anchor4"</span>&gt;anchor4&lt;/a&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">document<span class="selector-class">.anchors</span> <span class="comment">// [anchor1 DOM对象, anchor2 DOM对象, anchor3 DOM对象]</span></div><div class="line">document<span class="selector-class">.anchors</span>[<span class="string">'anchor1'</span>] <span class="comment">// anchor1 DOM对象</span></div><div class="line">document<span class="selector-class">.anchors</span>[<span class="number">0</span>] <span class="comment">// anchor1 DOM对象</span></div></pre></td></tr></table></figure>
+<h3 id="document-forms"><a href="#document-forms" class="headerlink" title="document.forms"></a>document.forms</h3><ul>
+<li>返回文档中所有的form的DOM对象的引用</li>
+<li>返回类数组对象</li>
+<li>包含id或name属性的form元素会被返回</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">form</span> id=<span class="string">"form1"</span>&gt;&lt;/form&gt;</div><div class="line">    &lt;<span class="selector-tag">form</span> name=<span class="string">"form2"</span>&gt;&lt;/form&gt;</div><div class="line">    &lt;<span class="selector-tag">form</span> id=<span class="string">"form2"</span>&gt;&lt;/form&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">document<span class="selector-class">.forms</span> <span class="comment">// [form1 DOM对象, form2(name) DOM对象, form2(id) DOM对象]</span></div><div class="line">document<span class="selector-class">.forms</span>[<span class="string">'form2'</span>] <span class="comment">// 返回id为form2元素，id和name的值同名时，id的优先级更高</span></div><div class="line">document<span class="selector-class">.forms</span>[<span class="number">1</span>] <span class="comment">// name为form2 DOM对象</span></div></pre></td></tr></table></figure>
+<h3 id="document-links"><a href="#document-links" class="headerlink" title="document.links"></a>document.links</h3><ul>
+<li>返回文档中所有的a的DOM对象</li>
+<li>返回类数组对象</li>
+<li>既包含name属性，又包含href属性的a元素，既会被收集到links中，又会被收集到anchors中</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> name=<span class="string">"anchor1"</span>&gt;&lt;/a&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> name=<span class="string">"anchor2"</span> href=<span class="string">"xxx"</span>&gt;&lt;/a&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> id=<span class="string">"link1"</span> href=<span class="string">"http://www.xxx.com"</span>&gt;&lt;/a&gt;</div><div class="line">    &lt;<span class="selector-tag">a</span> name=<span class="string">"link1"</span> href=<span class="string">"http://www.xxx.com"</span>&gt;&lt;/a&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">document<span class="selector-class">.links</span><span class="selector-class">.length</span> <span class="comment">// 3</span></div><div class="line">document<span class="selector-class">.links</span>[<span class="string">'link1'</span>] <span class="comment">// id为link1的a元素</span></div></pre></td></tr></table></figure>
+<h3 id="document-images"><a href="#document-images" class="headerlink" title="document.images"></a>document.images</h3><ul>
+<li>返回文档中的所有image元素的集合</li>
+<li>类数组对象</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">img</span> src=<span class="string">""</span>&gt;</div><div class="line">    &lt;<span class="selector-tag">img</span> src=<span class="string">"xxx"</span>&gt;</div><div class="line">    &lt;img&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">document<span class="selector-class">.images</span><span class="selector-class">.length</span> <span class="comment">// 3</span></div></pre></td></tr></table></figure>
+<h3 id="document-scripts"><a href="#document-scripts" class="headerlink" title="document.scripts"></a>document.scripts</h3><ul>
+<li>返回当前文档中所有script元素的集合</li>
+<li>只读属性</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">// html</div><div class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"text/javascript"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">""</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line">// body</div><div class="line">document.scripts.length // 2</div></pre></td></tr></table></figure>
+<h3 id="document-body"><a href="#document-body" class="headerlink" title="document.body"></a>document.body</h3><ul>
+<li>返回当前文档的body元素</li>
+<li>可读写</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">document<span class="selector-class">.body</span> <span class="comment">// 返回当前文档的body元素</span></div><div class="line">document<span class="selector-class">.body</span> = document.createElement(<span class="string">'body'</span>)</div><div class="line">document<span class="selector-class">.body</span> <span class="comment">// 返回新创建的body元素</span></div></pre></td></tr></table></figure>
+<h3 id="document-cookie"><a href="#document-cookie" class="headerlink" title="document.cookie"></a>document.cookie</h3><ul>
+<li>返回与当前文档相关的所有cookie组成的字符串。如: <code>a=1; b=2</code></li>
+<li>可进行增删改查操作</li>
+<li>和普通对象属性的读写操作不同</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设目前页面中存在如下cookie: `a=1; b=2`</span></div><div class="line"></div><div class="line"><span class="comment">// 增加cookie</span></div><div class="line"><span class="built_in">document</span>.cookie <span class="comment">// 'a=1; b=2'</span></div><div class="line"><span class="built_in">document</span>.cookie = <span class="string">'c=3'</span> <span class="comment">// 'c=3'</span></div><div class="line"><span class="built_in">document</span>.cookie <span class="comment">// 'a=1; b=2; c=3'</span></div><div class="line"></div><div class="line"><span class="comment">// 修改cookie</span></div><div class="line"><span class="keyword">let</span> d = <span class="keyword">new</span> <span class="built_in">Date</span>()</div><div class="line">d.setTime(<span class="built_in">Date</span>.now() + <span class="number">1</span> * <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>)</div><div class="line">d.toUTCString()</div><div class="line"><span class="built_in">document</span>.cookie = <span class="string">'c=4; expires='</span> + d <span class="comment">// 设置10天之后过期</span></div><div class="line"><span class="built_in">document</span>.cookie <span class="comment">// 'a=1; b=2; c=4'</span></div><div class="line"></div><div class="line"><span class="comment">// 读取cookie</span></div><div class="line"><span class="keyword">let</span> cookieName = <span class="string">'c'</span></div><div class="line"><span class="keyword">let</span> cookieReg = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'(^| )'</span> + cookieName + <span class="string">'=([^;]*)(;|$)'</span>)</div><div class="line"><span class="built_in">document</span>.cookie.match(cookieReg)[<span class="number">2</span>] <span class="comment">// 3</span></div><div class="line"></div><div class="line"><span class="comment">// 删除cookie</span></div><div class="line"><span class="keyword">let</span> n = <span class="keyword">new</span> <span class="built_in">Date</span>()</div><div class="line">n.setTime(<span class="built_in">Date</span>.now() - <span class="number">1</span> * <span class="number">24</span> * <span class="number">60</span> * <span class="number">60</span> * <span class="number">1000</span>)</div><div class="line">n.toUTCString()</div><div class="line"><span class="built_in">document</span>.cookie = <span class="string">'c=0; expires='</span> + n</div><div class="line"><span class="built_in">document</span>.cookie <span class="comment">// 'a=1; b=2'</span></div></pre></td></tr></table></figure>
+<h3 id="document-domain"><a href="#document-domain" class="headerlink" title="document.domain"></a>document.domain</h3><ul>
+<li>返回文档的域名</li>
+<li>可读可写，但写入是有限制的</li>
+<li>一级域名相同的请求，但二级、或三级域名不同，可以通过设置domain来达到跨域的效果</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设当前页面的域名为http://a.b.c.com</span></div><div class="line">docuemnt<span class="selector-class">.domain</span> <span class="comment">// 'a.b.c.com'</span></div><div class="line">document<span class="selector-class">.domain</span> = <span class="string">'b.c.com'</span></div><div class="line">document<span class="selector-class">.domain</span> <span class="comment">// 'b.c.com'</span></div><div class="line">document<span class="selector-class">.domain</span> = <span class="string">'c.com'</span></div><div class="line">document<span class="selector-class">.domain</span> <span class="comment">// 'c.com'</span></div><div class="line">document<span class="selector-class">.domain</span> = <span class="string">'com'</span> <span class="comment">// 报错</span></div><div class="line">document<span class="selector-class">.domain</span> = <span class="string">'d.b.c.com'</span> <span class="comment">// 报错</span></div><div class="line">document<span class="selector-class">.domain</span> = <span class="string">'a.b.d.com'</span> <span class="comment">//报错</span></div><div class="line"></div><div class="line"><span class="comment">// a.b.com下面的a.html引入c.b.com下面的b.html</span></div><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;<span class="selector-tag">iframe</span> name=<span class="string">"demo"</span> src=<span class="string">"http://c.b.com/b.html"</span>&gt;&lt;/iframe&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">frames[<span class="string">'demo'</span>]<span class="selector-class">.document</span> <span class="comment">// 报跨域错误</span></div><div class="line"></div><div class="line"><span class="comment">// 在a.b.com下a.html和c.b.com下的b.html页面同时设置domain可以解除跨域限制</span></div><div class="line">document<span class="selector-class">.domain</span> = <span class="string">'b.com'</span></div><div class="line">`</div></pre></td></tr></table></figure>
+<h3 id="document-lastModified"><a href="#document-lastModified" class="headerlink" title="document.lastModified"></a>document.lastModified</h3><ul>
+<li>返回文档最后被修改的日期和时间</li>
+<li>字符串</li>
+</ul>
+<h3 id="document-referrer"><a href="#document-referrer" class="headerlink" title="document.referrer"></a>document.referrer</h3><ul>
+<li>返回加载当前文档的文档的URL</li>
+<li>如果不是通过其他文档加载的当前文档，比如从地址栏中直接输入，则referrer为空字符串</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设从http://a.b.com/a.html页面打开了http://c.d.com/b.html页面</span></div><div class="line"><span class="comment">// 在http://c.d.com/b.html中获取referrer</span></div><div class="line">document<span class="selector-class">.referrer</span> <span class="comment">// http://a.b.com/a.html</span></div></pre></td></tr></table></figure>
+<h3 id="document-title"><a href="#document-title" class="headerlink" title="document.title"></a>document.title</h3><ul>
+<li>返回当前文档的标题</li>
+<li>可读可写</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设当前页面的title为'我是一个document demo'</span></div><div class="line">document<span class="selector-class">.title</span> <span class="comment">// '我是一个document demo'</span></div><div class="line">document<span class="selector-class">.title</span> = <span class="string">'123'</span> <span class="comment">// 标签上的title显示为123</span></div><div class="line">document<span class="selector-class">.title</span> <span class="comment">// '123'</span></div></pre></td></tr></table></figure>
+<h3 id="document-URL"><a href="#document-URL" class="headerlink" title="document.URL"></a>document.URL</h3><ul>
+<li>返回当前文档的实际URL</li>
+<li>和location.href的区别</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>document.URL</th>
+<th>location.href</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>只读</td>
+<td>可读写</td>
+</tr>
+<tr>
+<td>重定向之后的url</td>
+<td>未重定向之前的url</td>
+</tr>
+</tbody>
+</table>
+<h3 id="document-getElementById-id"><a href="#document-getElementById-id" class="headerlink" title="document.getElementById(id)"></a>document.getElementById(id)</h3><ul>
+<li>返回对拥有指定ID的第一个对象的引用</li>
+</ul>
+<h3 id="document-getElementsByName-name"><a href="#document-getElementsByName-name" class="headerlink" title="document.getElementsByName(name)"></a>document.getElementsByName(name)</h3><ul>
+<li>返回带有指定name属性的对象的集合</li>
+</ul>
+<h3 id="document-getElementsByTagName-tagname"><a href="#document-getElementsByTagName-tagname" class="headerlink" title="document.getElementsByTagName(tagname)"></a>document.getElementsByTagName(tagname)</h3><ul>
+<li>返回指定标签名的对象集合</li>
+<li>传入特殊字符串<code>*</code>将返回文档中所有元素的集合</li>
+<li>tagname不区分大小写</li>
+</ul>
+<h3 id="document-characterSet"><a href="#document-characterSet" class="headerlink" title="document.characterSet"></a>document.characterSet</h3><ul>
+<li>返回用于渲染当前文档的字符编码类型</li>
+</ul>
+<h3 id="document-charset"><a href="#document-charset" class="headerlink" title="document.charset"></a>document.charset</h3><ul>
+<li>characterSet的别名，同characterSet</li>
+</ul>
+<h3 id="document-contentType"><a href="#document-contentType" class="headerlink" title="document.contentType"></a>document.contentType</h3><ul>
+<li>返回当前文档的Content-Type(MIME)类型</li>
+<li>该属性的返回值是浏览器检测到的,不一定是直接读取HTTP响应头中的或者HTML中meta标签指定的值</li>
+</ul>
+<h3 id="document-doctype"><a href="#document-doctype" class="headerlink" title="document.doctype"></a>document.doctype</h3><ul>
+<li>返回当前文档关联的文档类型定义的对象</li>
+<li>如果文档没有设置DTD(文档类型定义)，则该属性返回null</li>
+<li>只读</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">// 假设文档设置<span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line">document.doctype // <span class="meta">&lt;!DOCTYPE html&gt;</span></div><div class="line">document.doctype.name // html</div></pre></td></tr></table></figure>
+<h3 id="document-documentElement"><a href="#document-documentElement" class="headerlink" title="document.documentElement"></a>document.documentElement</h3><ul>
+<li>只读属性</li>
+<li>返回文档的根元素，如HTML文档的html元素</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.documentElement === <span class="built_in">document</span>.children[<span class="number">0</span>]</div></pre></td></tr></table></figure>
+<h3 id="document-documentURI"><a href="#document-documentURI" class="headerlink" title="document.documentURI"></a>document.documentURI</h3><ul>
+<li>返回文档地址字符串</li>
+<li>只读属性</li>
+<li>DOM4规范</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>document.URL</th>
+<th>document.documentURI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>只用于html文档</td>
+<td>用于所有类型的文档</td>
+</tr>
+</tbody>
+</table>
+<h3 id="document-implementation"><a href="#document-implementation" class="headerlink" title="document.implementation"></a>document.implementation</h3><h3 id="document-styleSheets"><a href="#document-styleSheets" class="headerlink" title="document.styleSheets"></a>document.styleSheets</h3><ul>
+<li>只读属性</li>
+<li>返回一个由StyleSheet对象组成的StyleSheetList</li>
+<li>类数组对象</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.styleSheets.item(<span class="number">0</span>) === <span class="built_in">document</span>.styleSheets[<span class="number">0</span>]</div></pre></td></tr></table></figure>
+<h3 id="document-styleSheetSets"><a href="#document-styleSheetSets" class="headerlink" title="document.styleSheetSets"></a>document.styleSheetSets</h3><ul>
+<li>返回目前可用的样式表集合</li>
+</ul>
+<h3 id="document-children"><a href="#document-children" class="headerlink" title="document.children"></a>document.children</h3><ul>
+<li>返回document的所有直接子元素节点</li>
+<li>不包含DTD、注释、纯文本等</li>
+<li>只读属性</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">// html</div><div class="line"><span class="meta">&lt;!Doctype html&gt;</span></div><div class="line"><span class="comment">&lt;!--comments--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div><div class="line"><span class="comment">&lt;!--comments--&gt;</span></div><div class="line"></div><div class="line">// js</div><div class="line">document.children // [html DOM]</div></pre></td></tr></table></figure>
+<h3 id="document-firstElementChild-amp-amp-document-lastElementChild"><a href="#document-firstElementChild-amp-amp-document-lastElementChild" class="headerlink" title="document.firstElementChild &amp;&amp; document.lastElementChild"></a>document.firstElementChild &amp;&amp; document.lastElementChild</h3><ul>
+<li>只读属性</li>
+<li>返回document的第一个&amp;&amp;最后一个子元素节点</li>
+<li>所有的元素节点都有此属性</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// html</div><div class="line"><span class="meta">&lt;!Doctype html&gt;</span></div><div class="line"><span class="comment">&lt;!--comments--&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div><div class="line"><span class="comment">&lt;!--comments--&gt;</span></div><div class="line"></div><div class="line">// js</div><div class="line">document.firstElementChild // html DOM</div><div class="line">document.lastElementChild // html DOM</div></pre></td></tr></table></figure>
+<h3 id="document-activeElement"><a href="#document-activeElement" class="headerlink" title="document.activeElement"></a>document.activeElement</h3><ul>
+<li>返回页面中获得焦点的元素</li>
+<li>只读属性</li>
+<li>大部分情况下返回input||textarea元素</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 获取输入框中被选中的文字</span></div><div class="line">let ele = document<span class="selector-class">.activeElement</span></div><div class="line">ele<span class="selector-class">.value</span><span class="selector-class">.substring</span>(ele<span class="selector-class">.selectionStart</span>, selectionEnd) <span class="comment">// 返回输入框中被选中的文本</span></div></pre></td></tr></table></figure>
+<h3 id="document-defaultView"><a href="#document-defaultView" class="headerlink" title="document.defaultView"></a>document.defaultView</h3><ul>
+<li>返回当前document对象所关联的window对象</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.defaultView === <span class="built_in">window</span></div></pre></td></tr></table></figure>
+<h3 id="document-designMode"><a href="#document-designMode" class="headerlink" title="document.designMode"></a>document.designMode</h3><ul>
+<li>控制整个文档是否可编辑</li>
+<li>默认为’off’</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    <span class="selector-tag">i</span> am editable</div><div class="line">&lt;/body&gt;</div><div class="line">document<span class="selector-class">.designMode</span> = <span class="string">'on'</span> <span class="comment">// 整个文档可编辑</span></div></pre></td></tr></table></figure>
+<h3 id="document-dir"><a href="#document-dir" class="headerlink" title="document.dir"></a>document.dir</h3><ul>
+<li>返回文档中html元素上<code>dir</code>属性指定的文字的朝向，如果没指定，则返回空字符串</li>
+<li>‘ltr’ || ‘rtl’</li>
+<li>可读写</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;<span class="selector-tag">html</span> dir=<span class="string">"ltr"</span>&gt;</div><div class="line">&lt;/html&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">document<span class="selector-class">.dir</span> <span class="comment">// 'ltr'</span></div><div class="line">document<span class="selector-class">.dir</span> = <span class="string">'rtl'</span> <span class="comment">// 文字变成从右向左排版</span></div></pre></td></tr></table></figure>
+<h3 id="document-head"><a href="#document-head" class="headerlink" title="document.head"></a>document.head</h3><ul>
+<li>返回文档中的head元素</li>
+<li>只读属性</li>
+</ul>
+<h3 id="document-location"><a href="#document-location" class="headerlink" title="document.location"></a>document.location</h3><ul>
+<li>返回一个location对象</li>
+<li>同window.location</li>
+</ul>
+<h3 id="document-readyState"><a href="#document-readyState" class="headerlink" title="document.readyState"></a>document.readyState</h3><ul>
+<li>状态列表</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>状态</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>loading</td>
+<td>文档加载</td>
+</tr>
+<tr>
+<td>interactive</td>
+<td>文档结束渲染但在加载内嵌资源</td>
+</tr>
+<tr>
+<td>complete</td>
+<td>文档加载完成时</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">document</span>.onreadystatechange = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// 模拟DOMContentLoaded</span></div><div class="line">    <span class="keyword">if</span>(<span class="built_in">document</span>.readyState === <span class="string">'interactive'</span>)&#123;</div><div class="line">        domContentLoadedCallback()</div><div class="line">    <span class="comment">// 模拟onload</span></div><div class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(<span class="built_in">document</span>.readState === <span class="string">'complete'</span>)&#123;</div><div class="line">        onloadCallback()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="document-onreadystatechange"><a href="#document-onreadystatechange" class="headerlink" title="document.onreadystatechange"></a>document.onreadystatechange</h3><ul>
+<li>事件</li>
+<li>当document.readyState属性发生变化时触发</li>
+</ul>
+<h3 id="document-createAttribute"><a href="#document-createAttribute" class="headerlink" title="document.createAttribute()"></a>document.createAttribute()</h3><ul>
+<li>创建并返回一个新的属性节点</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;<span class="selector-tag">body</span></div><div class="line">    &lt;<span class="selector-tag">p</span> id=<span class="string">"demo"</span>&gt;<span class="selector-tag">i</span> am <span class="selector-tag">a</span> demo&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">let <span class="selector-tag">p</span> = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">let attr = document.createAttribute(<span class="string">'test'</span>)</div><div class="line">attr<span class="selector-class">.nodeValue</span> = <span class="string">'haha'</span></div><div class="line"><span class="selector-tag">p</span>.setAttributeNode(attr)</div><div class="line"><span class="selector-tag">p</span>.getAttribute(<span class="string">'test'</span>) <span class="comment">// 'haha'</span></div></pre></td></tr></table></figure>
+<h3 id="document-createComment"><a href="#document-createComment" class="headerlink" title="document.createComment()"></a>document.createComment()</h3><ul>
+<li>创建并返回一个注释节点</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> comment = <span class="built_in">document</span>.createComment(<span class="string">'我是一条注释'</span>)</div><div class="line"><span class="built_in">document</span>.body.appendChild(comment) <span class="comment">// 会在文档body结束标签之前插入一条注释</span></div></pre></td></tr></table></figure>
+<h3 id="document-createDocumentFragment"><a href="#document-createDocumentFragment" class="headerlink" title="document.createDocumentFragment()"></a>document.createDocumentFragment()</h3><ul>
+<li>返回一个空文档片段对象的引用</li>
+<li>不是DOM树的一部分</li>
+<li>通常的使用场景是创建一个文档片段，然后将创建的DOM元素插入到文档片段中，最后把文档片段插入到DOM树中。在DOM树中，文档片段会被替换为它所有的子元素</li>
+<li>因为文档片段存在与内存中，并不在DOM树中，所以将子元素插入到文档片段时不会引起页面回流(reflow)(对元素位置和几何上的计算)。因此，使用文档片段document fragments 通常会起到优化性能的作用(better performance)</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> docfrag = <span class="built_in">document</span>.createDocumentFragment()</div><div class="line"><span class="keyword">let</span> pEle = <span class="built_in">document</span>.createElement(<span class="string">'p'</span>)</div><div class="line">pEle.textContent = <span class="string">'I am from fragment'</span></div><div class="line">docfrag.appendChild(pEle)</div><div class="line"><span class="built_in">document</span>.body.appendChild(docfrag) <span class="comment">// body结束标签之前插入一个p标签，内容为'I am from fragment'</span></div></pre></td></tr></table></figure>
+<h3 id="document-createElement"><a href="#document-createElement" class="headerlink" title="document.createElement()"></a>document.createElement()</h3><ul>
+<li>创建并返回一个指定的HTML元素</li>
+<li>如果创建一个未指定的元素时，返回HTMLUnkownElement</li>
+</ul>
+<h3 id="document-createRange"><a href="#document-createRange" class="headerlink" title="document.createRange()"></a>document.createRange()</h3><ul>
+<li>返回一个Range对象</li>
+</ul>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">let</span> <span class="built_in">range</span> = document.createRange()</div><div class="line"><span class="built_in">range</span>.setStart(startNode, startOffset)</div><div class="line"><span class="built_in">range</span>.setEnd(endNode, endOffset)</div></pre></td></tr></table></figure>
+<h3 id="document-createTextNode"><a href="#document-createTextNode" class="headerlink" title="document.createTextNode()"></a>document.createTextNode()</h3><ul>
+<li>创建并返回一个文本节点</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> textNode = <span class="built_in">document</span>.createTextNode(<span class="string">'创建了一个文本节点'</span>)</div><div class="line"><span class="built_in">document</span>.body.appendChild(textNode) <span class="comment">// body结束标签之前插入这行文字</span></div></pre></td></tr></table></figure>
+<h3 id="document-createEvent-type"><a href="#document-createEvent-type" class="headerlink" title="document.createEvent(type)"></a>document.createEvent(type)</h3><ul>
+<li>type string，代表被创建的事件的类型。可能的参数有：’UIEvents’/‘MouseEvents’/‘MutationEvents’/‘HTMLEvents’</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//html</span></div><div class="line">&lt;body&gt;</div><div class="line">    &lt;p id=<span class="string">"demo"</span>&gt;text&lt;/p&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line"><span class="keyword">let</span> demo = document.getElementById(<span class="string">'demo'</span>)</div><div class="line">demo.addEventListener(<span class="string">'alert'</span>, function()&#123;</div><div class="line">    alert(<span class="string">'自定义事件'</span>)</div><div class="line">&#125;, <span class="literal">false</span>)</div><div class="line"></div><div class="line"><span class="keyword">let</span> <span class="keyword">event</span> = document.createEvent(<span class="string">'HTMLEvents'</span>)</div><div class="line"><span class="keyword">event</span>.initEvent(<span class="string">'alert'</span>, <span class="literal">false</span>, <span class="literal">false</span>)</div><div class="line">demo.dispatchEvent(<span class="keyword">event</span>) <span class="comment">// 页面中alert弹出'自定义事件'</span></div></pre></td></tr></table></figure>
+<h3 id="document-elementFromPoint"><a href="#document-elementFromPoint" class="headerlink" title="document.elementFromPoint()"></a>document.elementFromPoint()</h3><ul>
+<li>返回当前文档上处于指定坐标位置最顶层的元素。最顶层的元素一定是html啊，哥有点惶恐</li>
+<li>坐标是相对于包含该文档的浏览器窗口的左上角为原点来计算的, 通常 x 和 y 坐标都应为正数</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let ele = document.elementFromPoint()</div><div class="line">ele<span class="selector-class">.style</span><span class="selector-class">.backgroundColor</span> = <span class="string">'red'</span> <span class="comment">// html被整个添加红色背景</span></div></pre></td></tr></table></figure>
+<h3 id="document-getElementsByClassName"><a href="#document-getElementsByClassName" class="headerlink" title="document.getElementsByClassName()"></a>document.getElementsByClassName()</h3><ul>
+<li>返回一个类数组对象</li>
+<li>包含所有指定class名称的元素</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">    <span class="xml"><span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"demo"</span>&gt;</span>link<span class="tag">&lt;/&gt;</span></span></div><div class="line">    <span class="tag">&lt;<span class="name">p</span> <span class="attr">class</span>=<span class="string">"demo"</span>&gt;</span>p<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo1"</span>&gt;</span>div<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line"><span class="built_in">document</span>.getElementsByClassName(<span class="string">'demo'</span>) <span class="comment">// [a DOM, p DOM]</span></div></pre></td></tr></table></figure>
+<h3 id="document-getElementsByTagName"><a href="#document-getElementsByTagName" class="headerlink" title="document.getElementsByTagName()"></a>document.getElementsByTagName()</h3><ul>
+<li>返回一个包括所有给定标签名称的元素的HTMLCollection</li>
+<li>返回的HTMLCollection是实时的</li>
+<li>可以指定特殊字符<code>*</code>获取所有元素</li>
+</ul>
+<h3 id="document-importNode-externalNode-deep"><a href="#document-importNode-externalNode-deep" class="headerlink" title="document.importNode(externalNode, deep)"></a>document.importNode(externalNode, deep)</h3><ul>
+<li>externalNode 外部文档的节点</li>
+<li>deep 是否深度拷贝节点，默认我true</li>
+<li>节点不会从外部文档中删除，返回的是一个拷贝节点</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">let node = frames[<span class="string">'frame'</span>]<span class="selector-class">.document</span><span class="selector-class">.getElementsByTagName</span>(<span class="string">'p'</span>)[<span class="number">0</span>] <span class="comment">// 获取名为frame的iframe中的第一个p元素</span></div><div class="line">let copy = document.importNode(node) <span class="comment">// 将元素导入当前window对象中</span></div><div class="line">document<span class="selector-class">.body</span><span class="selector-class">.appendChild</span>(copy) <span class="comment">// 将带入的元素插入文档</span></div></pre></td></tr></table></figure>
+<h3 id="document-getElementById-id-1"><a href="#document-getElementById-id-1" class="headerlink" title="document.getElementById(id)"></a>document.getElementById(id)</h3><ul>
+<li>id 大小写敏感的字符串，代表了所要查找的元素的唯一ID</li>
+</ul>
+<h3 id="document-querySelector-selectors"><a href="#document-querySelector-selectors" class="headerlink" title="document.querySelector(selectors)"></a>document.querySelector(selectors)</h3><ul>
+<li>selectors 一个或多个CSS选择器字符串，如果多个则以逗号分隔</li>
+<li>返回当前文档中第一个匹配特定选择器的元素</li>
+<li>如果没有匹配到，返回null</li>
+<li>如果匹配到多个，则返回第一个元素</li>
+<li>CSS 伪类不会返回任何元素</li>
+<li>如果要匹配的ID或选择器不符合CSS语法（比如不恰当地使用了冒号或者空格），你必须用反斜杠将这些字符转义</li>
+</ul>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// html</span></div><div class="line">&lt;body&gt;</div><div class="line">&lt;<span class="built-in">div</span> id=<span class="string">"foo\bar"</span>&gt;&lt;/<span class="built-in">div</span>&gt;</div><div class="line">&lt;<span class="built-in">div</span> class=<span class="string">"foo:bar"</span>&gt;&lt;/<span class="built-in">div</span>&gt;</div><div class="line">&lt;/body&gt;</div><div class="line"></div><div class="line"><span class="comment">// js</span></div><div class="line">document.querySelector(<span class="string">'#foo\bar'</span>) <span class="comment">// 匹配不到元素</span></div><div class="line">document.querySelector(<span class="string">'#foo\\\\bar'</span>) <span class="comment">// 匹配'#foo\bar'</span></div><div class="line">document.querySelector(<span class="string">'#foo:bar'</span>) <span class="comment">// 匹配不到元素</span></div><div class="line">document.querySelector(<span class="string">'.foo\\:bar'</span>) <span class="comment">// 匹配'.foo:bar'</span></div></pre></td></tr></table></figure>
+<h3 id="document-querySelectorAll-selectors"><a href="#document-querySelectorAll-selectors" class="headerlink" title="document.querySelectorAll(selectors)"></a>document.querySelectorAll(selectors)</h3><ul>
+<li>selectors 同querySelector</li>
+<li>同querySelector不同的是：返回所有匹配到的元素</li>
+</ul>
+<h3 id="document-getElementsByName-name-1"><a href="#document-getElementsByName-name-1" class="headerlink" title="document.getElementsByName(name)"></a>document.getElementsByName(name)</h3><ul>
+<li>name 元素的name属性</li>
+<li>返回一个所有匹配到的元素的集合</li>
+</ul>
+<h3 id="document-getSelection"><a href="#document-getSelection" class="headerlink" title="document.getSelection()"></a>document.getSelection()</h3><ul>
+<li>同window.getSelection()</li>
+<li>返回一个Selection对象，表示用户选择的文本</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> selection = <span class="built_in">document</span>.getSelection()</div><div class="line">selection.toString() <span class="comment">// 返回被选中的字符串</span></div></pre></td></tr></table></figure>
+<h3 id="document-hasFocus"><a href="#document-hasFocus" class="headerlink" title="document.hasFocus()"></a>document.hasFocus()</h3><ul>
+<li>返回一个布尔值，表明当前文档或者当前文档的子节点是否获得了焦点</li>
+<li>该方法可以用来判断当前文档中的活动元素是否获得了焦点</li>
+<li>在浏览器中查看当前文档是，返回true；查看其它文档，或者浏览器在后台运行时返回false</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DOM/" rel="tag">#DOM</a>
+          
+            <a href="/tags/document/" rel="tag">#document</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Vue源码解读-对参数data的处理/" rel="next" title="Vue源码解读-对参数Data的处理">
+                <i class="fa fa-chevron-left"></i> Vue源码解读-对参数Data的处理
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Vue源码解读-方法与事件绑定/" rel="prev" title="Vue源码解读-方法与事件绑定">
+                Vue源码解读-方法与事件绑定 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#document-all"><span class="nav-number">1.</span> <span class="nav-text">document.all</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-anchors"><span class="nav-number">2.</span> <span class="nav-text">document.anchors</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-forms"><span class="nav-number">3.</span> <span class="nav-text">document.forms</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-links"><span class="nav-number">4.</span> <span class="nav-text">document.links</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-images"><span class="nav-number">5.</span> <span class="nav-text">document.images</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-scripts"><span class="nav-number">6.</span> <span class="nav-text">document.scripts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-body"><span class="nav-number">7.</span> <span class="nav-text">document.body</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-cookie"><span class="nav-number">8.</span> <span class="nav-text">document.cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-domain"><span class="nav-number">9.</span> <span class="nav-text">document.domain</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-lastModified"><span class="nav-number">10.</span> <span class="nav-text">document.lastModified</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-referrer"><span class="nav-number">11.</span> <span class="nav-text">document.referrer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-title"><span class="nav-number">12.</span> <span class="nav-text">document.title</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-URL"><span class="nav-number">13.</span> <span class="nav-text">document.URL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-getElementById-id"><span class="nav-number">14.</span> <span class="nav-text">document.getElementById(id)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-getElementsByName-name"><span class="nav-number">15.</span> <span class="nav-text">document.getElementsByName(name)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-getElementsByTagName-tagname"><span class="nav-number">16.</span> <span class="nav-text">document.getElementsByTagName(tagname)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-characterSet"><span class="nav-number">17.</span> <span class="nav-text">document.characterSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-charset"><span class="nav-number">18.</span> <span class="nav-text">document.charset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-contentType"><span class="nav-number">19.</span> <span class="nav-text">document.contentType</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-doctype"><span class="nav-number">20.</span> <span class="nav-text">document.doctype</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-documentElement"><span class="nav-number">21.</span> <span class="nav-text">document.documentElement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-documentURI"><span class="nav-number">22.</span> <span class="nav-text">document.documentURI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-implementation"><span class="nav-number">23.</span> <span class="nav-text">document.implementation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-styleSheets"><span class="nav-number">24.</span> <span class="nav-text">document.styleSheets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-styleSheetSets"><span class="nav-number">25.</span> <span class="nav-text">document.styleSheetSets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-children"><span class="nav-number">26.</span> <span class="nav-text">document.children</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-firstElementChild-amp-amp-document-lastElementChild"><span class="nav-number">27.</span> <span class="nav-text">document.firstElementChild && document.lastElementChild</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-activeElement"><span class="nav-number">28.</span> <span class="nav-text">document.activeElement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-defaultView"><span class="nav-number">29.</span> <span class="nav-text">document.defaultView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-designMode"><span class="nav-number">30.</span> <span class="nav-text">document.designMode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-dir"><span class="nav-number">31.</span> <span class="nav-text">document.dir</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-head"><span class="nav-number">32.</span> <span class="nav-text">document.head</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-location"><span class="nav-number">33.</span> <span class="nav-text">document.location</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-readyState"><span class="nav-number">34.</span> <span class="nav-text">document.readyState</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-onreadystatechange"><span class="nav-number">35.</span> <span class="nav-text">document.onreadystatechange</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-createAttribute"><span class="nav-number">36.</span> <span class="nav-text">document.createAttribute()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-createComment"><span class="nav-number">37.</span> <span class="nav-text">document.createComment()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-createDocumentFragment"><span class="nav-number">38.</span> <span class="nav-text">document.createDocumentFragment()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-createElement"><span class="nav-number">39.</span> <span class="nav-text">document.createElement()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-createRange"><span class="nav-number">40.</span> <span class="nav-text">document.createRange()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-createTextNode"><span class="nav-number">41.</span> <span class="nav-text">document.createTextNode()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-createEvent-type"><span class="nav-number">42.</span> <span class="nav-text">document.createEvent(type)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-elementFromPoint"><span class="nav-number">43.</span> <span class="nav-text">document.elementFromPoint()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-getElementsByClassName"><span class="nav-number">44.</span> <span class="nav-text">document.getElementsByClassName()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-getElementsByTagName"><span class="nav-number">45.</span> <span class="nav-text">document.getElementsByTagName()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-importNode-externalNode-deep"><span class="nav-number">46.</span> <span class="nav-text">document.importNode(externalNode, deep)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-getElementById-id-1"><span class="nav-number">47.</span> <span class="nav-text">document.getElementById(id)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-querySelector-selectors"><span class="nav-number">48.</span> <span class="nav-text">document.querySelector(selectors)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-querySelectorAll-selectors"><span class="nav-number">49.</span> <span class="nav-text">document.querySelectorAll(selectors)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-getElementsByName-name-1"><span class="nav-number">50.</span> <span class="nav-text">document.getElementsByName(name)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-getSelection"><span class="nav-number">51.</span> <span class="nav-text">document.getSelection()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document-hasFocus"><span class="nav-number">52.</span> <span class="nav-text">document.hasFocus()</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = '原生DOM系列-Document对象/';
+      var disqus_title = "原生DOM系列-Document对象";
+      var disqus_url = 'http://yoursite.com/原生DOM系列-Document对象/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

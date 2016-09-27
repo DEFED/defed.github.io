@@ -1,0 +1,901 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="DOM," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等Window对象包含window、document等属性也就是说window属性和document属性同属于Window对象该文档中过滤掉了部分特别常用的属性或方法，如alert/console等同时也过滤掉了部分特别不常用的属性或方法内容尚不完整，请下周继续收看！！  
+
+window属性
+window属性指向当前Wi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="原生DOM系列-Window对象">
+<meta property="og:url" content="http://yoursite.com/原生DOM系列-Window对象/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等Window对象包含window、document等属性也就是说window属性和document属性同属于Window对象该文档中过滤掉了部分特别常用的属性或方法，如alert/console等同时也过滤掉了部分特别不常用的属性或方法内容尚不完整，请下周继续收看！！  
+
+window属性
+window属性指向当前Wi">
+<meta property="og:updated_time" content="2016-09-27T09:06:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="原生DOM系列-Window对象">
+<meta name="twitter:description" content="本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等Window对象包含window、document等属性也就是说window属性和document属性同属于Window对象该文档中过滤掉了部分特别常用的属性或方法，如alert/console等同时也过滤掉了部分特别不常用的属性或方法内容尚不完整，请下周继续收看！！  
+
+window属性
+window属性指向当前Wi">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/原生DOM系列-Window对象/"/>
+
+  <title> 原生DOM系列-Window对象 | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                原生DOM系列-Window对象
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-19T16:04:40+08:00" content="2016-08-19">
+              2016-08-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/DOM/" itemprop="url" rel="index">
+                    <span itemprop="name">DOM</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/原生DOM系列-Window对象/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="原生DOM系列-Window对象/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>本系列文章中所指的DOM，都是纯纯的HTML DOM，不包括XML DOM等<br>Window对象包含window、document等属性<br>也就是说window属性和document属性同属于Window对象<br>该文档中过滤掉了部分特别常用的属性或方法，如alert/console等<br>同时也过滤掉了部分特别不常用的属性或方法<br>内容尚不完整，请下周继续收看！！  </p>
+</blockquote>
+<h3 id="window属性"><a href="#window属性" class="headerlink" title="window属性"></a>window属性</h3><ul>
+<li>window属性指向当前Window对象</li>
+<li>全局环境下window属性同其它属性和this的关系</li>
+</ul>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span> === <span class="keyword">this</span> <span class="regexp">//</span> <span class="keyword">this</span>和<span class="built_in">window</span>同指向Window对象</div><div class="line"><span class="built_in">window</span>.<span class="keyword">this</span> <span class="regexp">//</span> <span class="literal">undefined</span>。<span class="keyword">this</span>并非Window对象的属性</div><div class="line"><span class="built_in">window</span> === parent <span class="regexp">//</span> 顶层<span class="built_in">window</span>中，parent属性指向当前Window对象</div><div class="line"><span class="built_in">window</span>.parent === <span class="built_in">window</span> <span class="regexp">//</span> parent是Window对象的属性</div><div class="line"><span class="built_in">window</span> === top <span class="regexp">//</span> 顶层<span class="built_in">window</span>中，top属性都指向当前Window对象</div><div class="line"><span class="built_in">window</span>.top === top <span class="regexp">//</span> top是Window对象的属性</div><div class="line"><span class="built_in">window</span> === self <span class="regexp">//</span> self和<span class="built_in">window</span>一样指向当前Window对象</div><div class="line"><span class="built_in">window</span>.self === self <span class="regexp">//</span> self是Window对象的属性</div><div class="line"><span class="built_in">window</span> === <span class="built_in">document</span>.defaultView</div><div class="line"><span class="built_in">window</span> === frames <span class="regexp">//</span> 是不是很奇怪。其实iframes会被解析挂载到<span class="built_in">window</span>对象上，<span class="built_in">window</span>对象是一个类数组对象</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="self"><a href="#self" class="headerlink" title="self"></a>self</h3><ul>
+<li>指向当前window对象</li>
+</ul>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attr">self</span> === window</div></pre></td></tr></table></figure>
+<h3 id="parent"><a href="#parent" class="headerlink" title="parent"></a>parent</h3><ul>
+<li>parent属性指向包含当前Window对象的Window对象</li>
+</ul>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设当前html文档中包含一个name等于frame1的iframe</span></div><div class="line">frames[<span class="string">'frame1'</span>].<span class="keyword">parent</span> === <span class="keyword">window</span></div></pre></td></tr></table></figure>
+<h3 id="top"><a href="#top" class="headerlink" title="top"></a>top</h3><ul>
+<li>top属性指向最顶层Window对象</li>
+</ul>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设当前html文档中包含一个name等于frame1的iframe</span></div><div class="line"><span class="comment">// frame1文档中有包含frmae2文档</span></div><div class="line">frames.frame1.top === frames.frame1.frames.frame2.top</div></pre></td></tr></table></figure>
+<h3 id="frames"><a href="#frames" class="headerlink" title="frames"></a>frames</h3><ul>
+<li>当前文档中所有包含的iframe的集合</li>
+<li>frames对象指向当前Window对象，真正的iframe集合以数组和Window对象属性的形式挂载到Window对象上。</li>
+</ul>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">// 假设当前html文档中包含一个name等于frame1的iframe</div><div class="line">frames[<span class="number">0</span>] === frames[<span class="string">'frame1'</span>]</div><div class="line">frames[<span class="number">0</span>] === window[<span class="number">0</span>]</div><div class="line">frames[<span class="number">0</span>] === window[<span class="string">'frame1'</span>]</div></pre></td></tr></table></figure>
+<h3 id="closed"><a href="#closed" class="headerlink" title="closed"></a>closed</h3><ul>
+<li>返回窗口是否已被关闭</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 打开一个窗口</span></div><div class="line"><span class="selector-tag">var</span> demo = window.open(<span class="string">''</span>, <span class="string">''</span>, <span class="string">'width=200,height=100'</span>)</div><div class="line">demo<span class="selector-class">.closed</span> <span class="comment">// false</span></div><div class="line"></div><div class="line"><span class="comment">// 关闭打开的窗口</span></div><div class="line">demo<span class="selector-class">.closed</span> <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<h3 id="document"><a href="#document" class="headerlink" title="document"></a>document</h3><ul>
+<li>对Document对象的只读引用</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.<span class="built_in">document</span> = <span class="number">1</span> <span class="comment">// 不会报错，但不生效</span></div><div class="line"><span class="built_in">document</span> <span class="comment">// Document对象</span></div></pre></td></tr></table></figure>
+<ul>
+<li>详见<code>原生DOM系列-Document对象</code></li>
+</ul>
+<h3 id="history"><a href="#history" class="headerlink" title="history"></a>history</h3><ul>
+<li>对History对象的只读引用</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">window<span class="selector-class">.history</span> = <span class="number">1</span> <span class="comment">// 不会报错，但不生效</span></div><div class="line">history <span class="comment">// History对象</span></div></pre></td></tr></table></figure>
+<ul>
+<li>详见<code>原生DOM系列-History对象</code></li>
+</ul>
+<h3 id="innerHeight-amp-innerWidth"><a href="#innerHeight-amp-innerWidth" class="headerlink" title="innerHeight &amp; innerWidth"></a>innerHeight &amp; innerWidth</h3><ul>
+<li>只读属性</li>
+<li>返回窗口的文档显示区高度和宽度，不包括菜单栏、工具栏和滚动条等高度</li>
+<li>IE不支持该属性，以clientHeight &amp; clientWidth代替</li>
+</ul>
+<h3 id="length"><a href="#length" class="headerlink" title="length"></a>length</h3><ul>
+<li>设置或返回窗口中得iframe数量</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 假设当前html文档中包含一个name等于frame1的iframe</span></div><div class="line">window<span class="selector-class">.length</span> <span class="comment">// 1</span></div><div class="line">length = <span class="number">10</span></div><div class="line">window<span class="selector-class">.lenght</span> <span class="comment">// 10</span></div></pre></td></tr></table></figure>
+<h3 id="location"><a href="#location" class="headerlink" title="location"></a>location</h3><ul>
+<li>对Location对象的引用</li>
+<li>详见<code>原生DOM系列-Location对象</code></li>
+</ul>
+<h3 id="name"><a href="#name" class="headerlink" title="name"></a>name</h3><ul>
+<li>设置或返回窗口的名称</li>
+</ul>
+<figure class="highlight delphi"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">window.<span class="keyword">name</span> == <span class="string">'123'</span></div><div class="line"><span class="keyword">name</span> <span class="comment">// '123'</span></div></pre></td></tr></table></figure>
+<h3 id="navigatory"><a href="#navigatory" class="headerlink" title="navigatory"></a>navigatory</h3><ul>
+<li>对Navigator对象的引用</li>
+<li>详见<code>原生DOM系列-Navigator对象</code></li>
+</ul>
+<h3 id="opener"><a href="#opener" class="headerlink" title="opener"></a>opener</h3><ul>
+<li>返回对创建该窗口的Window对象的引用</li>
+<li>可以通过该属性调用创建者Window对象的属性和方法，从而控制创建者窗口的内容变化</li>
+<li>如果被打开的页面和当前页面不在同一个域下，被打开的页面中opener为空</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 当前窗口(open.html)中执行</span></div><div class="line">let demo = open(<span class="string">'opened.html'</span>, <span class="string">''</span>, <span class="string">'width=200,height=100'</span>)</div><div class="line"></div><div class="line"><span class="comment">// opened.html中执行</span></div><div class="line">opener<span class="selector-class">.document</span><span class="selector-class">.write</span>(<span class="string">'haha'</span>)</div><div class="line"></div><div class="line"><span class="comment">// open.html中的内容会变成'haha'</span></div></pre></td></tr></table></figure>
+<h3 id="outerHeight-amp-outerWidth"><a href="#outerHeight-amp-outerWidth" class="headerlink" title="outerHeight &amp; outerWidth"></a>outerHeight &amp; outerWidth</h3><ul>
+<li>返回整个窗口的高度和宽度</li>
+<li>IE中不支持，也不存在替代属性</li>
+<li>移动端这些属性会一直返回0</li>
+</ul>
+<h3 id="screen"><a href="#screen" class="headerlink" title="screen"></a>screen</h3><ul>
+<li>对Screen对象的只读引用</li>
+<li>Screen对象获取打开当前浏览器的屏幕的相关信息</li>
+</ul>
+<h3 id="screenLeft-amp-screenTop-amp-screenX-amp-screenY"><a href="#screenLeft-amp-screenTop-amp-screenX-amp-screenY" class="headerlink" title="screenLeft &amp; screenTop &amp; screenX &amp; screenY"></a>screenLeft &amp; screenTop &amp; screenX &amp; screenY</h3><ul>
+<li>只读属性</li>
+<li>返回浏览器窗口在屏幕上的x坐标和y坐标</li>
+<li>移动端无实际意义，因为移动端浏览器窗口始终是全屏幕打开的，这些数据会一直都是0</li>
+</ul>
+<h3 id="close"><a href="#close" class="headerlink" title="close()"></a>close()</h3><ul>
+<li>仅能对通过js打开的窗口有用</li>
+<li>移动端无效</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">let demo = <span class="built_in">open</span>(<span class="string">''</span>, <span class="string">''</span>, <span class="string">'widht=200,height=100'</span>)</div><div class="line">demo.<span class="built_in">close</span>() <span class="comment">// demo窗口打开之后立即被关闭</span></div></pre></td></tr></table></figure>
+<h3 id="open"><a href="#open" class="headerlink" title="open()"></a>open()</h3><ul>
+<li>打开一个新的浏览器窗口或查找一个已命名的窗口</li>
+<li>移动端无效</li>
+</ul>
+<h3 id="scrollBy-xnum-ynum"><a href="#scrollBy-xnum-ynum" class="headerlink" title="scrollBy(xnum, ynum)"></a>scrollBy(xnum, ynum)</h3><ul>
+<li>按x/y轴滚动指定的像素数</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">scrollBy</span><span class="params">(<span class="number">0</span>, <span class="number">100</span>)</span></span> <span class="comment">// 向下滚动100px</span></div><div class="line"><span class="function"><span class="title">scrollBy</span><span class="params">(<span class="number">100</span>, <span class="number">0</span>)</span></span> <span class="comment">// 向右滚动100px</span></div></pre></td></tr></table></figure>
+<h3 id="scrollTo-xpos-ypos"><a href="#scrollTo-xpos-ypos" class="headerlink" title="scrollTo(xpos, ypos)"></a>scrollTo(xpos, ypos)</h3><ul>
+<li>将内容滚动到文档的指定坐标位置</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">scrollTo</span><span class="params">(<span class="number">0</span>, <span class="number">0</span>)</span></span> <span class="comment">// 滚动到最上面，最左边</span></div><div class="line"><span class="function"><span class="title">scrollTo</span><span class="params">(<span class="number">0</span>, document.body.scroll)</span></span> <span class="comment">// 滚动到最上面，最左边</span></div></pre></td></tr></table></figure>
+<p>…未完待续！！</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/DOM/" rel="tag">#DOM</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/原生DOM系列-Element对象/" rel="next" title="原生DOM系列-Element对象">
+                <i class="fa fa-chevron-left"></i> 原生DOM系列-Element对象
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/原生DOM系列-History对象/" rel="prev" title="原生DOM系列-History对象">
+                原生DOM系列-History对象 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#window属性"><span class="nav-number">1.</span> <span class="nav-text">window属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#self"><span class="nav-number">2.</span> <span class="nav-text">self</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#parent"><span class="nav-number">3.</span> <span class="nav-text">parent</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#top"><span class="nav-number">4.</span> <span class="nav-text">top</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#frames"><span class="nav-number">5.</span> <span class="nav-text">frames</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#closed"><span class="nav-number">6.</span> <span class="nav-text">closed</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#document"><span class="nav-number">7.</span> <span class="nav-text">document</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#history"><span class="nav-number">8.</span> <span class="nav-text">history</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#innerHeight-amp-innerWidth"><span class="nav-number">9.</span> <span class="nav-text">innerHeight & innerWidth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#length"><span class="nav-number">10.</span> <span class="nav-text">length</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#location"><span class="nav-number">11.</span> <span class="nav-text">location</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#name"><span class="nav-number">12.</span> <span class="nav-text">name</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#navigatory"><span class="nav-number">13.</span> <span class="nav-text">navigatory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#opener"><span class="nav-number">14.</span> <span class="nav-text">opener</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#outerHeight-amp-outerWidth"><span class="nav-number">15.</span> <span class="nav-text">outerHeight & outerWidth</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#screen"><span class="nav-number">16.</span> <span class="nav-text">screen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#screenLeft-amp-screenTop-amp-screenX-amp-screenY"><span class="nav-number">17.</span> <span class="nav-text">screenLeft & screenTop & screenX & screenY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#close"><span class="nav-number">18.</span> <span class="nav-text">close()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#open"><span class="nav-number">19.</span> <span class="nav-text">open()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scrollBy-xnum-ynum"><span class="nav-number">20.</span> <span class="nav-text">scrollBy(xnum, ynum)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scrollTo-xpos-ypos"><span class="nav-number">21.</span> <span class="nav-text">scrollTo(xpos, ypos)</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = '原生DOM系列-Window对象/';
+      var disqus_title = "原生DOM系列-Window对象";
+      var disqus_url = 'http://yoursite.com/原生DOM系列-Window对象/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

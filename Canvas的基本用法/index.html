@@ -1,0 +1,1060 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="canvas," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="canvas系列
+
+canvas元素
+当不使用元素属性设置canvas的宽高时，默认初始化宽度300px和高度150px
+可以通过css定义canvas的大小，但css指定的尺寸和canvas初始比例不一致时，会出现扭曲，因此建议始终通过width和height属性来指定canvas大小
+
+123&amp;lt;canvas id=&quot;demo&quot; width=&quot;300&quot; height=&quot;150&quot;&amp;gt;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Canvas的基本用法">
+<meta property="og:url" content="http://yoursite.com/Canvas的基本用法/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="canvas系列
+
+canvas元素
+当不使用元素属性设置canvas的宽高时，默认初始化宽度300px和高度150px
+可以通过css定义canvas的大小，但css指定的尺寸和canvas初始比例不一致时，会出现扭曲，因此建议始终通过width和height属性来指定canvas大小
+
+123&amp;lt;canvas id=&quot;demo&quot; width=&quot;300&quot; height=&quot;150&quot;&amp;gt;">
+<meta property="og:image" content="http://i2.buimg.com/1949/7aab1d95d8c92bed.jpg">
+<meta property="og:image" content="http://i2.buimg.com/1949/87a445c38e90807c.jpg">
+<meta property="og:image" content="http://i2.buimg.com/1949/14c248b6ba9fc2ce.jpg">
+<meta property="og:image" content="http://i1.piimg.com/1949/6c37dfb5af1ea051.jpg">
+<meta property="og:image" content="http://i1.piimg.com/1949/ebe4581785363ee5.jpg">
+<meta property="og:image" content="http://i2.buimg.com/574382/cf830b62408422dd.jpg">
+<meta property="og:image" content="http://i1.piimg.com/574382/0bd26d3e169855be.jpg">
+<meta property="og:image" content="http://i2.buimg.com/574382/7b3db1e31500096c.jpg">
+<meta property="og:image" content="http://i4.piimg.com/574382/567f82ae195b55a2.jpg">
+<meta property="og:image" content="http://i1.piimg.com/574382/0cf50444001a3184.jpg">
+<meta property="og:updated_time" content="2016-09-27T09:06:49.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Canvas的基本用法">
+<meta name="twitter:description" content="canvas系列
+
+canvas元素
+当不使用元素属性设置canvas的宽高时，默认初始化宽度300px和高度150px
+可以通过css定义canvas的大小，但css指定的尺寸和canvas初始比例不一致时，会出现扭曲，因此建议始终通过width和height属性来指定canvas大小
+
+123&amp;lt;canvas id=&quot;demo&quot; width=&quot;300&quot; height=&quot;150&quot;&amp;gt;">
+<meta name="twitter:image" content="http://i2.buimg.com/1949/7aab1d95d8c92bed.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Canvas的基本用法/"/>
+
+  <title> Canvas的基本用法 | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Canvas的基本用法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-14T16:49:40+08:00" content="2016-09-14">
+              2016-09-14
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/canvas/" itemprop="url" rel="index">
+                    <span itemprop="name">canvas</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/Canvas的基本用法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Canvas的基本用法/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>canvas系列</p>
+</blockquote>
+<h3 id="canvas元素"><a href="#canvas元素" class="headerlink" title="canvas元素"></a>canvas元素</h3><ul>
+<li>当不使用元素属性设置canvas的宽高时，默认初始化宽度300px和高度150px</li>
+<li>可以通过css定义canvas的大小，但css指定的尺寸和canvas初始比例不一致时，会出现扭曲，因此建议始终通过width和height属性来指定canvas大小</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="selector-tag">canvas</span> id=<span class="string">"demo"</span> <span class="attribute">width</span>=<span class="string">"300"</span> height=<span class="string">"150"</span>&gt;</div><div class="line">    您使用的浏览器不支持canvas，请升级浏览器</div><div class="line">&lt;/canvas&gt;</div></pre></td></tr></table></figure>
+<h3 id="获取渲染上下文"><a href="#获取渲染上下文" class="headerlink" title="获取渲染上下文"></a>获取渲染上下文</h3><ul>
+<li>canvas元素创造了一个固定大小的画布</li>
+<li>并提供了一个渲染上下文，用来绘制或处理需要展示的内容</li>
+<li>如何获取渲染上下文</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> demo = <span class="built_in">document</span>.getElementById(<span class="string">'demo'</span>)</div><div class="line"><span class="keyword">let</span> ctx = demo.getContext(<span class="string">'2d'</span>)</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li>检查浏览器支持情况</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">if</span><span class="params">(demo.getContext)</span></span>&#123;</div><div class="line">    ctx = demo.getContext(<span class="string">'2d'</span>)</div><div class="line">&#125;<span class="keyword">else</span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="绘制图形"><a href="#绘制图形" class="headerlink" title="绘制图形"></a>绘制图形</h3><ul>
+<li>坐标原点：左上角</li>
+<li>X轴向右为正方向</li>
+<li>Y轴向下为正方向</li>
+</ul>
+<h4 id="矩形"><a href="#矩形" class="headerlink" title="矩形"></a>矩形</h4><blockquote>
+<p>canvas唯一支持的不通过路径进行绘制的图形</p>
+</blockquote>
+<h5 id="ctx-fillRect-x-y-width-height"><a href="#ctx-fillRect-x-y-width-height" class="headerlink" title="ctx.fillRect(x, y, width, height)"></a>ctx.fillRect(x, y, width, height)</h5><blockquote>
+<p>绘制填充的矩形</p>
+</blockquote>
+<ul>
+<li>x: x轴坐标</li>
+<li>y: y轴坐标</li>
+<li>width: 矩形的宽度</li>
+<li>height: 矩形的高度</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ctx.fillStyle = 'green'</div><div class="line">ctx.fillRect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>) <span class="comment">// 在坐标(0, 0)的位置开始绘制一个宽高都是100px的矩形</span></div></pre></td></tr></table></figure>
+<p><img src="http://i2.buimg.com/1949/7aab1d95d8c92bed.jpg" alt="矩形"></p>
+<h5 id="ctx-strokeRect-x-y-width-height"><a href="#ctx-strokeRect-x-y-width-height" class="headerlink" title="ctx.strokeRect(x, y, width, height)"></a>ctx.strokeRect(x, y, width, height)</h5><blockquote>
+<p>绘制一个矩形的边框</p>
+</blockquote>
+<ul>
+<li>参数同fillRect()</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ctx.strokeStyle = 'blue'</div><div class="line">ctx.strokeRect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>) <span class="comment">// 为前面绘制的矩形用蓝色进行描边</span></div></pre></td></tr></table></figure>
+<p><img src="http://i2.buimg.com/1949/87a445c38e90807c.jpg" alt="xx"></p>
+<h5 id="ctx-clearRect-x-y-width-height"><a href="#ctx-clearRect-x-y-width-height" class="headerlink" title="ctx.clearRect(x, y, width, height)"></a>ctx.clearRect(x, y, width, height)</h5><blockquote>
+<p>清除指定矩形区域，让清楚的部分完全透明</p>
+</blockquote>
+<ul>
+<li>参数同fillRect()</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ctx.clearRect(<span class="number">15</span>, <span class="number">15</span>, <span class="number">90</span>, <span class="number">90</span>)</div></pre></td></tr></table></figure>
+<p><img src="http://i2.buimg.com/1949/14c248b6ba9fc2ce.jpg" alt="xx"></p>
+<h4 id="路径"><a href="#路径" class="headerlink" title="路径"></a>路径</h4><blockquote>
+<p>图形的基本元素是路径<br>创建路径需要如下步骤  </p>
+</blockquote>
+<ul>
+<li>创建路径的起点</li>
+<li>使用画图命令画出路径</li>
+<li>把路径封闭(非必需)</li>
+<li>通过路径来渲染图形</li>
+</ul>
+<h5 id="ctx-beginPath"><a href="#ctx-beginPath" class="headerlink" title="ctx.beginPath()"></a>ctx.beginPath()</h5><blockquote>
+<p>开始绘制路径  </p>
+</blockquote>
+<h5 id="ctx-moveTo-x-y"><a href="#ctx-moveTo-x-y" class="headerlink" title="ctx.moveTo(x, y)"></a>ctx.moveTo(x, y)</h5><blockquote>
+<p>将🖌️移动到指定的坐标点<br>准备开始绘制路径<br>可以在绘制路径过程中不断执行此方法，从而绘制出不连续的路径  </p>
+</blockquote>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">ctx.beginPath()</div><div class="line">ctx.arc(<span class="number">75</span>, <span class="number">75</span>, <span class="number">50</span>, <span class="number">0</span>, Math.<span class="literal">PI</span> * <span class="number">2</span>, true) <span class="comment">// arc方法请往下看</span></div><div class="line">ctx.moveTo(<span class="number">110</span>, <span class="number">75</span>)</div><div class="line">ctx.arc(<span class="number">75</span>, <span class="number">75</span>, <span class="number">35</span>, <span class="number">0</span>, Math.<span class="literal">PI</span>, false)</div><div class="line">ctx.moveTo(<span class="number">65</span>, <span class="number">65</span>)</div><div class="line">ctx.arc(<span class="number">60</span>, <span class="number">65</span>, <span class="number">5</span>, <span class="number">0</span>, Math.<span class="literal">PI</span> * <span class="number">2</span>, true)</div><div class="line">ctx.moveTo(<span class="number">95</span>, <span class="number">65</span>)</div><div class="line">ctx.arc(<span class="number">90</span>, <span class="number">65</span>, <span class="number">5</span>, <span class="number">0</span>, Math.<span class="literal">PI</span> * <span class="number">2</span>, true)</div><div class="line">ctx.strokeStyle = 'green'</div><div class="line">ctx.stroke()</div></pre></td></tr></table></figure>
+<p><img src="http://i1.piimg.com/1949/6c37dfb5af1ea051.jpg" alt="xx"></p>
+<h5 id="ctx-lineTo-x-y"><a href="#ctx-lineTo-x-y" class="headerlink" title="ctx.lineTo(x, y)"></a>ctx.lineTo(x, y)</h5><blockquote>
+<p>绘制一条从当前位置到指定坐标点的直线</p>
+</blockquote>
+<ul>
+<li>x, y: 结束位置的坐标点</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">10</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">110</span>, <span class="number">110</span>)</div><div class="line">ctx.lineTo(<span class="number">110</span>, <span class="number">10</span>)</div><div class="line">ctx.closePath()</div><div class="line">ctx.fillStyle = 'red'</div><div class="line">ctx.fill()</div><div class="line">ctx.stroke()</div></pre></td></tr></table></figure>
+<p><img src="http://i1.piimg.com/1949/ebe4581785363ee5.jpg" alt="xx"></p>
+<h5 id="ctx-arc-x-y-radius-startAngle-endAngle-anticlockwise"><a href="#ctx-arc-x-y-radius-startAngle-endAngle-anticlockwise" class="headerlink" title="ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise)"></a>ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise)</h5><ul>
+<li>x, y: 圆弧的圆心的坐标</li>
+<li>radius: 圆弧的半径</li>
+<li>startAngle: 从startAngle的<code>弧度</code>开始，以x轴为基准</li>
+<li>endAngle: 到endAngle的<code>弧度</code>结束，以x轴为基准</li>
+<li>anticlockwise: 绘制的方向，默认顺时针。<code>true 逆时针</code>，<code>false 顺时针</code></li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">for(let i = <span class="number">0</span>; i &lt; <span class="number">6</span>; i++)&#123;</div><div class="line">    for(let j = <span class="number">0</span>; j &lt; <span class="number">6</span>; j++)&#123;</div><div class="line">        let raduis = <span class="number">10</span></div><div class="line">        let x = (raduis + <span class="number">2</span>) * (j + <span class="number">1</span>) * <span class="number">2</span></div><div class="line">        let y = (raduis + <span class="number">2</span>) * (i + <span class="number">1</span>) * <span class="number">2</span></div><div class="line">        let startAngle = <span class="number">0</span></div><div class="line">        let endAngle = (Math.<span class="literal">PI</span> / <span class="number">180</span>) * (i + <span class="number">1</span>) * (j + <span class="number">1</span>) * <span class="number">10</span></div><div class="line">        ctx.beginPath()</div><div class="line">        ctx.arc(x, y, raduis, startAngle, endAngle)</div><div class="line">        ctx.strokeStyle = 'green'</div><div class="line">        ctx.stroke()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="http://i2.buimg.com/574382/cf830b62408422dd.jpg" alt="xx"></p>
+<h5 id="ctx-quadraticCurveTo-cp1x-cp1y-x-y"><a href="#ctx-quadraticCurveTo-cp1x-cp1y-x-y" class="headerlink" title="ctx.quadraticCurveTo(cp1x, cp1y, x, y)"></a>ctx.quadraticCurveTo(cp1x, cp1y, x, y)</h5><ul>
+<li>从当前位置开始绘制二次贝赛尔曲线</li>
+<li>cp1x, cp1y: 控制点的坐标</li>
+<li>x, y: 结束点的坐标</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ctx.moveTo(<span class="number">50</span>, <span class="number">50</span>)</div><div class="line">ctx.quadraticCurveTo(<span class="number">0</span>, <span class="number">30</span>, <span class="number">50</span>, <span class="number">100</span>)</div><div class="line">ctx.quadraticCurveTo(<span class="number">100</span>, <span class="number">30</span>, <span class="number">50</span>, <span class="number">50</span>)</div><div class="line">ctx.fill()</div></pre></td></tr></table></figure>
+<p><img src="http://i1.piimg.com/574382/0bd26d3e169855be.jpg" alt="xx"></p>
+<h5 id="ctx-bezierCurveTo-cp1x-cp1y-cp2x-cp2y-x-y"><a href="#ctx-bezierCurveTo-cp1x-cp1y-cp2x-cp2y-x-y" class="headerlink" title="ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)"></a>ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)</h5><ul>
+<li>绘制三次贝赛尔曲线</li>
+<li>三次贝赛尔曲线有两个控制点(cp1x, cp1y)/(cp2x, cp2y)</li>
+</ul>
+<h5 id="ctx-rect-x-y-width-height"><a href="#ctx-rect-x-y-width-height" class="headerlink" title="ctx.rect(x, y, width, height)"></a>ctx.rect(x, y, width, height)</h5><ul>
+<li>绘制一条矩形的路径</li>
+<li>和fillRect和strokeRect的区别是: rect画的仅仅是一条路径，没有渲染！！！</li>
+<li>绘制圆角矩形</li>
+</ul>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">function roundedRect(ctx, x, y, <span class="built_in">width</span>, <span class="built_in">height</span>, <span class="built_in">radius</span>)&#123;</div><div class="line">    ctx.beginPath()</div><div class="line">    ctx.moveTo(x, y + <span class="built_in">radius</span>)</div><div class="line">    ctx.lineTo(x, y + <span class="built_in">height</span> - <span class="built_in">radius</span>)</div><div class="line">    ctx.quadraticCurveTo(x, y + <span class="built_in">height</span>, x + <span class="built_in">radius</span>, y + <span class="built_in">height</span>)</div><div class="line">    ctx.lineTo(x + <span class="built_in">width</span> - <span class="built_in">radius</span>, y + <span class="built_in">height</span>)</div><div class="line">    ctx.quadraticCurveTo(x + <span class="built_in">width</span>, y + <span class="built_in">height</span>, x + <span class="built_in">width</span>, y + <span class="built_in">height</span> - <span class="built_in">radius</span>)</div><div class="line">    ctx.lineTo(x + <span class="built_in">width</span>, y + <span class="built_in">radius</span>)</div><div class="line">    ctx.quadraticCurveTo(x + <span class="built_in">width</span>, y, x + <span class="built_in">width</span> - <span class="built_in">radius</span>, y)</div><div class="line">    ctx.lineTo(x + <span class="built_in">radius</span>, y)</div><div class="line">    ctx.quadraticCurveTo(x, y, x, y + <span class="built_in">radius</span>)</div><div class="line">    ctx.stroke()</div><div class="line">&#125;</div><div class="line">roundedRect(ctx, <span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>, <span class="number">10</span>)</div></pre></td></tr></table></figure>
+<p><img src="http://i2.buimg.com/574382/7b3db1e31500096c.jpg" alt="xx"></p>
+<h5 id="ctx-path2D"><a href="#ctx-path2D" class="headerlink" title="ctx.path2D()"></a>ctx.path2D()</h5><blockquote>
+<p>用于缓存或记录绘画命令<br>方便快速的回顾路径<br>所有的路径方法都可以在path2D的实例中使用  </p>
+</blockquote>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">let rectangle = new Path2D()</div><div class="line">rectangle.rect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">50</span>, <span class="number">50</span>)</div><div class="line"></div><div class="line">let circle = new Path2D()</div><div class="line">circle.moveTo(<span class="number">125</span>, <span class="number">35</span>)</div><div class="line">circle.arc(<span class="number">100</span>, <span class="number">35</span>, <span class="number">25</span>, <span class="number">0</span>, <span class="number">2</span> * Math.<span class="literal">PI</span>)</div><div class="line"></div><div class="line">ctx.stroke(rectangle)</div><div class="line">ctx.fill(circle)</div></pre></td></tr></table></figure>
+<p><img src="http://i4.piimg.com/574382/567f82ae195b55a2.jpg" alt="xx"></p>
+<h3 id="样式和颜色"><a href="#样式和颜色" class="headerlink" title="样式和颜色"></a>样式和颜色</h3><h4 id="色彩"><a href="#色彩" class="headerlink" title="色彩"></a>色彩</h4><h5 id="ctx-fillStyle"><a href="#ctx-fillStyle" class="headerlink" title="ctx.fillStyle"></a>ctx.fillStyle</h5><ul>
+<li>设置填充颜色</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ctx<span class="selector-class">.fillStyle</span> = <span class="string">'green'</span></div><div class="line">ctx<span class="selector-class">.fillStyle</span> = <span class="string">'#00ff00'</span></div><div class="line">ctx<span class="selector-class">.fillStyle</span> = <span class="string">'rgb(0, 255, 0)'</span></div><div class="line">ctx<span class="selector-class">.fillStyle</span> = <span class="string">'rgba(0, 255, 0, 0.5)'</span></div></pre></td></tr></table></figure>
+<h5 id="ctx-strokeStyle"><a href="#ctx-strokeStyle" class="headerlink" title="ctx.strokeStyle"></a>ctx.strokeStyle</h5><ul>
+<li>设置描边颜色</li>
+</ul>
+<h4 id="透明度"><a href="#透明度" class="headerlink" title="透明度"></a>透明度</h4><h5 id="ctx-globalAlpha"><a href="#ctx-globalAlpha" class="headerlink" title="ctx.globalAlpha"></a>ctx.globalAlpha</h5><ul>
+<li>设置图形和图片的透明度</li>
+<li>取值在0-1之间，默认值为1，即不透明</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ctx.fillStyle = 'blue'</div><div class="line">ctx.fillRect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>)</div><div class="line">ctx.globalAlpha = <span class="number">0.5</span></div><div class="line">ctx.fillStyle = 'green'</div><div class="line">ctx.fillRect(<span class="number">50</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">100</span>)</div></pre></td></tr></table></figure>
+<p><img src="http://i1.piimg.com/574382/0cf50444001a3184.jpg" alt="xx"></p>
+<h4 id="线型"><a href="#线型" class="headerlink" title="线型"></a>线型</h4><h5 id="ctx-lineWidth"><a href="#ctx-lineWidth" class="headerlink" title="ctx.lineWidth"></a>ctx.lineWidth</h5><ul>
+<li>设置或获取线段的粗细</li>
+<li>取值正数，默认为1</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ctx.lineWidth = <span class="number">5</span></div><div class="line">ctx.fillStyle = 'gray'</div><div class="line">ctx.fillRect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>)</div><div class="line">ctx.strokeRect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>)</div></pre></td></tr></table></figure>
+<h5 id="ctx-lineCap"><a href="#ctx-lineCap" class="headerlink" title="ctx.lineCap"></a>ctx.lineCap</h5><ul>
+<li>设置线段末端的样式</li>
+<li>枚举值：<code>butt(默认)</code> <code>round</code> <code>square</code></li>
+<li>绘制相同长度的线段时，不同lineCap的长度不同，<code>round</code>和<code>square</code>比<code>butt</code>长出<code>lineWidth/2</code></li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">ctx.lineWidth = <span class="number">10</span></div><div class="line"></div><div class="line"><span class="comment">// 绘制lineCap为butt的线段</span></div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">10</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">10</span>, <span class="number">100</span>)</div><div class="line">ctx.stroke()</div><div class="line"></div><div class="line"><span class="comment">// 绘制lineCap为round的线段</span></div><div class="line">ctx.lineCap = 'round'</div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">40</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">40</span>, <span class="number">100</span>)</div><div class="line">ctx.stroke()</div><div class="line"></div><div class="line"><span class="comment">// 绘制lineCap为square的线段</span></div><div class="line">ctx.lineCap = 'square'</div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">80</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">80</span>, <span class="number">100</span>)</div><div class="line">ctx.stroke()</div></pre></td></tr></table></figure>
+<h5 id="ctx-lineJoin"><a href="#ctx-lineJoin" class="headerlink" title="ctx.lineJoin"></a>ctx.lineJoin</h5><ul>
+<li>指定两个相连路径的连接部分的样式</li>
+<li>枚举值: <code>bevel</code> <code>round</code> <code>miter(默认)</code></li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">ctx.lineWidth = <span class="number">10</span></div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">10</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">60</span>, <span class="number">60</span>)</div><div class="line">ctx.lineTo(<span class="number">110</span>, <span class="number">10</span>)</div><div class="line">ctx.stroke()</div><div class="line"></div><div class="line">ctx.lineJoin = 'round'</div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">150</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">200</span>, <span class="number">60</span>)</div><div class="line">ctx.lineTo(<span class="number">250</span>, <span class="number">10</span>)</div><div class="line">ctx.stroke()</div><div class="line"></div><div class="line">ctx.lineJoin = 'bevel'</div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">300</span>, <span class="number">10</span>)</div><div class="line">ctx.lineTo(<span class="number">350</span>, <span class="number">60</span>)</div><div class="line">ctx.lineTo(<span class="number">400</span>, <span class="number">10</span>)</div><div class="line">ctx.stroke()</div></pre></td></tr></table></figure>
+<h5 id="ctx-miterLimit"><a href="#ctx-miterLimit" class="headerlink" title="ctx.miterLimit"></a>ctx.miterLimit</h5><ul>
+<li>当lineJoin被设置为<code>miter</code>时，两条线段的外侧会延伸，直至相交</li>
+<li>miterLimit是设置向外延伸的最大值，一旦超过这个最大值，这不再延伸，而是lineJoin变为<code>bevel</code>模式</li>
+</ul>
+<h4 id="虚线"><a href="#虚线" class="headerlink" title="虚线"></a>虚线</h4><h5 id="ctx-setLineDash-arr"><a href="#ctx-setLineDash-arr" class="headerlink" title="ctx.setLineDash(arr)"></a>ctx.setLineDash(arr)</h5><ul>
+<li>设置虚线样式</li>
+<li>arr: 虚线线段长度和间距长度的数组，数组长度可为2或者3。如<code>[10, 20]</code> <code>[10, 20, 30]</code></li>
+<li>如果数组元素的数量是奇数，数组元素会被复制并重复一次</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ctx.lineWidth = <span class="number">10</span></div><div class="line">ctx.setLineDash([<span class="number">10</span>, <span class="number">20</span>， <span class="number">30</span>])</div><div class="line">ctx.beginPath()</div><div class="line">ctx.moveTo(<span class="number">20</span>, <span class="number">20</span>)</div><div class="line">ctx.lineTo(<span class="number">500</span>, <span class="number">500</span>)</div><div class="line">ctx.stroke()</div></pre></td></tr></table></figure>
+<h5 id="ctx-getLineDash"><a href="#ctx-getLineDash" class="headerlink" title="ctx.getLineDash()"></a>ctx.getLineDash()</h5><ul>
+<li>返回值：一组描述交替绘制线段和间距（坐标空间单位）长度的数字</li>
+</ul>
+<h5 id="ctx-lineDashOffset"><a href="#ctx-lineDashOffset" class="headerlink" title="ctx.lineDashOffset"></a>ctx.lineDashOffset</h5><ul>
+<li>设置虚线偏移量</li>
+</ul>
+<h4 id="渐变"><a href="#渐变" class="headerlink" title="渐变"></a>渐变</h4><h5 id="ctx-createLinearGradient-x0-y0-x1-y1"><a href="#ctx-createLinearGradient-x0-y0-x1-y1" class="headerlink" title="ctx.createLinearGradient(x0, y0, x1, y1)"></a>ctx.createLinearGradient(x0, y0, x1, y1)</h5><ul>
+<li>创建沿参数坐标指定的直线的渐变</li>
+<li>x0, y0: 起点坐标</li>
+<li>x1, y1: 重点坐标</li>
+</ul>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">let gradient = ctx.createLinearGradient(<span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>, <span class="number">200</span>)</div><div class="line">gradient.addColorStop(<span class="number">0</span>, 'red')</div><div class="line">gradient.addColorStop(<span class="number">0.5</span>, 'green')</div><div class="line">gradient.addColorStop(<span class="number">1</span>, 'blue')</div><div class="line">ctx.fillStyle = gradient</div><div class="line">ctx.fillRect(<span class="number">0</span>, <span class="number">0</span>, <span class="number">200</span>, <span class="number">200</span>)</div></pre></td></tr></table></figure>
+<h5 id="ctx-createRadialGradient-x1-y1-r1-x2-y2-r2"><a href="#ctx-createRadialGradient-x1-y1-r1-x2-y2-r2" class="headerlink" title="ctx.createRadialGradient(x1, y1, r1, x2, y2, r2)"></a>ctx.createRadialGradient(x1, y1, r1, x2, y2, r2)</h5><ul>
+<li>根据参数确定两个圆的坐标，绘制放射性渐变</li>
+<li>r1: 第一个圆的半径</li>
+<li>r2: 第二个圆的半径</li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+<h5 id="ctx-addColorStop-position-color"><a href="#ctx-addColorStop-position-color" class="headerlink" title="ctx.addColorStop(position, color)"></a>ctx.addColorStop(position, color)</h5><ul>
+<li>设置渐变过程中某个位置的颜色</li>
+<li>postion: 位置。取值<code>0-1</code>之间</li>
+<li>color: 有效的颜色的字符串，如<code>&#39;#fff&#39;</code> <code>&#39;rgba(255, 255, 255, 0.1)&#39;</code></li>
+</ul>
+<h4 id="图案样式"><a href="#图案样式" class="headerlink" title="图案样式"></a>图案样式</h4><h5 id="ctx-createPattern-image-type"><a href="#ctx-createPattern-image-type" class="headerlink" title="ctx.createPattern(image, type)"></a>ctx.createPattern(image, type)</h5><ul>
+<li>创建模式</li>
+<li>image: 如下类型的元素<ul>
+<li>HTMLImageElement(img)</li>
+<li>HTMLVideoElement(video)</li>
+<li>HTMLCanvasElement(canvas)</li>
+<li>ImageBitmap</li>
+<li>ImageData</li>
+<li>Blob</li>
+</ul>
+</li>
+<li>type: 枚举值<code>repeat(默认)</code> <code>repeat-x</code> <code>repeat-y</code> <code>no-repeat</code></li>
+</ul>
+<h5 id="ctx-shadowOffsetX-ctx-shadowOffsetY"><a href="#ctx-shadowOffsetX-ctx-shadowOffsetY" class="headerlink" title="ctx.shadowOffsetX / ctx.shadowOffsetY"></a>ctx.shadowOffsetX / ctx.shadowOffsetY</h5><ul>
+<li>设置阴影在水平和垂直方向的偏移距离</li>
+</ul>
+<h5 id="ctx-shadowBlur"><a href="#ctx-shadowBlur" class="headerlink" title="ctx.shadowBlur"></a>ctx.shadowBlur</h5><ul>
+<li>设置阴影模糊的程度</li>
+<li>取值：非负数，默认值为0</li>
+</ul>
+<h5 id="ctx-shadowColor"><a href="#ctx-shadowColor" class="headerlink" title="ctx.shadowColor"></a>ctx.shadowColor</h5><ul>
+<li>设置阴影的颜色</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ctx<span class="selector-class">.shadowOffsetX</span> = <span class="number">10</span></div><div class="line">ctx<span class="selector-class">.shadowOffsetY</span> = <span class="number">10</span></div><div class="line">ctx<span class="selector-class">.shadowBlur</span> = <span class="number">10</span></div><div class="line">ctx<span class="selector-class">.shadowColor</span> = <span class="string">'green'</span></div><div class="line">ctx.strokeRect(<span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>)</div></pre></td></tr></table></figure>
+<h3 id="文本"><a href="#文本" class="headerlink" title="文本"></a>文本</h3><h4 id="绘制文本"><a href="#绘制文本" class="headerlink" title="绘制文本"></a>绘制文本</h4><h5 id="ctx-fillText-text-x-y-maxWidth"><a href="#ctx-fillText-text-x-y-maxWidth" class="headerlink" title="ctx.fillText(text, x, y[, maxWidth])"></a>ctx.fillText(text, x, y[, maxWidth])</h5><ul>
+<li>以填充的方式绘制文字</li>
+<li>text: 被绘制的文字</li>
+<li>x, y: 绘制的起点</li>
+<li>maxWidth: 最大宽度，可选</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ctx</span><span class="selector-class">.fillText</span>(<span class="string">'Canvas'</span>, <span class="number">50</span>, <span class="number">50</span>)</div></pre></td></tr></table></figure>
+<h5 id="ctx-strokeText-text-x-y-maxWidth"><a href="#ctx-strokeText-text-x-y-maxWidth" class="headerlink" title="ctx.strokeText(text, x, y[, maxWidth])"></a>ctx.strokeText(text, x, y[, maxWidth])</h5><ul>
+<li>以描边的方式绘制文字</li>
+<li>参数同fillText</li>
+</ul>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">ctx</span><span class="selector-class">.strokeText</span>(<span class="string">'Canvas'</span>, <span class="number">50</span>, <span class="number">50</span>)</div></pre></td></tr></table></figure>
+<h4 id="设置样式"><a href="#设置样式" class="headerlink" title="设置样式"></a>设置样式</h4><h5 id="ctx-font"><a href="#ctx-font" class="headerlink" title="ctx.font"></a>ctx.font</h5><ul>
+<li>设置文字字体。默认：10px sans-serif</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ctx<span class="selector-class">.font</span> = <span class="string">'50px 微软雅黑'</span></div></pre></td></tr></table></figure>
+<h5 id="ctx-textAlign"><a href="#ctx-textAlign" class="headerlink" title="ctx.textAlign"></a>ctx.textAlign</h5><ul>
+<li>设置文字的对齐方式</li>
+<li>对齐是指当执行fillText或者strokeText时，相对于参数X的位置，如取值为<code>center</code>时，文本的开始位置将是<code>x - 文字的长度 * 50%</code></li>
+<li>取值: 枚举<code>start(默认)</code> <code>end</code> <code>left</code> <code>right</code> <code>center</code></li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ctx<span class="selector-class">.textAlign</span> = <span class="string">'end'</span> <span class="comment">// 从文字的结束位置开始绘制文字</span></div><div class="line">ctx<span class="selector-class">.textAlign</span> = <span class="string">'left'</span> <span class="comment">// 文本左对齐</span></div><div class="line">ctx<span class="selector-class">.textAlign</span> = <span class="string">'center'</span> <span class="comment">// 绘制文字时，从中间向两边绘制</span></div></pre></td></tr></table></figure>
+<h5 id="ctx-textBaseline"><a href="#ctx-textBaseline" class="headerlink" title="ctx.textBaseline"></a>ctx.textBaseline</h5><ul>
+<li>设置文字的基线，即文字垂直方向的绘制基准</li>
+<li>取值: 枚举<code>top</code> <code>hanging</code> <code>middle</code> <code>alphabetic(默认)</code> <code>ideographic</code> <code>bottom</code></li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ctx<span class="selector-class">.textBaseline</span> = <span class="string">'top'</span> <span class="comment">// 文本基线位于文本的顶部</span></div><div class="line">ctx<span class="selector-class">.textBaseline</span> = <span class="string">'hanging'</span> <span class="comment">// 文本基线是悬挂基线？</span></div><div class="line">ctx<span class="selector-class">.textBaseline</span> = <span class="string">'middle'</span> <span class="comment">// 基线位于文本中间</span></div><div class="line">ctx<span class="selector-class">.textBaseline</span> = <span class="string">'alphabetic'</span> <span class="comment">// 基线位于文字的基线</span></div></pre></td></tr></table></figure>
+<h5 id="ctx-direction"><a href="#ctx-direction" class="headerlink" title="ctx.direction"></a>ctx.direction</h5><ul>
+<li>设置文字的方向</li>
+<li>取值: ltr 从左向右(默认) / rtl 从右向左</li>
+</ul>
+<h4 id="文本测量"><a href="#文本测量" class="headerlink" title="文本测量"></a>文本测量</h4><h5 id="ctx-measureText-text"><a href="#ctx-measureText-text" class="headerlink" title="ctx.measureText(text)"></a>ctx.measureText(text)</h5><ul>
+<li>测量文本并获取当前文本相关属性的对象</li>
+<li>测量相同文本的返回值会根据前期设置的不同而返回值不同</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ctx<span class="selector-class">.font</span> = <span class="string">'20px 微软雅黑'</span></div><div class="line">ctx.measureText(<span class="string">'Canvas'</span>) <span class="comment">// &#123;width: 74.61994934082031&#125;</span></div><div class="line"></div><div class="line">ctx<span class="selector-class">.font</span> = <span class="string">'50px 微软雅黑'</span></div><div class="line">ctx.measureText(<span class="string">'Canvas'</span>) <span class="comment">// &#123;width: 186.54995727539062&#125;</span></div></pre></td></tr></table></figure>
+<h3 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h3><h4 id="绘制图片"><a href="#绘制图片" class="headerlink" title="绘制图片"></a>绘制图片</h4><h5 id="drawImage-image-x-y-width-height"><a href="#drawImage-image-x-y-width-height" class="headerlink" title="drawImage(image, x, y, width, height)"></a>drawImage(image, x, y, width, height)</h5><ul>
+<li>绘制图片到画布上</li>
+<li>x, y: 绘制的起点</li>
+<li>width, height: 绘制的宽高(压缩图片)</li>
+</ul>
+<h5 id="drawImage-image-sourceX-sourceY-sourceWidth-sourceHeight-distX-distY-distWidth-distHeight"><a href="#drawImage-image-sourceX-sourceY-sourceWidth-sourceHeight-distX-distY-distWidth-distHeight" class="headerlink" title="drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, distX, distY, distWidth, distHeight)"></a>drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, distX, distY, distWidth, distHeight)</h5><ul>
+<li>对图片进行切片之后绘制到画布上</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">let <span class="selector-tag">img</span> = new Image()</div><div class="line"><span class="comment">// img.setAttribute('crossOrigin', '')</span></div><div class="line"><span class="selector-tag">img</span><span class="selector-class">.onload</span> = () =&gt; &#123;</div><div class="line">    ctx.drawImage(<span class="selector-tag">img</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">500</span>, <span class="number">500</span>, <span class="number">10</span>, <span class="number">10</span>, <span class="number">100</span>, <span class="number">100</span>)</div><div class="line">&#125;</div><div class="line"><span class="selector-tag">img</span><span class="selector-class">.src</span> = <span class="string">'http://i1.piimg.com/574382/0cf50444001a3184.jpg'</span></div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/canvas/" rel="tag">#canvas</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/原生DOM系列-Storage对象/" rel="next" title="原生DOM系列-Storage对象">
+                <i class="fa fa-chevron-left"></i> 原生DOM系列-Storage对象
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/AnimationLib-PreloadJS基本用法/" rel="prev" title="♏️  AnimationLib-PreloadJS基本用法">
+                ♏️  AnimationLib-PreloadJS基本用法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">26</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#canvas元素"><span class="nav-number">1.</span> <span class="nav-text">canvas元素</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取渲染上下文"><span class="nav-number">2.</span> <span class="nav-text">获取渲染上下文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制图形"><span class="nav-number">3.</span> <span class="nav-text">绘制图形</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#矩形"><span class="nav-number">3.1.</span> <span class="nav-text">矩形</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-fillRect-x-y-width-height"><span class="nav-number">3.1.1.</span> <span class="nav-text">ctx.fillRect(x, y, width, height)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-strokeRect-x-y-width-height"><span class="nav-number">3.1.2.</span> <span class="nav-text">ctx.strokeRect(x, y, width, height)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-clearRect-x-y-width-height"><span class="nav-number">3.1.3.</span> <span class="nav-text">ctx.clearRect(x, y, width, height)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#路径"><span class="nav-number">3.2.</span> <span class="nav-text">路径</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-beginPath"><span class="nav-number">3.2.1.</span> <span class="nav-text">ctx.beginPath()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-moveTo-x-y"><span class="nav-number">3.2.2.</span> <span class="nav-text">ctx.moveTo(x, y)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-lineTo-x-y"><span class="nav-number">3.2.3.</span> <span class="nav-text">ctx.lineTo(x, y)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-arc-x-y-radius-startAngle-endAngle-anticlockwise"><span class="nav-number">3.2.4.</span> <span class="nav-text">ctx.arc(x, y, radius, startAngle, endAngle, anticlockwise)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-quadraticCurveTo-cp1x-cp1y-x-y"><span class="nav-number">3.2.5.</span> <span class="nav-text">ctx.quadraticCurveTo(cp1x, cp1y, x, y)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-bezierCurveTo-cp1x-cp1y-cp2x-cp2y-x-y"><span class="nav-number">3.2.6.</span> <span class="nav-text">ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-rect-x-y-width-height"><span class="nav-number">3.2.7.</span> <span class="nav-text">ctx.rect(x, y, width, height)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-path2D"><span class="nav-number">3.2.8.</span> <span class="nav-text">ctx.path2D()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#样式和颜色"><span class="nav-number">4.</span> <span class="nav-text">样式和颜色</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#色彩"><span class="nav-number">4.1.</span> <span class="nav-text">色彩</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-fillStyle"><span class="nav-number">4.1.1.</span> <span class="nav-text">ctx.fillStyle</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-strokeStyle"><span class="nav-number">4.1.2.</span> <span class="nav-text">ctx.strokeStyle</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#透明度"><span class="nav-number">4.2.</span> <span class="nav-text">透明度</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-globalAlpha"><span class="nav-number">4.2.1.</span> <span class="nav-text">ctx.globalAlpha</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#线型"><span class="nav-number">4.3.</span> <span class="nav-text">线型</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-lineWidth"><span class="nav-number">4.3.1.</span> <span class="nav-text">ctx.lineWidth</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-lineCap"><span class="nav-number">4.3.2.</span> <span class="nav-text">ctx.lineCap</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-lineJoin"><span class="nav-number">4.3.3.</span> <span class="nav-text">ctx.lineJoin</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-miterLimit"><span class="nav-number">4.3.4.</span> <span class="nav-text">ctx.miterLimit</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#虚线"><span class="nav-number">4.4.</span> <span class="nav-text">虚线</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-setLineDash-arr"><span class="nav-number">4.4.1.</span> <span class="nav-text">ctx.setLineDash(arr)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-getLineDash"><span class="nav-number">4.4.2.</span> <span class="nav-text">ctx.getLineDash()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-lineDashOffset"><span class="nav-number">4.4.3.</span> <span class="nav-text">ctx.lineDashOffset</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#渐变"><span class="nav-number">4.5.</span> <span class="nav-text">渐变</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-createLinearGradient-x0-y0-x1-y1"><span class="nav-number">4.5.1.</span> <span class="nav-text">ctx.createLinearGradient(x0, y0, x1, y1)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-createRadialGradient-x1-y1-r1-x2-y2-r2"><span class="nav-number">4.5.2.</span> <span class="nav-text">ctx.createRadialGradient(x1, y1, r1, x2, y2, r2)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-addColorStop-position-color"><span class="nav-number">4.5.3.</span> <span class="nav-text">ctx.addColorStop(position, color)</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图案样式"><span class="nav-number">4.6.</span> <span class="nav-text">图案样式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-createPattern-image-type"><span class="nav-number">4.6.1.</span> <span class="nav-text">ctx.createPattern(image, type)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-shadowOffsetX-ctx-shadowOffsetY"><span class="nav-number">4.6.2.</span> <span class="nav-text">ctx.shadowOffsetX / ctx.shadowOffsetY</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-shadowBlur"><span class="nav-number">4.6.3.</span> <span class="nav-text">ctx.shadowBlur</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-shadowColor"><span class="nav-number">4.6.4.</span> <span class="nav-text">ctx.shadowColor</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文本"><span class="nav-number">5.</span> <span class="nav-text">文本</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#绘制文本"><span class="nav-number">5.1.</span> <span class="nav-text">绘制文本</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-fillText-text-x-y-maxWidth"><span class="nav-number">5.1.1.</span> <span class="nav-text">ctx.fillText(text, x, y[, maxWidth])</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-strokeText-text-x-y-maxWidth"><span class="nav-number">5.1.2.</span> <span class="nav-text">ctx.strokeText(text, x, y[, maxWidth])</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设置样式"><span class="nav-number">5.2.</span> <span class="nav-text">设置样式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-font"><span class="nav-number">5.2.1.</span> <span class="nav-text">ctx.font</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-textAlign"><span class="nav-number">5.2.2.</span> <span class="nav-text">ctx.textAlign</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-textBaseline"><span class="nav-number">5.2.3.</span> <span class="nav-text">ctx.textBaseline</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-direction"><span class="nav-number">5.2.4.</span> <span class="nav-text">ctx.direction</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#文本测量"><span class="nav-number">5.3.</span> <span class="nav-text">文本测量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#ctx-measureText-text"><span class="nav-number">5.3.1.</span> <span class="nav-text">ctx.measureText(text)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图片"><span class="nav-number">6.</span> <span class="nav-text">图片</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#绘制图片"><span class="nav-number">6.1.</span> <span class="nav-text">绘制图片</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#drawImage-image-x-y-width-height"><span class="nav-number">6.1.1.</span> <span class="nav-text">drawImage(image, x, y, width, height)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#drawImage-image-sourceX-sourceY-sourceWidth-sourceHeight-distX-distY-distWidth-distHeight"><span class="nav-number">6.1.2.</span> <span class="nav-text">drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, distX, distY, distWidth, distHeight)</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'Canvas的基本用法/';
+      var disqus_title = "Canvas的基本用法";
+      var disqus_url = 'http://yoursite.com/Canvas的基本用法/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>
