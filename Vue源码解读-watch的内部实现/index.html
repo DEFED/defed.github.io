@@ -1,0 +1,842 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Vue,MVVM,MVC," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头本文主要通过$watch，分析Vue源码中对数据双向绑定的实现  
+
+使用Demo
+下面源码的解读主要基于此demo
+
+123456789101112131415161718var demo = new Vue(&amp;#123;    data: &amp;#123;        &apos;a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码解读-$Watch的内部实现">
+<meta property="og:url" content="http://yoursite.com/Vue源码解读-watch的内部实现/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头本文主要通过$watch，分析Vue源码中对数据双向绑定的实现  
+
+使用Demo
+下面源码的解读主要基于此demo
+
+123456789101112131415161718var demo = new Vue(&amp;#123;    data: &amp;#123;        &apos;a">
+<meta property="og:updated_time" content="2016-09-26T10:28:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码解读-$Watch的内部实现">
+<meta name="twitter:description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头本文主要通过$watch，分析Vue源码中对数据双向绑定的实现  
+
+使用Demo
+下面源码的解读主要基于此demo
+
+123456789101112131415161718var demo = new Vue(&amp;#123;    data: &amp;#123;        &apos;a">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Vue源码解读-watch的内部实现/"/>
+
+  <title> Vue源码解读-$Watch的内部实现 | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Vue源码解读-$Watch的内部实现
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-22T16:36:38+08:00" content="2016-07-22">
+              2016-07-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/Vue源码解读-watch的内部实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Vue源码解读-watch的内部实现/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>version: 1.0.24<br>对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头<br>本文主要通过$watch，分析Vue源码中对数据双向绑定的实现  </p>
+</blockquote>
+<h3 id="使用Demo"><a href="#使用Demo" class="headerlink" title="使用Demo"></a>使用Demo</h3><ul>
+<li>下面源码的解读主要基于此demo</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> demo = <span class="keyword">new</span> Vue(&#123;</div><div class="line">    <span class="attr">data</span>: &#123;</div><div class="line">        <span class="string">'a'</span>: &#123;</div><div class="line">            <span class="string">'b'</span>: <span class="string">'B'</span></div><div class="line">        &#125;,</div><div class="line">        <span class="string">'b'</span>: <span class="string">'B'</span>,</div><div class="line">        <span class="string">'c'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line"><span class="keyword">var</span> demounwatcher = demo.$watch(<span class="string">'a.b + b + c[1] | uppercase'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">newVal, oldVal</span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(newVal, oldVal)</div><div class="line">    demounwatcher() <span class="comment">// 取消监听</span></div><div class="line">&#125;, &#123;</div><div class="line">    <span class="attr">deep</span>: <span class="literal">true</span>, <span class="comment">// 是否深层监听。当次属性为true，监听`a`属性，当`a.b`属性的值发生变化时也触发回调</span></div><div class="line">    immediate: <span class="literal">true</span>, <span class="comment">// 是否立即触发。当此属性为true，调用此方法时就触发一次回调</span></div><div class="line">    sync: <span class="literal">true</span>, <span class="comment">// 同步。不推入队列，直接触发执行</span></div><div class="line">    user: <span class="literal">true</span>, <span class="comment">// 推入用户队列还是指令队列</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h3><ul>
+<li>监听表达式，在表达式发生变化时触发回调</li>
+<li>主要逻辑封装在Watcher类中</li>
+<li>指令和表达式的区别：指令包含表达式。如：<code>a + b | uppercase</code>是指令，<code>a + b</code>是表达式。表大会可以直接在js中执行，而指令需要处理后才能执行</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">Vue.prototype.$watch = <span class="function"><span class="keyword">function</span> <span class="params">(expOrFn, cb, options)</span> &#123;</span></div><div class="line">    var <span class="keyword">vm</span> = this</div><div class="line">    var parsed</div><div class="line">    <span class="keyword">if</span> (typeof expOrFn === <span class="string">'string'</span>) &#123;</div><div class="line">        // 解析指令，拆分表达式和过滤器</div><div class="line">        parsed = parseDirective(expOrFn)</div><div class="line">        expOrFn = parsed.expression</div><div class="line">    &#125;</div><div class="line">    var watcher = <span class="keyword">new</span> Watcher(<span class="keyword">vm</span>, expOrFn, <span class="keyword">cb</span>, &#123;</div><div class="line">        deep: <span class="keyword">options</span> &amp;&amp; <span class="keyword">options</span>.deep,</div><div class="line">        <span class="keyword">sync</span>: <span class="keyword">options</span> &amp;&amp; <span class="keyword">options</span>.<span class="keyword">sync</span>,</div><div class="line">        <span class="built_in">filter</span><span class="variable">s:</span> parsed &amp;&amp; parsed.filters,</div><div class="line">        user: !options || <span class="keyword">options</span>.user !== false</div><div class="line">    &#125;)</div><div class="line">    // 如果设置了立即触发，则在调用$watch时就触发一次回调</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">options</span> &amp;&amp; <span class="keyword">options</span>.immediate) &#123;</div><div class="line">        <span class="keyword">cb</span>.<span class="keyword">call</span>(<span class="keyword">vm</span>, watcher.value)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">unwatchFn</span> <span class="params">()</span> &#123;</span></div><div class="line">        watcher.teardown()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Watcher类"><a href="#Watcher类" class="headerlink" title="Watcher类"></a>Watcher类</h4><ul>
+<li>构造函数</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 参数解释</span></div><div class="line"><span class="comment">// vm Vue实例</span></div><div class="line"><span class="comment">// expOrFn 表达式或函数</span></div><div class="line"><span class="comment">// cb 指令值或函数值发生变化时的回调</span></div><div class="line"><span class="comment">// options 配置参数，用于控制Watcher的行为</span></div><div class="line"><span class="comment">//      - &#123;Array&#125; filters // 过滤器</span></div><div class="line"><span class="comment">//      - &#123;Boolean&#125; twoWay // 是否为双向监听</span></div><div class="line"><span class="comment">//      - &#123;Boolean&#125; deep // 是否为深度监听</span></div><div class="line"><span class="comment">//      - &#123;Boolean&#125; user // 是否用户，用于判断放入哪一个队列(有两条异步队列)</span></div><div class="line"><span class="comment">//      - &#123;Boolean&#125; sync // 是否为同步执行回调</span></div><div class="line"><span class="comment">//      - &#123;Boolean&#125; lazy // true 下次触发时获取expOrFn当前值；false 立即获取当前值</span></div><div class="line"><span class="comment">//      - &#123;Function&#125; [preProcess] // 应用过滤器之前执行的方法</span></div><div class="line"><span class="comment">//      - &#123;Function&#125; [postProcess] // 应用过滤器之后执行的方法</span></div><div class="line">export <span class="keyword">default</span> function Watcher (vm, expOrFn, cb, options) &#123;</div><div class="line">    <span class="comment">// 将配置扩展到当前类上</span></div><div class="line">    <span class="keyword">if</span> (options) &#123;</div><div class="line">        extend(<span class="keyword">this</span>, options)</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 是否是订阅的函数</span></div><div class="line">    <span class="keyword">var</span> isFn = typeof expOrFn === <span class="string">'function'</span></div><div class="line">    <span class="keyword">this</span>.vm = vm</div><div class="line">    <span class="comment">// 将当前Watcher类推送到对应的Vue实例中</span></div><div class="line">    vm._watchers.push(<span class="keyword">this</span>)</div><div class="line">    <span class="keyword">this</span>.expression = expOrFn</div><div class="line">    <span class="keyword">this</span>.cb = cb</div><div class="line">    <span class="comment">// 在订阅者管理员(batcher.js)中用到</span></div><div class="line">    <span class="keyword">this</span>.id = ++uid </div><div class="line">    <span class="keyword">this</span>.active = <span class="literal">true</span></div><div class="line">    <span class="keyword">this</span>.dirty = <span class="keyword">this</span>.lazy</div><div class="line">    <span class="keyword">this</span>.deps = [] <span class="comment">// 当前订阅者被哪些管理员管理着</span></div><div class="line">    <span class="keyword">this</span>.newDeps = []</div><div class="line">    <span class="keyword">this</span>.depIds = new Set() <span class="comment">// 订阅者管理员的id</span></div><div class="line">    <span class="keyword">this</span>.newDepIds = new Set()</div><div class="line">    <span class="keyword">this</span>.prevError = <span class="literal">null</span></div><div class="line">    <span class="keyword">if</span> (isFn) &#123;</div><div class="line">        <span class="comment">// 如果函数，相当于指定了当前订阅者获取数据的方法，每次订阅者通过这个方法获取数据然后与之前的值进行对比</span></div><div class="line">        <span class="keyword">this</span>.getter = expOrFn</div><div class="line">        <span class="keyword">this</span>.setter = undefined</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">// 否则的话解析表达式，具体可以看$get &amp; $set的内部实现中对parseExpression的解释</span></div><div class="line">        <span class="keyword">var</span> res = parseExpression(expOrFn, <span class="keyword">this</span>.twoWay)</div><div class="line">        <span class="keyword">this</span>.getter = res.<span class="keyword">get</span></div><div class="line">        <span class="keyword">this</span>.setter = res.<span class="keyword">set</span></div><div class="line">    &#125;</div><div class="line">    <span class="comment">// value维护的是数据的旧值，拿到当前值，当下一次订阅的数据发生变化时和新值进行对比</span></div><div class="line">    <span class="comment">// 如果是lazy模式，则先不拿数据</span></div><div class="line">    <span class="keyword">this</span>.value = <span class="keyword">this</span>.lazy</div><div class="line">        ? undefined</div><div class="line">        : <span class="keyword">this</span>.<span class="keyword">get</span>()</div><div class="line">    <span class="keyword">this</span>.queued = <span class="keyword">this</span>.shallow = <span class="literal">false</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>获取expOrFn的值</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">Watcher.prototype.<span class="keyword">get</span> = function () &#123;</div><div class="line">    <span class="comment">// 看下面对beforeGet的解释</span></div><div class="line">    <span class="keyword">this</span>.beforeGet()</div><div class="line">    <span class="keyword">var</span> scope = <span class="keyword">this</span>.scope || <span class="keyword">this</span>.vm</div><div class="line">    <span class="keyword">var</span> value</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// 调用getter时，会将此订阅者实例推送的到订阅者管理员的仓库中</span></div><div class="line">        value = <span class="keyword">this</span>.getter.call(scope, scope)</div><div class="line">    &#125; <span class="keyword">catch</span> (e) &#123;&#125;</div><div class="line">    <span class="comment">// 如果需要深度监听</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.deep) &#123;</div><div class="line">        <span class="comment">// 请看下面对traverse的解释</span></div><div class="line">        traverse(value)</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 前置执行逻辑</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.preProcess) &#123;</div><div class="line">        value = <span class="keyword">this</span>.preProcess(value)</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 应用过滤器</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.filters) &#123;</div><div class="line">        value = scope._applyFilters(value, <span class="literal">null</span>, <span class="keyword">this</span>.filters, <span class="literal">false</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 后置执行逻辑</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.postProcess) &#123;</div><div class="line">        value = <span class="keyword">this</span>.postProcess(value)</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// </span></div><div class="line">    <span class="keyword">this</span>.afterGet()</div><div class="line">    <span class="keyword">return</span> value</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>在获取expOrFn的值之前，先将Dep类的静态属性target设置成当前订阅者。目的是在读取expOrFn(触发get)的值时，如果发现Dep.target有值，可以将当前订阅者推入到订阅者管理员的仓库中(beforeGet)</li>
+</ul>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="type">Watcher</span>.proto<span class="keyword">type</span>.beforeGet = function () &#123;</div><div class="line">    <span class="type">Dep</span>.target = this</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>如果需要深度订阅时，对expOrFn的值进行递归处理。在数据读取的瞬间，就完成了想要完成的逻辑。</li>
+</ul>
+<figure class="highlight fsharp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">const seenObjects = <span class="keyword">new</span> Set()</div><div class="line"><span class="comment">// 内部递归时会传入seen参数，用于保存seen中已经存在的数据</span></div><div class="line"><span class="keyword">function</span> traverse (<span class="keyword">val</span>, seen) &#123;</div><div class="line">    <span class="keyword">let</span> i, keys</div><div class="line">    <span class="keyword">if</span> (!seen) &#123;</div><div class="line">        <span class="comment">// 如果没有配饰seen，把它指向seenObjects，并清空内容</span></div><div class="line">        seen = seenObjects</div><div class="line">        seen.clear()</div><div class="line">    &#125;</div><div class="line">    const isA = isArray(<span class="keyword">val</span>)</div><div class="line">    const isO = isObject(<span class="keyword">val</span>)</div><div class="line">    <span class="keyword">if</span> (isA || isO) &#123;</div><div class="line">        <span class="comment">// 如果当前值有Observer</span></div><div class="line">        <span class="keyword">if</span> (<span class="keyword">val</span>.__ob__) &#123;</div><div class="line">            <span class="comment">// 拿到当前值的Observer的订阅者管理员的id</span></div><div class="line">            var depId = <span class="keyword">val</span>.__ob__.dep.id</div><div class="line">            <span class="comment">// 如果seen中已经有这个id了，直接返回</span></div><div class="line">            <span class="keyword">if</span> (seen.has(depId)) &#123;</div><div class="line">                <span class="keyword">return</span></div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="comment">// 否则添加到seen中</span></div><div class="line">                seen.add(depId)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 递归数组</span></div><div class="line">        <span class="keyword">if</span> (isA) &#123;</div><div class="line">            i = <span class="keyword">val</span>.length</div><div class="line">            <span class="comment">// 触发数组内部元素的get，因为此时Dep.target依然引用了当前Watcher，因此数组内部元素的Observer的订阅者管理员中也会被加入当前订阅者从而达到深度监听的目的</span></div><div class="line">            <span class="keyword">while</span> (i--) traverse(<span class="keyword">val</span>[i], seen)</div><div class="line">        <span class="comment">// 递归对象</span></div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isO) &#123;</div><div class="line">            keys = Object.keys(<span class="keyword">val</span>)</div><div class="line">            i = keys.length</div><div class="line">            <span class="keyword">while</span> (i--) traverse(<span class="keyword">val</span>[keys[i]], seen)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>执行get后期的一些善后工作(afterGet)</li>
+</ul>
+<figure class="highlight elm"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="type">Watcher</span>.proto<span class="keyword">type</span>.afterGet = function () &#123;</div><div class="line">    // 每次在<span class="type">Watcher</span>调用get方法之后都必须将<span class="type">Dep</span>的target属性设置为null，避免影响别人读取数据时的逻辑执行</div><div class="line">    <span class="type">Dep</span>.target = null</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vue/" rel="tag">#Vue</a>
+          
+            <a href="/tags/MVVM/" rel="tag">#MVVM</a>
+          
+            <a href="/tags/MVC/" rel="tag">#MVC</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Vue源码解读-指令v-text的编译过程/" rel="next" title="Vue源码解读-指令V-Text的编译过程">
+                <i class="fa fa-chevron-left"></i> Vue源码解读-指令V-Text的编译过程
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Vue源码解读-对参数data的处理/" rel="prev" title="Vue源码解读-对参数Data的处理">
+                Vue源码解读-对参数Data的处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Demo"><span class="nav-number">1.</span> <span class="nav-text">使用Demo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#入口"><span class="nav-number">2.</span> <span class="nav-text">入口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Watcher类"><span class="nav-number">2.1.</span> <span class="nav-text">Watcher类</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'Vue源码解读-watch的内部实现/';
+      var disqus_title = "Vue源码解读-$Watch的内部实现";
+      var disqus_url = 'http://yoursite.com/Vue源码解读-watch的内部实现/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

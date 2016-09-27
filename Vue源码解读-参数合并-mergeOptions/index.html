@@ -1,0 +1,842 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Vue,MVVM,MVC," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头该功能主要用于类的继承过程中和类的实例化过程中。主要是按照预先设定好的合并策略将父类和子类或者类和实例中的参数进行合并/src/util/options.js  
+
+源码解读入口
+对外暴露的参数合并入口，主要在Vue实例化和Vue子类声明(组件声明)及实例化前期处理参数时被调">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码解读-参数合并(mergeOptions)">
+<meta property="og:url" content="http://yoursite.com/Vue源码解读-参数合并-mergeOptions/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头该功能主要用于类的继承过程中和类的实例化过程中。主要是按照预先设定好的合并策略将父类和子类或者类和实例中的参数进行合并/src/util/options.js  
+
+源码解读入口
+对外暴露的参数合并入口，主要在Vue实例化和Vue子类声明(组件声明)及实例化前期处理参数时被调">
+<meta property="og:updated_time" content="2016-09-26T10:28:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码解读-参数合并(mergeOptions)">
+<meta name="twitter:description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头该功能主要用于类的继承过程中和类的实例化过程中。主要是按照预先设定好的合并策略将父类和子类或者类和实例中的参数进行合并/src/util/options.js  
+
+源码解读入口
+对外暴露的参数合并入口，主要在Vue实例化和Vue子类声明(组件声明)及实例化前期处理参数时被调">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Vue源码解读-参数合并-mergeOptions/"/>
+
+  <title> Vue源码解读-参数合并(mergeOptions) | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Vue源码解读-参数合并(mergeOptions)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-15T18:33:36+08:00" content="2016-07-15">
+              2016-07-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/Vue源码解读-参数合并-mergeOptions/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Vue源码解读-参数合并-mergeOptions/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>version: 1.0.24<br>对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头<br>该功能主要用于类的继承过程中和类的实例化过程中。主要是按照预先设定好的合并策略将父类和子类或者类和实例中的参数进行合并<br><code>/src/util/options.js</code>  </p>
+</blockquote>
+<h3 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h3><h4 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h4><ul>
+<li>对外暴露的参数合并入口，主要在Vue实例化和Vue子类声明(组件声明)及实例化前期处理参数时被调用。</li>
+</ul>
+<a id="more"></a>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 如果存在vm，则说明是在实例化过程中被调用</span></div><div class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">mergeOptions</span> (<span class="params">parent, child, vm</span>) </span>&#123;</div><div class="line">    <span class="comment">// 处理局部组件，保证局部组件已经初始化(继承了Vue，成为Vue的子类)</span></div><div class="line">    guardComponents(child)</div><div class="line">    <span class="comment">// 处理props参数的值，保证props的值按照key-&gt;value的方式被赋值</span></div><div class="line">    guardProps(child)</div><div class="line">    <span class="built_in">var</span> options = &#123;&#125;</div><div class="line">    <span class="built_in">var</span> key</div><div class="line">    <span class="comment">// 这部分代码只存在于源码中，产出之后的代码中并不存在，但官方文档中却提供了用法说明，比较奇怪</span></div><div class="line">    <span class="comment">// 先不管它</span></div><div class="line">    <span class="keyword">if</span> (child.extends) &#123;</div><div class="line">        <span class="built_in">parent</span> = <span class="keyword">typeof</span> child.extends === <span class="string">'function'</span></div><div class="line">            ? mergeOptions(<span class="built_in">parent</span>, child.extends.options, vm)</div><div class="line">            : mergeOptions(<span class="built_in">parent</span>, child.extends, vm)</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// mixins提供可复用功能，当不同组件之间共用一部分初始化参数时使用</span></div><div class="line">    <span class="comment">// 引用一个数组</span></div><div class="line">    <span class="keyword">if</span> (child.mixins) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="built_in">var</span> i = <span class="number">0</span>, l = child.mixins.length; i &lt; l; i++) &#123;</div><div class="line">            <span class="built_in">var</span> mixin = child.mixins[i]</div><div class="line">            <span class="built_in">var</span> mixinOptions = mixin.prototype <span class="keyword">instanceof</span> Vue</div><div class="line">                ? <span class="attribute">mixin.options</span></div><div class="line">                : mixin</div><div class="line">            <span class="comment">// 先将mixins中的数据同parent进行合并</span></div><div class="line">            <span class="built_in">parent</span> = mergeOptions(<span class="built_in">parent</span>, mixinOptions, vm)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (key <span class="keyword">in</span> <span class="built_in">parent</span>) &#123;</div><div class="line">        mergeField(key)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span> (key <span class="keyword">in</span> child) &#123;</div><div class="line">        <span class="keyword">if</span> (!hasOwn(<span class="built_in">parent</span>, key)) &#123;</div><div class="line">            mergeField(key)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">mergeField</span> (<span class="params">key</span>) </span>&#123;</div><div class="line">        <span class="built_in">var</span> strat = strats[key] || defaultStrat</div><div class="line">        <span class="comment">// 调用对应的合并策略</span></div><div class="line">        options[key] = strat(<span class="built_in">parent</span>[key], child[key], vm, key)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> options</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 主要用于确保局部组件被正确的初始化</span></div><div class="line"><span class="comment">// 对外暴露的局部组件的使用方式有如下两种</span></div><div class="line"><span class="comment">// let Haha = Vue.extend(options)</span></div><div class="line"><span class="comment">// components: &#123;</span></div><div class="line"><span class="comment">//     'haha': Haha, // 第一种，事先声明</span></div><div class="line"><span class="comment">//     'hengheng': options // 第二种，只传入初始化的参数</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">guardComponents</span> (<span class="params">options</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (options.components) &#123;</div><div class="line">        <span class="comment">// guardArrayAssets其实在这里啥也没干，忽略它就好</span></div><div class="line">        <span class="built_in">var</span> components = options.components =</div><div class="line">            guardArrayAssets(options.components)</div><div class="line">        <span class="built_in">var</span> ids = <span class="built_in">Object</span>.keys(components)</div><div class="line">        <span class="built_in">var</span> def</div><div class="line">        <span class="keyword">for</span> (<span class="built_in">var</span> i = <span class="number">0</span>, l = ids.length; i &lt; l; i++) &#123;</div><div class="line">            <span class="built_in">var</span> key = ids[i]</div><div class="line">            <span class="comment">// 避免用户使用通用的html标签和Vue预定的(slot|partial|component)标签</span></div><div class="line">            <span class="comment">// 也就是说，如果用户用了上述key，会直接被忽略，不生效</span></div><div class="line">            <span class="keyword">if</span> (commonTagRE.test(key) || reservedTagRE.test(key)) &#123;</div><div class="line">                <span class="keyword">continue</span></div><div class="line">            &#125;</div><div class="line">            def = components[key]</div><div class="line">            <span class="comment">// 此处存在重复劳动，第一种使用方式获得的值已经是Vue的子类了，但依然会在调用isPlainObject时返回true，进入Vue.extend进行处理。虽然不会出问题，但相当于丢弃了之前的子类初始化，重新进行了一次。</span></div><div class="line">            <span class="comment">// 所以在使用中，如果想要避免此类情况，可以全都使用第二种方式进行局部组件的声明</span></div><div class="line">            <span class="keyword">if</span> (isPlainObject(def)) &#123;</div><div class="line">                components[key] = Vue.extend(def)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// prop参数传入的方式有如下几种</span></div><div class="line"><span class="comment">// props: ['a', 'b'] // 第一种：简单语法，不做数据校验</span></div><div class="line"><span class="comment">// props: &#123; // 第二种：对象语法，指定验证要求</span></div><div class="line"><span class="comment">//     'a': &#123;&#125;,</span></div><div class="line"><span class="comment">//     'b': &#123;&#125;</span></div><div class="line"><span class="comment">// &#125;</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">guardProps</span> (<span class="params">options</span>) </span>&#123;</div><div class="line">    <span class="built_in">var</span> props = options.props</div><div class="line">    <span class="built_in">var</span> i, val</div><div class="line">    <span class="comment">// 如果是第一种用法</span></div><div class="line">    <span class="keyword">if</span> (isArray(props)) &#123;</div><div class="line">        <span class="comment">// 转换成第二种用法</span></div><div class="line">        options.props = &#123;&#125;</div><div class="line">        i = props.length</div><div class="line">        <span class="keyword">while</span> (i--) &#123;</div><div class="line">            val = props[i]</div><div class="line">            <span class="comment">// 如果数组元素是字符串，则字符串为props的key，没有类型检查配置</span></div><div class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> val === <span class="string">'string'</span>) &#123;</div><div class="line">                options.props[val] = <span class="literal">null</span></div><div class="line">            <span class="comment">// 数组元素可以是对象，可以进行类型检查配置，但这种用法解构不清晰，因此没有出现在Vue的官方文档里</span></div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (val.name) &#123;</div><div class="line">                options.props[val.name] = val</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    <span class="comment">// 如果是第二种用法</span></div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isPlainObject(props)) &#123;</div><div class="line">        <span class="built_in">var</span> keys = <span class="built_in">Object</span>.keys(props)</div><div class="line">        i = keys.length</div><div class="line">        <span class="keyword">while</span> (i--) &#123;</div><div class="line">            val = props[keys[i]]</div><div class="line">            <span class="comment">// 如果某个prop被赋值为function，将其转化为对象，把function作为对象的type属性的值，该function用于校验当前的prop的合法性</span></div><div class="line">            <span class="keyword">if</span> (<span class="keyword">typeof</span> val === <span class="string">'function'</span>) &#123;</div><div class="line">                props[keys[i]] = &#123; <span class="attribute">type</span>: val &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="strats"><a href="#strats" class="headerlink" title="strats"></a>strats</h4><ul>
+<li>绑定处理参数中各种数据的方法，统一在入口方法mergeOptions()中被调用</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 创建strats对象并绑定到config上</span></div><div class="line"><span class="selector-tag">var</span> strats = config<span class="selector-class">.optionMergeStrategies</span> = Object.create(null)</div></pre></td></tr></table></figure>
+<ul>
+<li><p>声明对参数中data的处理策略</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// parentVal 继承过程中代表父类的data，实例化过程中代表类中的data</span></div><div class="line"><span class="comment">// childVal 继承过程中代表子类的data，实例化过程中代表实例化过程中参数中传入的data</span></div><div class="line"><span class="comment">// vm 当前实例。如果不存在vm参数，则说明是通过component声明的组件的声明过程，此时组件尚未实例化，因此不存在对实例的引用</span></div><div class="line">strats.data = <span class="function"><span class="keyword">function</span> (<span class="params">parentVal, childVal, vm</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!vm) &#123;</div><div class="line">        <span class="comment">// 对组件声明过程中data的处理逻辑</span></div><div class="line">        <span class="comment">// 此时parentVal和childVal，只要有数据，必须是function类型，因为这里处理的组件的声明过程，Vue要求组件(子类)的声明时传入的data必须是function类型，否则不进行处理。原因是：组件是可复用功能模块，如果直接传入object类型(想想引用类型的特征)的data，会导致组件的所以实例都引用向同一份数据。但是个人觉得，Vue应该在内部去处理，避免用户踩进这样的坑。而不是提醒用户使用的时候小心有这样的坑。</span></div><div class="line">        </div><div class="line">        <span class="comment">// 如果当前组件没有data，则返回父类的data。</span></div><div class="line">        <span class="comment">// 父类可以保证data只能是undefined或者function类型（Vue类的data是undefined，其它Vue的子类或者子类的子类都在当前方法中被要求只能父类的类型相同）</span></div><div class="line">        <span class="keyword">if</span> (!childVal) &#123;</div><div class="line">            <span class="keyword">return</span> parentVal</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 如果当前组件的data不是function类型，则返回父类的data</span></div><div class="line">        <span class="keyword">if</span> (<span class="keyword">typeof</span> childVal !== <span class="string">'function'</span>) &#123;</div><div class="line">            <span class="keyword">return</span> parentVal</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 此时已经保证了子类的存在并且为function类型，所有如果父类不存在，直接返回子类就好了</span></div><div class="line">        <span class="keyword">if</span> (!parentVal) &#123;</div><div class="line">            <span class="keyword">return</span> childVal</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 如果上面的情况都不存在，说明父类和子类都存在data，且都是function类型</span></div><div class="line">        <span class="comment">// 此处只能返回一个方法，用于拿到合并后的数据。</span></div><div class="line">        <span class="comment">// 为啥要返回一个处理数据的方法，而不是直接返回处理之后的结果呢？</span></div><div class="line">        <span class="comment">// 因为data()中可能存在和当前实例绑定的数据，因此必须在实例化过程中才能拿到实例相关的数据</span></div><div class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">mergedDataFn</span> (<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">return</span> mergeData(</div><div class="line">                childVal.call(<span class="keyword">this</span>),</div><div class="line">                parentVal.call(<span class="keyword">this</span>)</div><div class="line">            )</div><div class="line">        &#125;</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (parentVal || childVal) &#123;</div><div class="line">        <span class="comment">// 处理实例化过程中的data</span></div><div class="line">        <span class="comment">// 为啥还是返回一个处理函数呢？</span></div><div class="line">        <span class="comment">// 因为数据是在实时变化的，因此需要在使用的时候实时进行合并。</span></div><div class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">mergedInstanceDataFn</span> (<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="comment">// instance merge</span></div><div class="line">            <span class="keyword">var</span> instanceData = <span class="keyword">typeof</span> childVal === <span class="string">'function'</span></div><div class="line">                ? childVal.call(vm)</div><div class="line">                : childVal</div><div class="line">            <span class="keyword">var</span> defaultData = <span class="keyword">typeof</span> parentVal === <span class="string">'function'</span></div><div class="line">                ? parentVal.call(vm)</div><div class="line">                : <span class="literal">undefined</span></div><div class="line">            <span class="keyword">if</span> (instanceData) &#123;</div><div class="line">                <span class="keyword">return</span> mergeData(instanceData, defaultData)</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="keyword">return</span> defaultData</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">mergeData</span> (<span class="params">to, from</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> key, toVal, fromVal</div><div class="line">    <span class="keyword">for</span> (key <span class="keyword">in</span> <span class="keyword">from</span>) &#123;</div><div class="line">        toVal = to[key]</div><div class="line">        fromVal = <span class="keyword">from</span>[key]</div><div class="line">        <span class="keyword">if</span> (!hasOwn(to, key)) &#123;</div><div class="line">            set(to, key, fromVal)</div><div class="line">        <span class="comment">// 如果被merge的属性在to中是对象，在from中也是对象，则深度merge。</span></div><div class="line">        <span class="comment">// 如果仅to中是对象，from是非object类型，则保留to中的数据不变。</span></div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (isObject(toVal) &amp;&amp; isObject(fromVal)) &#123;</div><div class="line">            mergeData(toVal, fromVal)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> to</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>声明对参数中el的处理策略，此时拿到的可能是一个选择器字符串或者DOM对象</p>
+</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">strats.<span class="keyword">el</span> = <span class="function"><span class="keyword">function</span> <span class="params">(parentVal, childVal, vm)</span> &#123;</span></div><div class="line">    <span class="keyword">if</span> (!vm &amp;&amp; childVal &amp;&amp; typeof childVal !== <span class="string">'function'</span>) &#123;</div><div class="line">        <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    var <span class="keyword">ret</span> = childVal || parentVal</div><div class="line">    // 在组件声明时，如果传入了<span class="keyword">el</span>参数，此时<span class="keyword">el</span>必须是<span class="function"><span class="keyword">function</span>类型。同<span class="title">data</span>一样，是为了避免此组件的所有实例指向同一个元素</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">vm</span> &amp;&amp; typeof <span class="keyword">ret</span> === <span class="string">'function'</span></div><div class="line">        ? <span class="keyword">ret</span>.<span class="keyword">call</span>(<span class="keyword">vm</span>)</div><div class="line">        : <span class="keyword">ret</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>声明对参数中声明周期钩子中绑定的处理函数的处理策略，不同阶段的钩子处理策略是相同的</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">strats.init =</div><div class="line">strats.created =</div><div class="line">strats.ready =</div><div class="line">strats.attached =</div><div class="line">strats.detached =</div><div class="line">strats.beforeCompile =</div><div class="line">strats.compiled =</div><div class="line">strats.beforeDestroy =</div><div class="line">strats.destroyed =</div><div class="line">strats.activate = <span class="function"><span class="keyword">function</span> <span class="params">(parentVal, childVal)</span> </span>&#123;</div><div class="line">    <span class="comment">// 如果存在当前实例当前生命周期的钩子</span></div><div class="line">    <span class="keyword">return</span> childVal</div><div class="line">        <span class="comment">// 如果当前实例的父级实例中存在当前生命周期的钩子</span></div><div class="line">        ? parentVal</div><div class="line">            <span class="comment">// 则将当前实例当前生命周期的钩子添加到父级钩子数组的后面(父级当前声明周期钩子只要存在，一定已经被处理成数组了)</span></div><div class="line">            ? parentVal.concat(childVal)</div><div class="line">            <span class="comment">// 如果父级当前生命周期钩子不存在，且当前实例的当前生命周期钩子是数组</span></div><div class="line">            : isArray(childVal)</div><div class="line">                <span class="comment">// 则返回当前实例的当前生命周期钩子数组</span></div><div class="line">                ? childVal</div><div class="line">                <span class="comment">// 如果父级当前生命周期钩子不存在，且当前实例的当前生命周期钩子不是数组，则将其放入数组</span></div><div class="line">                : [childVal]</div><div class="line">        <span class="comment">// 如果不存在当前实例当前生命周期的钩子，则直接返回父级当前生命周期钩子(undefined或数组)</span></div><div class="line">        : parentVal</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>声明对参数中events &amp; watch的处理策略</li>
+</ul>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">strats.watch =</div><div class="line">strats.events = <span class="function"><span class="keyword">function</span> (<span class="params">parentVal, childVal</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!childVal) <span class="keyword">return</span> parentVal</div><div class="line">    <span class="keyword">if</span> (!parentVal) <span class="keyword">return</span> childVal</div><div class="line">    <span class="built_in">var</span> ret = &#123;&#125;</div><div class="line">    <span class="comment">// 现将父级对应参数扩展到ret上</span></div><div class="line">    extend(ret, parentVal)</div><div class="line">    <span class="comment">// 然后遍历子级(当前)参数</span></div><div class="line">    <span class="keyword">for</span> (<span class="built_in">var</span> key <span class="keyword">in</span> childVal) &#123;</div><div class="line">        <span class="built_in">var</span> <span class="built_in">parent</span> = ret[key]</div><div class="line">        <span class="built_in">var</span> child = childVal[key]</div><div class="line">        <span class="comment">// 将父级和子级中都存在值的属性指向一个数组，并将父级中的值放入数组，方便讲子级中的同名属性值放入数组</span></div><div class="line">        <span class="keyword">if</span> (<span class="built_in">parent</span> &amp;&amp; !isArray(<span class="built_in">parent</span>)) &#123;</div><div class="line">            <span class="built_in">parent</span> = [<span class="built_in">parent</span>]</div><div class="line">        &#125;</div><div class="line">        ret[key] = <span class="built_in">parent</span></div><div class="line">            ? <span class="built_in">parent</span>.concat(child)</div><div class="line">            : [child]</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 此处并未保证返回的ret的所以属性都指向数组</span></div><div class="line">    <span class="keyword">return</span> ret</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>声明对参数中props &amp; methods &amp; computed的处理策略</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">strats.props =</div><div class="line">strats.methods =</div><div class="line">strats.computed = <span class="function"><span class="keyword">function</span> <span class="params">(parentVal, childVal)</span> &#123;</span></div><div class="line">    <span class="keyword">if</span> (!childVal) <span class="keyword">return</span> parentVal</div><div class="line">    <span class="keyword">if</span> (!parentVal) <span class="keyword">return</span> childVal</div><div class="line">    var <span class="keyword">ret</span> = Object.create(null) // 与var <span class="keyword">ret</span> = &#123;&#125;相同</div><div class="line">    <span class="built_in">extend</span>(<span class="keyword">ret</span>, parentVal)</div><div class="line">    // 合并策略：子覆盖父</div><div class="line">    <span class="built_in">extend</span>(<span class="keyword">ret</span>, childVal)</div><div class="line">    <span class="keyword">return</span> <span class="keyword">ret</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>声明对参数components/directive/elementDirective/filter/transition/partial的处理策略。</li>
+</ul>
+<figure class="highlight scheme"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">    <span class="symbol">'component</span>',</div><div class="line">    <span class="symbol">'directive</span>',</div><div class="line">    <span class="symbol">'elementDirective</span>',</div><div class="line">    <span class="symbol">'filter</span>',</div><div class="line">    <span class="symbol">'transition</span>',</div><div class="line">    <span class="symbol">'partial</span>'</div><div class="line">].forEach(<span class="name">function</span> (<span class="name">type</span>) &#123;</div><div class="line">  strats[<span class="name">type</span> + <span class="symbol">'s</span>'] = mergeAssets</div><div class="line">&#125;)</div><div class="line"></div><div class="line">function mergeAssets (<span class="name">parentVal</span>, childVal) &#123;</div><div class="line">    // 创建对象并把parentVal放到对象的prototype中</div><div class="line">    var res = Object.create(<span class="name">parentVal</span> || null)</div><div class="line">    return childVal</div><div class="line">        // 如果当前类或实例中存在对应的参数，则合并到新创建的对象中</div><div class="line">        ? extend(<span class="name">res</span>, guardArrayAssets(<span class="name">childVal</span>))</div><div class="line">        否则直接返回新创建的对象</div><div class="line">        : res</div><div class="line">&#125;</div><div class="line">// 将数组形式的数据转换成对象形式的数据</div><div class="line">function guardArrayAssets (<span class="name">assets</span>) &#123;</div><div class="line">    if (<span class="name">isArray</span>(<span class="name">assets</span>)) &#123;</div><div class="line">        var res = &#123;&#125;</div><div class="line">        var i = assets.length</div><div class="line">        var asset</div><div class="line">        while (<span class="name">i--</span>) &#123;</div><div class="line">            asset = assets[<span class="name">i</span>]</div><div class="line">            var id = typeof asset === <span class="symbol">'function</span>'</div><div class="line">                ? ((<span class="name">asset.options</span> &amp;&amp; asset.options.name) || asset.id)</div><div class="line">                : (<span class="name">asset.name</span> || asset.id)</div><div class="line">            if (<span class="name">!id</span>) &#123;</div><div class="line">                process.env.NODE_ENV !== <span class="symbol">'production</span>' &amp;&amp; warn(</div><div class="line">                <span class="symbol">'Array-syntax</span> assets must provide a <span class="string">"name"</span> or <span class="string">"id"</span> field.')</div><div class="line">            &#125; else &#123;</div><div class="line">                res[<span class="name">id</span>] = asset</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        return res</div><div class="line">    &#125;</div><div class="line">    return assets</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>其它参数采用默认处理策略</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> defaultStrat = <span class="function"><span class="keyword">function</span> <span class="params">(parentVal, childVal)</span> </span>&#123;</div><div class="line">    <span class="comment">// 优先选择当前组件的配置</span></div><div class="line">    <span class="keyword">return</span> childVal === <span class="literal">undefined</span></div><div class="line">        ? parentVal</div><div class="line">        : childVal</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vue/" rel="tag">#Vue</a>
+          
+            <a href="/tags/MVVM/" rel="tag">#MVVM</a>
+          
+            <a href="/tags/MVC/" rel="tag">#MVC</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Vue源码解读-生命周期/" rel="next" title="Vue源码解读-生命周期">
+                <i class="fa fa-chevron-left"></i> Vue源码解读-生命周期
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Vue源码解读-get-set的内部实现/" rel="prev" title="Vue源码解读-$Get & $Set的内部实现">
+                Vue源码解读-$Get & $Set的内部实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#源码解读"><span class="nav-number">1.</span> <span class="nav-text">源码解读</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#入口"><span class="nav-number">1.1.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#strats"><span class="nav-number">1.2.</span> <span class="nav-text">strats</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'Vue源码解读-参数合并-mergeOptions/';
+      var disqus_title = "Vue源码解读-参数合并(mergeOptions)";
+      var disqus_url = 'http://yoursite.com/Vue源码解读-参数合并-mergeOptions/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

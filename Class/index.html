@@ -1,0 +1,851 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ES6,Class," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="第一次接触Class的你需要注意哪些地方
+类结构体内部的方法定义不能（不需要）使用function字段
+类名必须大写。好像没有明确规定，但你就当有这个规定吧
+类结构体虽然是放在{}内，但此时的{}并不表示对象，而表示代码块，所以不要像之前定义prototype一样使用,分割各个函数
+类结构体中的所有方法都会被挂载到prototype对象上，成为各实例的通用方法
+同let&amp;amp;const一样，不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Class">
+<meta property="og:url" content="http://yoursite.com/Class/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="第一次接触Class的你需要注意哪些地方
+类结构体内部的方法定义不能（不需要）使用function字段
+类名必须大写。好像没有明确规定，但你就当有这个规定吧
+类结构体虽然是放在{}内，但此时的{}并不表示对象，而表示代码块，所以不要像之前定义prototype一样使用,分割各个函数
+类结构体中的所有方法都会被挂载到prototype对象上，成为各实例的通用方法
+同let&amp;amp;const一样，不">
+<meta property="og:updated_time" content="2016-09-26T10:28:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Class">
+<meta name="twitter:description" content="第一次接触Class的你需要注意哪些地方
+类结构体内部的方法定义不能（不需要）使用function字段
+类名必须大写。好像没有明确规定，但你就当有这个规定吧
+类结构体虽然是放在{}内，但此时的{}并不表示对象，而表示代码块，所以不要像之前定义prototype一样使用,分割各个函数
+类结构体中的所有方法都会被挂载到prototype对象上，成为各实例的通用方法
+同let&amp;amp;const一样，不">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Class/"/>
+
+  <title> Class | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Class
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-28T17:04:14+08:00" content="2016-06-28">
+              2016-06-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ES6/" itemprop="url" rel="index">
+                    <span itemprop="name">ES6</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/Class/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Class/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="第一次接触Class的你需要注意哪些地方"><a href="#第一次接触Class的你需要注意哪些地方" class="headerlink" title="第一次接触Class的你需要注意哪些地方"></a>第一次接触Class的你需要注意哪些地方</h3><ul>
+<li>类结构体内部的方法定义不能（不需要）使用function字段</li>
+<li>类名必须大写。好像没有明确规定，但你就当有这个规定吧</li>
+<li>类结构体虽然是放在<code>{}</code>内，但此时的<code>{}</code>并不表示对象，而表示代码块，所以不要像之前定义prototype一样使用<code>,</code>分割各个函数</li>
+<li>类结构体中的所有方法都会被挂载到prototype对象上，成为各实例的通用方法</li>
+<li>同let&amp;const一样，不存在变量提升</li>
+<li>不多说，都在demo里了，走一个。。。</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">new Demo() <span class="comment">// 不存在变量提升，这里会报错</span></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123; <span class="comment">// 类名大写</span></div><div class="line">  <span class="keyword">constructor</span>(x, y) &#123; <span class="comment">// 构造函数。可以不定义构造函数默认`constructor() &#123;&#125;`</span></div><div class="line">    <span class="keyword">this</span>.x = x;</div><div class="line">    <span class="keyword">this</span>.y = y;</div><div class="line">  &#125; <span class="comment">// 不需要`,`分割</span></div><div class="line">  toString() &#123; <span class="comment">// 不需要`function`定义函数</span></div><div class="line">    <span class="keyword">return</span> <span class="string">'('</span> + <span class="keyword">this</span>.x + <span class="string">', '</span> + <span class="keyword">this</span>.y + <span class="string">')'</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="继承-extends"><a href="#继承-extends" class="headerlink" title="继承 extends"></a>继承 extends</h3><ul>
+<li>子类通过构造函数向父类传参</li>
+<li>super代表父类的构造函数</li>
+<li>调用super之后才能使用this关键字，否则会报错</li>
+<li>demo</li>
+</ul>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">DemoChild</span> <span class="keyword">extends</span> <span class="title">Demo</span></span>&#123;</div><div class="line">    constructor(...args)&#123;</div><div class="line">        <span class="keyword">this</span>.args = args; <span class="comment">// 报错啦，这里还没有this呢。。</span></div><div class="line">        <span class="keyword">super</span>(...args);</div><div class="line">        <span class="keyword">this</span>.args = args; <span class="comment">//这才对嘛。。</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>可以继承原生构造函数</li>
+</ul>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">GoodArray</span> <span class="keyword">extends</span> <span class="title">Array</span></span>&#123; <span class="comment">// 妈妈再也不用担心对原生构造函数的扩展带来的各种问题</span></div><div class="line">    constructor(...args)&#123;</div><div class="line">        <span class="keyword">super</span>(...args);</div><div class="line">    &#125;</div><div class="line">    toString()&#123;</div><div class="line">        console.log(<span class="symbol">'I</span> am better then <span class="type">Array</span>');</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> arr = <span class="keyword">new</span> <span class="type">GoodArray</span>();</div><div class="line">arr.toString();</div></pre></td></tr></table></figure>
+<h3 id="prototype-amp-proto"><a href="#prototype-amp-proto" class="headerlink" title="prototype &amp; __proto__"></a>prototype &amp; __proto__</h3><ul>
+<li>__proto__总是指向父类</li>
+<li>prototype的__proto__总是指向父类的prototype</li>
+<li>绕死算了^v^</li>
+</ul>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">DemoChild.<span class="symbol">\_</span><span class="symbol">\_</span>proto<span class="symbol">\_</span><span class="symbol">\_</span> === Demo;</div><div class="line">DemoChild.prototype.<span class="symbol">\_</span><span class="symbol">\_</span>proto<span class="symbol">\_</span><span class="symbol">\_</span> === Demo.prototype;</div></pre></td></tr></table></figure>
+<h3 id="getter-amp-setter"><a href="#getter-amp-setter" class="headerlink" title="getter &amp; setter"></a>getter &amp; setter</h3><ul>
+<li>class内部可以定义get&amp;set方法，用于存取属性的值。用法和对象属性的getter&amp;setter相同</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span></span>&#123;</div><div class="line">    <span class="keyword">constructor</span>(foo)&#123;</div><div class="line">        <span class="keyword">this</span>._foo = foo;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">get</span> foo()&#123;</div><div class="line">        console.log(<span class="string">'get foo: '</span> + <span class="keyword">this</span>._foo);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>._foo;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">set</span> foo(<span class="keyword">val</span>)&#123;</div><div class="line">        <span class="keyword">this</span>._foo = <span class="keyword">val</span>;</div><div class="line">        console.log(<span class="string">'set foo: '</span> + <span class="keyword">this</span>._foo);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> demo = new Demo(<span class="number">111</span>);</div><div class="line">demo.foo = <span class="number">123</span>; <span class="comment">// set foo: 123</span></div><div class="line">demo.foo; <span class="comment">// get foo: 123</span></div></pre></td></tr></table></figure>
+<h3 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h3><ul>
+<li>static关键字</li>
+<li>静态方法可以直接通过类名调用，不需要实例化</li>
+<li>静态方法不会被实例继承</li>
+<li>父类的静态方法可以被子类继承</li>
+<li>静态方法也可以通过supper()调用</li>
+<li>来个糖炒栗子吧</li>
+</ul>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span></span>&#123;</div><div class="line">    static hello()&#123;</div><div class="line">        console.log(<span class="symbol">'hell</span>o');</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ChildDemo</span> <span class="keyword">extends</span> <span class="title">Demo</span></span>&#123;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> demo = <span class="keyword">new</span> <span class="type">Demo</span>();</div><div class="line"><span class="keyword">var</span> childDemo = <span class="keyword">new</span> <span class="type">ChildDemo</span>();</div><div class="line"><span class="type">Demo</span>.hello(); <span class="comment">// hello</span></div><div class="line"><span class="type">ChildDemo</span>.hello(); <span class="comment">// hello</span></div><div class="line">demo.hello(); <span class="comment">// 报错啦</span></div><div class="line">childDemo.hello(); <span class="comment">// 根本就没执行到我，其实我也一样报错</span></div></pre></td></tr></table></figure>
+<h3 id="静态属性和实例属性"><a href="#静态属性和实例属性" class="headerlink" title="静态属性和实例属性"></a>静态属性和实例属性</h3><ul>
+<li>如何定义静态属性？ES6规定Class内部只允许定义静态方法，不允许定义静态属性，ES7中有内部定义静态属性的提案，但是那是ES7的事情了</li>
+<li>实例属性只能在constructor中定义</li>
+</ul>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">class Demo&#123;</div><div class="line">    constructor(...<span class="built_in">props</span>)&#123;</div><div class="line">        this.<span class="built_in">props</span> = <span class="built_in">props</span>; // 定义实例属性</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">Demo.<span class="built_in">props</span> = 'static <span class="built_in">props</span>';</div><div class="line"><span class="built_in">var</span> <span class="built_in">demo</span> = <span class="built_in">new</span> Demo(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</div><div class="line">console.<span class="built_in">log</span>(<span class="built_in">demo</span>.<span class="built_in">props</span>); // [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</div><div class="line">console.<span class="built_in">log</span>(Demo.<span class="built_in">props</span>); // 'static <span class="built_in">props</span>'</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ES6/" rel="tag">#ES6</a>
+          
+            <a href="/tags/Class/" rel="tag">#Class</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Array/" rel="next" title="Array">
+                <i class="fa fa-chevron-left"></i> Array
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/fetch/" rel="prev" title="Fetch">
+                Fetch <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#第一次接触Class的你需要注意哪些地方"><span class="nav-number">1.</span> <span class="nav-text">第一次接触Class的你需要注意哪些地方</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承-extends"><span class="nav-number">2.</span> <span class="nav-text">继承 extends</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prototype-amp-proto"><span class="nav-number">3.</span> <span class="nav-text">prototype & __proto__</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getter-amp-setter"><span class="nav-number">4.</span> <span class="nav-text">getter & setter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态方法"><span class="nav-number">5.</span> <span class="nav-text">静态方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态属性和实例属性"><span class="nav-number">6.</span> <span class="nav-text">静态属性和实例属性</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'Class/';
+      var disqus_title = "Class";
+      var disqus_url = 'http://yoursite.com/Class/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

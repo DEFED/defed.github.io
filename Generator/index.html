@@ -1,0 +1,889 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ES6,Generator," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="关键词：状态机，遍历器，同步方式写异步方法
+
+基本概念
+形式上，Generator函数是一个普通函数，但是有两个特征。
+function关键字与函数名之间有一个星号。
+二是，函数体内部使用yield语句，定义不同的内部状态。
+
+
+
+1234567function* helloWorldGenerator() &amp;#123;    yield &apos;hello&apos;;    yield &apos;world&apos;;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Generator">
+<meta property="og:url" content="http://yoursite.com/Generator/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="关键词：状态机，遍历器，同步方式写异步方法
+
+基本概念
+形式上，Generator函数是一个普通函数，但是有两个特征。
+function关键字与函数名之间有一个星号。
+二是，函数体内部使用yield语句，定义不同的内部状态。
+
+
+
+1234567function* helloWorldGenerator() &amp;#123;    yield &apos;hello&apos;;    yield &apos;world&apos;;">
+<meta property="og:updated_time" content="2016-09-26T10:28:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Generator">
+<meta name="twitter:description" content="关键词：状态机，遍历器，同步方式写异步方法
+
+基本概念
+形式上，Generator函数是一个普通函数，但是有两个特征。
+function关键字与函数名之间有一个星号。
+二是，函数体内部使用yield语句，定义不同的内部状态。
+
+
+
+1234567function* helloWorldGenerator() &amp;#123;    yield &apos;hello&apos;;    yield &apos;world&apos;;">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Generator/"/>
+
+  <title> Generator | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Generator
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-28T17:11:22+08:00" content="2016-06-28">
+              2016-06-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ES6/" itemprop="url" rel="index">
+                    <span itemprop="name">ES6</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/Generator/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Generator/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>关键词：状态机，遍历器，同步方式写异步方法</p>
+</blockquote>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
+<li>形式上，Generator函数是一个普通函数，但是有两个特征。<ul>
+<li>function关键字与函数名之间有一个星号。</li>
+<li>二是，函数体内部使用yield语句，定义不同的内部状态。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">helloWorldGenerator</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">yield</span> <span class="string">'hello'</span>;</div><div class="line">    <span class="keyword">yield</span> <span class="string">'world'</span>;</div><div class="line">    <span class="keyword">return</span> <span class="string">'ending'</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> hw = helloWorldGenerator();</div><div class="line"><span class="keyword">var</span> h = helloWorldGenerator();</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li>调用Generator函数，返回一个遍历器对象，代表Generator函数的内部指针。</li>
+</ul>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="regexp">//</span> 接上面的demo</div><div class="line"></div><div class="line">hw.<span class="keyword">next</span>()</div><div class="line"><span class="regexp">//</span> &#123; value: <span class="string">'hello'</span>, done: false &#125;</div><div class="line"></div><div class="line">hw.<span class="keyword">next</span>()</div><div class="line"><span class="regexp">//</span> &#123; value: <span class="string">'world'</span>, done: false &#125;</div><div class="line"></div><div class="line">hw.<span class="keyword">next</span>()</div><div class="line"><span class="regexp">//</span> &#123; value: <span class="string">'ending'</span>, done: true &#125;</div><div class="line"></div><div class="line">hw.<span class="keyword">next</span>()</div><div class="line"><span class="regexp">//</span> &#123; value: undefined, done: true &#125;</div></pre></td></tr></table></figure>
+<h3 id="yield语句"><a href="#yield语句" class="headerlink" title="yield语句"></a>yield语句</h3><ul>
+<li>yield语句不能用在普通函数中，否则会报错</li>
+</ul>
+<figure class="highlight clojure"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(<span class="name">function</span> ()&#123;</div><div class="line">    yield <span class="number">1</span><span class="comment">;</span></div><div class="line">&#125;)()</div></pre></td></tr></table></figure>
+<ul>
+<li>yield语句如果用在一个表达式之中，必须放在圆括号里面</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">'Hello'</span> + <span class="keyword">yield</span>); <span class="comment">// SyntaxError</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Hello'</span> + <span class="keyword">yield</span> <span class="number">123</span>); <span class="comment">// SyntaxError</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Hello'</span> + (<span class="keyword">yield</span>)); <span class="comment">// OK</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Hello'</span> + (<span class="keyword">yield</span> <span class="number">123</span>)); <span class="comment">// OK</span></div></pre></td></tr></table></figure>
+<ul>
+<li>yield语句用作函数参数或赋值表达式的右边，可以不加括号</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">foo(<span class="keyword">yield</span> <span class="string">'a'</span>, <span class="keyword">yield</span> <span class="string">'b'</span>); <span class="comment">// OK</span></div><div class="line"><span class="keyword">let</span> input = <span class="keyword">yield</span>; <span class="comment">// OK</span></div></pre></td></tr></table></figure>
+<h2 id="return"><a href="#return" class="headerlink" title="return()"></a>return()</h2><ul>
+<li>如果主动调用return()方法，Generator函数将被终结</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">gen</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">yield</span> <span class="number">1</span>;</div><div class="line">    <span class="keyword">yield</span> <span class="number">2</span>;</div><div class="line">    <span class="keyword">yield</span> <span class="number">3</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> g = gen();</div><div class="line">g.next() <span class="comment">// &#123;value: 1, done: false&#125;</span></div><div class="line">g.<span class="keyword">return</span>(<span class="string">'foo'</span>) <span class="comment">// &#123;value: 'foo', done: true&#125;</span></div><div class="line">g.next() <span class="comment">// &#123;value: undefined, done: true&#125;</span></div></pre></td></tr></table></figure>
+<ul>
+<li><em>但是</em>，如果Generator函数内部有try…finally代码块，那么return方法会推迟到finally代码块执行完再执行。</li>
+</ul>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">gen</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="keyword">try</span>&#123;</div><div class="line">        <span class="keyword">yield</span> <span class="number">1</span>;</div><div class="line">    &#125;<span class="keyword">finally</span>&#123;</div><div class="line">        <span class="keyword">yield</span> <span class="number">2</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">yield</span> <span class="number">3</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> g = gen();</div><div class="line">g.next() <span class="comment">// &#123;value: 1, done: false&#125;</span></div><div class="line">g.<span class="keyword">return</span>(<span class="number">10</span>) <span class="comment">// &#123;value: 2, done: false&#125;</span></div><div class="line">g.next() <span class="comment">// &#123;value: 10, done: true&#125;</span></div></pre></td></tr></table></figure>
+<h3 id="yield"><a href="#yield" class="headerlink" title="yield*"></a>yield*</h3><ul>
+<li>在一个Generater函数内部直接调用另外一个Generater函数无效</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">outer</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">yield</span> <span class="number">1</span>;</div><div class="line">    <span class="keyword">yield</span> inner();</div><div class="line">    <span class="keyword">return</span> <span class="number">3</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">inner</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">yield</span> <span class="number">2</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> o = outer();</div><div class="line">o.next(); <span class="comment">// &#123;value: 1, done: false&#125;</span></div><div class="line">o.next(); <span class="comment">// &#123;value: inner, done: false&#125;</span></div><div class="line">o.next(); <span class="comment">// &#123;value: 3, done: true&#125;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>上面的情况可以使用<code>yield*</code>解决</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">outer</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">yield</span> <span class="number">1</span>;</div><div class="line">    <span class="keyword">yield</span>* inner(); <span class="comment">// 调用方法与上面不同</span></div><div class="line">    <span class="keyword">return</span> <span class="number">3</span>;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">inner</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">yield</span> <span class="number">2</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> o = outer();</div><div class="line">o.next(); <span class="comment">// &#123;value: 1, done: false&#125;</span></div><div class="line">o.next(); <span class="comment">// &#123;value: 2, done: false&#125; // 返回结果与上面不同</span></div><div class="line">o.next(); <span class="comment">// &#123;value: 3, done: true&#125;</span></div></pre></td></tr></table></figure>
+<ul>
+<li>任何数据结构只要有Iterator接口，就可以被yield*遍历。</li>
+</ul>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">function* demo()&#123;</div><div class="line">    <span class="keyword">yield</span>* [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</div><div class="line">&#125;</div><div class="line">var d = demo();</div><div class="line">d.<span class="keyword">next</span>(); <span class="regexp">//</span> &#123;<span class="symbol">value:</span> <span class="number">1</span>, <span class="symbol">done:</span> <span class="literal">false</span>&#125;</div><div class="line">d.<span class="keyword">next</span>(); <span class="regexp">//</span> &#123;<span class="symbol">value:</span> <span class="number">2</span>, <span class="symbol">done:</span> <span class="literal">false</span>&#125;</div><div class="line">d.<span class="keyword">next</span>(); <span class="regexp">//</span> &#123;<span class="symbol">value:</span> <span class="number">3</span>, <span class="symbol">done:</span> <span class="literal">false</span>&#125;</div><div class="line">d.<span class="keyword">next</span>(); <span class="regexp">//</span> &#123;<span class="symbol">value:</span> undefined, <span class="symbol">done:</span> <span class="literal">true</span>&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>如果被代理的Generator函数有return语句，那么就可以向代理它的Generator函数返回数据。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">outer</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">yield</span> <span class="number">1</span>;</div><div class="line">    <span class="keyword">var</span> i = <span class="keyword">yield</span>* inner();</div><div class="line">    <span class="keyword">yield</span> <span class="number">2</span> + i;</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">inner</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="number">2</span>;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> o = outer();</div><div class="line">o.next(); <span class="comment">// &#123;value: 1, done: false&#125;</span></div><div class="line">o.next(); <span class="comment">// &#123;value: 4, done: false&#125;</span></div></pre></td></tr></table></figure>
+<h3 id="作为对象属性的Generator函数"><a href="#作为对象属性的Generator函数" class="headerlink" title="作为对象属性的Generator函数"></a>作为对象属性的Generator函数</h3><ul>
+<li>如果一个对象的属性是Generator函数，可以简写成下面的形式。</li>
+</ul>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> obj = &#123;</div><div class="line">    * gen()&#123;</div><div class="line">        yield <span class="number">1</span>;</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line">var g = obj.gen();</div><div class="line">g.<span class="keyword">next</span>(); // &#123;value: <span class="number">1</span>, done: false&#125;</div></pre></td></tr></table></figure>
+<h3 id="Generator函数的this"><a href="#Generator函数的this" class="headerlink" title="Generator函数的this"></a>Generator函数的this</h3><h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><ul>
+<li>异步操作的同步化表达，逻辑更清晰</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">render</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    showLoading();</div><div class="line">    <span class="keyword">var</span> res = <span class="keyword">yield</span> getData();</div><div class="line">    hideLoading();</div><div class="line">    <span class="built_in">console</span>.log(res); <span class="comment">// 打印ajax的结果</span></div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getData</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    $.ajax().done(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</div><div class="line">        r.next(res);</div><div class="line">    &#125;);</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> r = render();</div><div class="line">r.next();</div></pre></td></tr></table></figure>
+<ul>
+<li>控制流管理，摆脱回调函数多层嵌套</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// callback方式</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    step1(<span class="function"><span class="keyword">function</span>(<span class="params">res1</span>)</span>&#123;</div><div class="line">        step2(res1, <span class="function"><span class="keyword">function</span>(<span class="params">res2</span>)</span>&#123;</div><div class="line">            step3(res2, <span class="function"><span class="keyword">function</span>(<span class="params">res3</span>)</span>&#123;</div><div class="line">                <span class="built_in">console</span>.log(res3);</div><div class="line">            &#125;)</div><div class="line">        &#125;)</div><div class="line">    &#125;)        </div><div class="line">&#125;</div><div class="line"><span class="comment">// promise方式</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">step</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    step1()</div><div class="line">    .then(step2)</div><div class="line">    .then(step3)</div><div class="line">    .then(<span class="function"><span class="keyword">function</span>(<span class="params">&#123;</span></span></div><div class="line">        <span class="regexp">//</span> do something</div><div class="line">    &#125;))        </div><div class="line">&#125;</div><div class="line">// <span class="title">Generator</span>方式</div><div class="line"><span class="title">function</span> <span class="title">step</span>(<span class="params"></span>)&#123;</div><div class="line">    <span class="keyword">var</span> res1 = <span class="keyword">yield</span> step1();</div><div class="line">    <span class="keyword">var</span> res2 = <span class="keyword">yield</span> step2(res1);</div><div class="line">    <span class="keyword">var</span> res3 = <span class="keyword">yield</span> step3(res2);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>多任务并行。如果yield语句后面的参数，是一个具有遍历器接口的对象，yield会遍历这个对象，再往下执行。这意味着，多个任务按顺序一个接一个执行时，yield语句可以按顺序排列。多个任务需要并列执行时（比如只有A任务和B任务都执行完，才能执行C任务），可以采用数组的写法。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">execTaskA</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="literal">true</span>)&#123;</div><div class="line">            resolve(<span class="string">'a'</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">execTaskB</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</div><div class="line">        <span class="keyword">if</span>(<span class="literal">true</span>)&#123;</div><div class="line">            resolve(<span class="string">'b'</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;)</div><div class="line">&#125;</div><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">execTasks</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> [resA, resB] = <span class="keyword">yield</span> [execTaskA(), execTaskB()];</div><div class="line">    <span class="comment">// let resB = yield* execTaskB();</span></div><div class="line">    <span class="built_in">console</span>.log(resA, resB);</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> t = execTasks();</div><div class="line">t.next();</div></pre></td></tr></table></figure>
+<ul>
+<li>关于Generator函数的自动执行，可以关注github上的<code>co</code>组件</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ES6/" rel="tag">#ES6</a>
+          
+            <a href="/tags/Generator/" rel="tag">#Generator</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Function/" rel="next" title="Function">
+                <i class="fa fa-chevron-left"></i> Function
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Iterator/" rel="prev" title="Iterator">
+                Iterator <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yield语句"><span class="nav-number">2.</span> <span class="nav-text">yield语句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#return"><span class="nav-number"></span> <span class="nav-text">return()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#yield"><span class="nav-number">1.</span> <span class="nav-text">yield*</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作为对象属性的Generator函数"><span class="nav-number">2.</span> <span class="nav-text">作为对象属性的Generator函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generator函数的this"><span class="nav-number">3.</span> <span class="nav-text">Generator函数的this</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">4.</span> <span class="nav-text">应用</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'Generator/';
+      var disqus_title = "Generator";
+      var disqus_url = 'http://yoursite.com/Generator/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

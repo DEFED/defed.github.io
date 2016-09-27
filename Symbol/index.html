@@ -1,0 +1,919 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ES6,Symbol," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="一种新的原始数据类型，表示独一无二的值。它是JavaScript语言的第七种数据类型。
+
+特性
+表示独一无二的值
+
+1234let a = Symbol();let b = Symbol();console.log(a === b); // falseconsole.log(a == b); // false">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Symbol">
+<meta property="og:url" content="http://yoursite.com/Symbol/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="一种新的原始数据类型，表示独一无二的值。它是JavaScript语言的第七种数据类型。
+
+特性
+表示独一无二的值
+
+1234let a = Symbol();let b = Symbol();console.log(a === b); // falseconsole.log(a == b); // false">
+<meta property="og:updated_time" content="2016-09-26T10:28:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Symbol">
+<meta name="twitter:description" content="一种新的原始数据类型，表示独一无二的值。它是JavaScript语言的第七种数据类型。
+
+特性
+表示独一无二的值
+
+1234let a = Symbol();let b = Symbol();console.log(a === b); // falseconsole.log(a == b); // false">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Symbol/"/>
+
+  <title> Symbol | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Symbol
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-28T17:23:11+08:00" content="2016-06-28">
+              2016-06-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ES6/" itemprop="url" rel="index">
+                    <span itemprop="name">ES6</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/Symbol/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Symbol/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>一种新的原始数据类型，表示独一无二的值。它是JavaScript语言的第七种数据类型。</p>
+</blockquote>
+<h3 id="特性"><a href="#特性" class="headerlink" title="特性"></a>特性</h3><ul>
+<li>表示独一无二的值</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = <span class="built_in">Symbol</span>();</div><div class="line"><span class="keyword">let</span> b = <span class="built_in">Symbol</span>();</div><div class="line"><span class="built_in">console</span>.log(a === b); <span class="comment">// false</span></div><div class="line"><span class="built_in">console</span>.log(a == b); <span class="comment">// false</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li>新的原始数据类型</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="built_in">Symbol</span>();</div><div class="line"><span class="keyword">typeof</span> a; <span class="comment">// "symbol"</span></div></pre></td></tr></table></figure>
+<ul>
+<li>不能使用new关键字</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="built_in">Symbol</span>(); <span class="comment">// 报错：Uncaught TypeError: Symbol is not a constructor</span></div></pre></td></tr></table></figure>
+<ul>
+<li>可以接受一个字符串作为参数，表示对Symbol实例的描述</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="built_in">Symbol</span>(<span class="string">'a'</span>); <span class="comment">// Symbol(a)</span></div><div class="line">a.toString() <span class="comment">// "Symbol(a)"</span></div></pre></td></tr></table></figure>
+<ul>
+<li>Symbol值不能与其他类型的值进行运算</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="built_in">Symbol</span>(<span class="string">'a'</span>);</div><div class="line"><span class="string">'hello '</span> + a; <span class="comment">// 报错：Cannot convert a Symbol value to a string</span></div><div class="line">\`hello $&#123;a&#125;\`; <span class="comment">// 报错：Cannot convert a Symbol value to a string</span></div></pre></td></tr></table></figure>
+<ul>
+<li>Symbol值可以显式转为字符串</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="built_in">Symbol</span>(<span class="string">'a'</span>);</div><div class="line"><span class="built_in">String</span>(a); <span class="comment">// "Symbol(a)"</span></div><div class="line">a.toString(); <span class="comment">// "Symbol(a)"</span></div></pre></td></tr></table></figure>
+<ul>
+<li>Symbol值也可以转为布尔值。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="built_in">Symbol</span>(<span class="string">'a'</span>);</div><div class="line"><span class="built_in">Boolean</span>(a); <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<ul>
+<li>不能转为数值</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="built_in">Symbol</span>(<span class="string">'a'</span>);</div><div class="line"><span class="built_in">Number</span>(a); <span class="comment">// 报错：Cannot convert a Symbol value to a number</span></div></pre></td></tr></table></figure>
+<h3 id="作为对象属性名"><a href="#作为对象属性名" class="headerlink" title="作为对象属性名"></a>作为对象属性名</h3><ul>
+<li>作为属性名的几种写法</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="built_in">Symbol</span>();</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj = &#123;&#125;;</div><div class="line">obj[a] = <span class="string">'hello'</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">    [a]: <span class="string">'hello'</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> obj = &#123;&#125;;</div><div class="line"><span class="built_in">Object</span>.defineProperty(obj, a, &#123;</div><div class="line">    value: <span class="string">'hello'</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<ul>
+<li>Symbol值作为对象属性名时，不能用点运算符，因为点运算符后面总是字符串</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="built_in">Symbol</span>();</div><div class="line"><span class="keyword">var</span> obj = &#123;&#125;;</div><div class="line"></div><div class="line">obj.a = <span class="string">'hello'</span>;</div><div class="line">obj[a] <span class="comment">// undefined</span></div><div class="line">obj[<span class="string">'a'</span>] <span class="comment">// "hello"</span></div></pre></td></tr></table></figure>
+<ul>
+<li>不能被for…in、for…of遍历，也不会被Object.keys()、Object.getOwnPropertyNames()等方法返回，可以通过Object.getOwnPropertySymbols()获取，或者通过Reflect.ownKey(属于ES7的范畴，它代理了大部分的Object功能，对它不再继续深入，有兴趣的同学可以自行查阅资料)</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">    [<span class="built_in">Symbol</span>(<span class="string">'a'</span>)]: <span class="string">'a'</span>,</div><div class="line">    [<span class="built_in">Symbol</span>(<span class="string">'b'</span>)]: <span class="string">'b'</span>,</div><div class="line">    <span class="attr">c</span>: <span class="string">'c'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">Object</span>.getOwnPropertyNames(obj); <span class="comment">// []</span></div><div class="line"></div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i <span class="keyword">in</span> obj) &#123;</div><div class="line">  <span class="built_in">console</span>.log(i); <span class="comment">// 无输出</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">Object</span>.getOwnPropertySymbols(obj); <span class="comment">// [Symbol(a), Symbol(b)]</span></div><div class="line"></div><div class="line"><span class="built_in">Reflect</span>.ownKeys(obj); <span class="comment">// ["c", Symbol(a), Symbol(b)]</span></div></pre></td></tr></table></figure>
+<h3 id="Symbol方法和内置Symbol值"><a href="#Symbol方法和内置Symbol值" class="headerlink" title="Symbol方法和内置Symbol值"></a>Symbol方法和内置Symbol值</h3><h4 id="for"><a href="#for" class="headerlink" title="for()"></a>for()</h4><ul>
+<li>使用for方法可以获取相同Symbol值的不同变量</li>
+<li>传入的字符串需要相同，可以为空</li>
+<li>必须全为for定义</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="built_in">Symbol</span>.<span class="keyword">for</span>();</div><div class="line"><span class="keyword">var</span> b = <span class="built_in">Symbol</span>.<span class="keyword">for</span>();</div><div class="line"><span class="keyword">var</span> c = <span class="built_in">Symbol</span>.<span class="keyword">for</span>(<span class="string">'c'</span>);</div><div class="line"><span class="keyword">var</span> d = <span class="built_in">Symbol</span>.<span class="keyword">for</span>(<span class="string">'c'</span>);</div><div class="line"><span class="keyword">var</span> e = <span class="built_in">Symbol</span>(<span class="string">'e'</span>);</div><div class="line"><span class="keyword">var</span> f = <span class="built_in">Symbol</span>.<span class="keyword">for</span>(<span class="string">'e'</span>);</div><div class="line"></div><div class="line">a === b; <span class="comment">// true</span></div><div class="line">c === d; <span class="comment">// true</span></div><div class="line">e === f; <span class="comment">// false</span></div></pre></td></tr></table></figure>
+<h4 id="keyFor"><a href="#keyFor" class="headerlink" title="keyFor()"></a>keyFor()</h4><ul>
+<li>返回一个已登记的Symbol类型值的key</li>
+<li>只有通过for方法生成的Symbol才能使用该方法返回key</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="built_in">Symbol</span>.<span class="keyword">for</span>(<span class="string">'a'</span>);</div><div class="line"><span class="built_in">Symbol</span>.keyFor(a); <span class="comment">// 'a'</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> a = <span class="built_in">Symbol</span>(<span class="string">'a'</span>); <span class="comment">// 未登记</span></div><div class="line"><span class="built_in">Symbol</span>.keyFor(a); <span class="comment">// undefined</span></div></pre></td></tr></table></figure>
+<h4 id="hasInstance"><a href="#hasInstance" class="headerlink" title="hasInstance"></a>hasInstance</h4><ul>
+<li>此方法至少暂时不可用，最新版的chrome和node中均不能正常工作</li>
+<li>该方法会被instanceof运算符调用</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span></span>&#123;</div><div class="line">    <span class="keyword">static</span> [<span class="built_in">Symbol</span>.hasInstance](foo)&#123;</div><div class="line">        <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">[] <span class="keyword">instanceof</span> Demo <span class="comment">// 理论上返回true，但是实际chrome中测试返回false</span></div></pre></td></tr></table></figure>
+<h4 id="isConcatSpreadable"><a href="#isConcatSpreadable" class="headerlink" title="isConcatSpreadable"></a>isConcatSpreadable</h4><ul>
+<li>对象的Symbol.isConcatSpreadable属性等于一个布尔值，表示该对象使用Array.prototype.concat()时，是否可以展开。</li>
+</ul>
+<figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">var a = [<span class="string">'a'</span>]; // 数组的<span class="symbol">Symbol</span>.isConcatSpreadable属性默认值为true</div><div class="line">[<span class="string">'b'</span>].concat(a, <span class="string">'c'</span>); // [<span class="string">'b'</span>, <span class="string">'a'</span>, <span class="string">'c'</span>]</div><div class="line"></div><div class="line">var a = [<span class="string">'a'</span>];</div><div class="line">a[<span class="symbol">Symbol</span>.isConcatSpreadable] = false;</div><div class="line">[<span class="string">'b'</span>].concat(a, <span class="string">'c'</span>); // [<span class="string">'b'</span>, [<span class="string">'a'</span>], <span class="string">'c'</span>]</div><div class="line"></div><div class="line">var a = &#123;</div><div class="line">    <span class="number">0</span>: <span class="string">'a'</span>,</div><div class="line">    length: <span class="number">1</span></div><div class="line">&#125;;</div><div class="line">[<span class="string">'c'</span>].concat(a, <span class="string">'d'</span>); // [<span class="string">'c'</span>, &#123;<span class="number">0</span>: <span class="string">'a'</span>, length: <span class="number">1</span>&#125;, <span class="string">'d'</span>]</div><div class="line">a[<span class="symbol">Symbol</span>.isConcatSpreadable] = true;</div><div class="line">[<span class="string">'c'</span>].concat(a, <span class="string">'d'</span>); // [<span class="string">'c'</span>, <span class="string">'a'</span>, <span class="string">'d'</span>]</div></pre></td></tr></table></figure>
+<ul>
+<li>这种方法是行不通的，至少我验证了最新的chrome和最新版的node，都无法正常工作</li>
+</ul>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span> <span class="keyword">extends</span> <span class="title">Array</span></span>&#123;[<span class="type">Symbol</span>.isConcatSpreadable]()&#123;<span class="keyword">return</span> <span class="literal">false</span>&#125;&#125;</div><div class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> <span class="type">Demo</span>('a');</div><div class="line">['b'].concat(a); <span class="comment">// ['b', 'a']</span></div></pre></td></tr></table></figure>
+<h4 id="species"><a href="#species" class="headerlink" title="species"></a>species</h4><ul>
+<li>蛋疼啊。。。。</li>
+<li>最新版Chrome和node中验证失败</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span> <span class="keyword">extends</span> <span class="title">Array</span></span>&#123;</div><div class="line">    <span class="keyword">constructor</span>(props)&#123;</div><div class="line">        <span class="keyword">super</span>();</div><div class="line">        <span class="keyword">this</span>.props = props</div><div class="line">    &#125;</div><div class="line">    [<span class="built_in">Symbol</span>.species]()&#123;</div><div class="line">        <span class="keyword">return</span> <span class="built_in">Array</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> Demo(<span class="number">1</span>);</div><div class="line"><span class="keyword">var</span> b = a.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, i, arr</span>)</span>&#123; <span class="comment">// 都是一个不同的数组了，咋可能还是Demo的实例呢！</span></div><div class="line">    <span class="keyword">return</span> item * <span class="number">2</span>;</div><div class="line">&#125;);</div><div class="line">b <span class="keyword">instanceof</span> Demo; <span class="comment">// 他们说这个地方应该返回true，但实际上返回false</span></div><div class="line">b <span class="keyword">instanceof</span> <span class="built_in">Array</span>;</div></pre></td></tr></table></figure>
+<h4 id="match"><a href="#match" class="headerlink" title="match"></a>match</h4><ul>
+<li>指定字符串调用match方法时的行为</li>
+</ul>
+<figure class="highlight scala"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Match</span></span>&#123;</div><div class="line">    constructor(props)&#123;</div><div class="line">        <span class="keyword">this</span>.props = props || <span class="symbol">'hell</span>o'</div><div class="line">    &#125;</div><div class="line">    [<span class="type">Symbol</span>.<span class="keyword">match</span>](string)&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.props.<span class="keyword">match</span>(string);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> <span class="keyword">match</span> = <span class="keyword">new</span> <span class="type">Match</span>();</div><div class="line">'e'.<span class="keyword">match</span>(<span class="keyword">match</span>); <span class="comment">// ['e']</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> <span class="keyword">match</span> = <span class="keyword">new</span> <span class="type">Match</span>(<span class="symbol">'11</span>1');</div><div class="line">'e'.<span class="keyword">match</span>(<span class="keyword">match</span>); <span class="comment">// null</span></div></pre></td></tr></table></figure>
+<h4 id="replace"><a href="#replace" class="headerlink" title="replace"></a>replace</h4><ul>
+<li>指定字符串调用replace方法时的行为</li>
+</ul>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">class <span class="title">Replace</span>&#123;</div><div class="line">    [<span class="built_in">Symbol</span>.replace](<span class="built_in">string</span>)&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="built_in">string</span>); <span class="comment">// 还可以干点别的哦。。</span></div><div class="line">        <span class="keyword">return</span> <span class="built_in">string</span>.replace(<span class="regexp">/b/g</span>, <span class="string">'a'</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="built_in">var</span> replace = <span class="keyword">new</span> Replace();</div><div class="line"><span class="string">'abaaaab'</span>.replace(replace); <span class="comment">// 'aaaaaaa'</span></div></pre></td></tr></table></figure>
+<h4 id="search"><a href="#search" class="headerlink" title="search"></a>search</h4><ul>
+<li>指定字符串调用search方法时的行为</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> <span class="title">Search</span>&#123;</div><div class="line">    [Symbol.search](<span class="keyword">string</span>)&#123;</div><div class="line">        <span class="keyword">string</span> = <span class="string">'aaaaab'</span>;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">string</span>.search(/b/g);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> search = <span class="keyword">new</span> Search();</div><div class="line"><span class="string">'abaaaab'</span>.search(search); <span class="comment">// 5</span></div></pre></td></tr></table></figure>
+<h4 id="split"><a href="#split" class="headerlink" title="split"></a>split</h4><ul>
+<li>指定字符串调用split方法时的行为</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">class</span> <span class="keyword">Split</span>&#123;</div><div class="line">    [Symbol.<span class="keyword">split</span>](string)&#123;</div><div class="line">        <span class="keyword">return</span> string.<span class="keyword">split</span>('b', 1);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> <span class="keyword">split</span> = new <span class="keyword">Split</span>();</div><div class="line">'abaaaab'.<span class="keyword">split</span>(<span class="keyword">split</span>); <span class="comment">// ['a']</span></div></pre></td></tr></table></figure>
+<h4 id="toPrimitive"><a href="#toPrimitive" class="headerlink" title="toPrimitive"></a>toPrimitive</h4><ul>
+<li>当数据被进行类型转换时，调用该数据的Symbol.toPrimitive方法</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> obj = &#123;</div><div class="line">    [Symbol.toPrimitive](<span class="keyword">type</span>)&#123;</div><div class="line">        <span class="keyword">switch</span>(<span class="keyword">type</span>)&#123;</div><div class="line">            <span class="keyword">case</span> <span class="string">'string'</span>: <span class="comment">// 只能转换成string时</span></div><div class="line">                <span class="keyword">return</span> <span class="string">'aaa'</span>;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">'number'</span>: <span class="comment">// 只能转换成number时</span></div><div class="line">                <span class="keyword">return</span> <span class="number">123</span>;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">case</span> <span class="string">'default'</span>: <span class="comment">// 既可以转换成string，又可以转换成number时</span></div><div class="line">                <span class="keyword">return</span> <span class="string">'default'</span>;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            <span class="keyword">default</span>:</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="number">2</span> * obj <span class="comment">// 246</span></div><div class="line"><span class="string">'a'</span> + obj <span class="comment">// 'adefault'</span></div><div class="line"><span class="built_in">String</span>(obj) <span class="comment">// 'aaa'</span></div></pre></td></tr></table></figure>
+<h4 id="toStringTag"><a href="#toStringTag" class="headerlink" title="toStringTag"></a>toStringTag</h4><ul>
+<li>控制在调用toString方法时返回的字符串</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Demo</span></span>&#123;</div><div class="line">    <span class="keyword">get</span> [<span class="built_in">Symbol</span>.toStringTag]()&#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">'Demo'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> a = <span class="keyword">new</span> Demo();</div><div class="line">a.toString(); <span class="comment">// "[object Demo]"</span></div></pre></td></tr></table></figure>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><h4 id="消除魔术字符串"><a href="#消除魔术字符串" class="headerlink" title="消除魔术字符串"></a>消除魔术字符串</h4><blockquote>
+<p>在代码之中多次出现、与代码形成强耦合的某一个具体的字符串或者数值。风格良好的代码，应该尽量消除魔术字符串，该由含义清晰的变量代替。</p>
+</blockquote>
+<ul>
+<li>魔术字符串的栗子</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">demo</span>(<span class="params">str</span>)</span>&#123;</div><div class="line">    <span class="keyword">switch</span>(str)&#123;</div><div class="line">        <span class="keyword">case</span> <span class="string">'abc'</span>: <span class="comment">// 魔术字符串</span></div><div class="line">            <span class="built_in">console</span>.log(<span class="string">'hello Symbol'</span>);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">demo(<span class="string">'abc'</span>); <span class="comment">// 魔术字符串</span></div></pre></td></tr></table></figure>
+<ul>
+<li>消除魔术字符串的方法，把它变成一个变量。大家都懂的，就没栗子了</li>
+<li>但是，上面栗子上’abc’字符串真的有实际意义吗？是否可以这样？当然也是需要赋值给一个变量</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="built_in">Symbol</span>(<span class="string">'a'</span>); <span class="comment">// 传字符串'a'只是为了方便查看下面的打印结果，其实可以不传</span></div><div class="line"><span class="keyword">var</span> b = <span class="built_in">Symbol</span>(<span class="string">'b'</span>);</div><div class="line">function demo(v)&#123;</div><div class="line">    <span class="keyword">switch</span>(v)&#123;</div><div class="line">        <span class="keyword">case</span> a: </div><div class="line">            console.log(\`hello <span class="built_in">Symbol</span>, I am $&#123;<span class="built_in">String</span>(a)&#125;\`); <span class="comment">// ES6的模板功能，下次再带大家认识。</span></div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> b: </div><div class="line">            console.log(\`hello <span class="built_in">Symbol</span>, I am $&#123;<span class="built_in">String</span>(b)&#125;\`);</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">demo(a);</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ES6/" rel="tag">#ES6</a>
+          
+            <a href="/tags/Symbol/" rel="tag">#Symbol</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/String/" rel="next" title="String">
+                <i class="fa fa-chevron-left"></i> String
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Vue-数据的双向绑定/" rel="prev" title="Vue源码解读-数据的双向绑定简陋版(仅用于原理说明)">
+                Vue源码解读-数据的双向绑定简陋版(仅用于原理说明) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#特性"><span class="nav-number">1.</span> <span class="nav-text">特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#作为对象属性名"><span class="nav-number">2.</span> <span class="nav-text">作为对象属性名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Symbol方法和内置Symbol值"><span class="nav-number">3.</span> <span class="nav-text">Symbol方法和内置Symbol值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#for"><span class="nav-number">3.1.</span> <span class="nav-text">for()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#keyFor"><span class="nav-number">3.2.</span> <span class="nav-text">keyFor()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hasInstance"><span class="nav-number">3.3.</span> <span class="nav-text">hasInstance</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#isConcatSpreadable"><span class="nav-number">3.4.</span> <span class="nav-text">isConcatSpreadable</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#species"><span class="nav-number">3.5.</span> <span class="nav-text">species</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#match"><span class="nav-number">3.6.</span> <span class="nav-text">match</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#replace"><span class="nav-number">3.7.</span> <span class="nav-text">replace</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#search"><span class="nav-number">3.8.</span> <span class="nav-text">search</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#split"><span class="nav-number">3.9.</span> <span class="nav-text">split</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toPrimitive"><span class="nav-number">3.10.</span> <span class="nav-text">toPrimitive</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#toStringTag"><span class="nav-number">3.11.</span> <span class="nav-text">toStringTag</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">4.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#消除魔术字符串"><span class="nav-number">4.1.</span> <span class="nav-text">消除魔术字符串</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'Symbol/';
+      var disqus_title = "Symbol";
+      var disqus_url = 'http://yoursite.com/Symbol/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

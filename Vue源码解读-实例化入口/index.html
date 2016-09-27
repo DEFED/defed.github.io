@@ -1,0 +1,814 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Vue,MVVM,MVC," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头文件：/src/instance/internal/init.js
+
+源码解读原始Vue类的实例化和Vue的子类的实例化的入口都是这里实例化过程中，主要关注各部分功能的实例化顺序源码分析中提到的Vue实例包括Vue的子类实例未进行解读部分为尚未读到或没读明白，嘎嘎。。。脸红了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码解读-实例化入口">
+<meta property="og:url" content="http://yoursite.com/Vue源码解读-实例化入口/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头文件：/src/instance/internal/init.js
+
+源码解读原始Vue类的实例化和Vue的子类的实例化的入口都是这里实例化过程中，主要关注各部分功能的实例化顺序源码分析中提到的Vue实例包括Vue的子类实例未进行解读部分为尚未读到或没读明白，嘎嘎。。。脸红了">
+<meta property="og:updated_time" content="2016-09-26T10:28:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码解读-实例化入口">
+<meta name="twitter:description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头文件：/src/instance/internal/init.js
+
+源码解读原始Vue类的实例化和Vue的子类的实例化的入口都是这里实例化过程中，主要关注各部分功能的实例化顺序源码分析中提到的Vue实例包括Vue的子类实例未进行解读部分为尚未读到或没读明白，嘎嘎。。。脸红了">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Vue源码解读-实例化入口/"/>
+
+  <title> Vue源码解读-实例化入口 | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Vue源码解读-实例化入口
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-05T17:59:51+08:00" content="2016-07-05">
+              2016-07-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/Vue源码解读-实例化入口/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Vue源码解读-实例化入口/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>version: 1.0.24<br>对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头<br>文件：<code>/src/instance/internal/init.js</code></p>
+</blockquote>
+<h3 id="源码解读"><a href="#源码解读" class="headerlink" title="源码解读"></a>源码解读</h3><p>原始Vue类的实例化和Vue的子类的实例化的入口都是这里<br>实例化过程中，主要关注各部分功能的实例化顺序<br>源码分析中提到的Vue实例包括Vue的子类实例<br>未进行解读部分为尚未读到或没读明白，嘎嘎。。。脸红了。。  </p>
+<a id="more"></a>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 依赖工具类中的mergeOptions方法，用于处理被传入的参数</span></div><div class="line"><span class="keyword">import</span> &#123; mergeOptions &#125; from <span class="string">'../../util/index'</span></div><div class="line">let uid = <span class="number">0</span> <span class="comment">// 用于Vue实例的唯一标识</span></div><div class="line">export <span class="keyword">default</span> function (Vue) &#123;</div><div class="line">  Vue.prototype._init = function (options) &#123;</div><div class="line">    options = options || &#123;&#125;</div><div class="line">    <span class="keyword">this</span>.$el = <span class="literal">null</span> <span class="comment">// 当前Vue实例对DOM的引用</span></div><div class="line">    <span class="keyword">this</span>.$parent = options.parent <span class="comment">// 当前实例对父级Vue实例的引用(并不是原型链上的父子关系，而是映射到的DOM结构上的父子关系)</span></div><div class="line">    <span class="keyword">this</span>.$root = <span class="keyword">this</span>.$parent <span class="comment">// 当前实例对最外层Vue实例的引用，如果当前实例是最外层，引用自己</span></div><div class="line">      ? <span class="keyword">this</span>.$parent.$root</div><div class="line">      : <span class="keyword">this</span></div><div class="line">    <span class="keyword">this</span>.$children = [] <span class="comment">// DOM结构中处于内层的子级Vue实例(不包含其它后代)所组成的数组</span></div><div class="line">    <span class="keyword">this</span>.$refs = &#123;&#125;       <span class="comment">// 对子级Vue实例中通过`v-ref:xxx`命名过的实例的引用</span></div><div class="line">    <span class="keyword">this</span>.$els = &#123;&#125;        <span class="comment">// 对当前实例对应DOM中通过`v-el:xxx`命名过的子元素的引用，如果子元素命名重名，则返回第一个</span></div><div class="line">    <span class="keyword">this</span>._watchers = []   <span class="comment">// 当前实例中所以Watcher实例所组成的数组</span></div><div class="line">    <span class="keyword">this</span>._directives = [] <span class="comment">// 当前实例中所以Directive实例所组成的数组</span></div><div class="line">    <span class="keyword">this</span>._uid = uid++ <span class="comment">// 实例唯一标记，子类的实例也以此递增，不单独计数</span></div><div class="line">    <span class="keyword">this</span>._isVue = <span class="literal">true</span> <span class="comment">// Vue实例的标记，用于排除Observer对当前实例的监控</span></div><div class="line">    <span class="keyword">this</span>._events = &#123;&#125; <span class="comment">// 对当前实例中事件以及注册到该事件上的回调的记录，事件类型作为key存储</span></div><div class="line">    <span class="keyword">this</span>._eventsCount = &#123;&#125;       <span class="comment">// 事件的数量，事件类型作为key存储</span></div><div class="line"></div><div class="line">    <span class="comment">// fragment instance properties</span></div><div class="line">    <span class="keyword">this</span>._isFragment = <span class="literal">false</span></div><div class="line">    <span class="keyword">this</span>._fragment =         <span class="comment">// @type &#123;DocumentFragment&#125;</span></div><div class="line">    <span class="keyword">this</span>._fragmentStart =    <span class="comment">// @type &#123;Text|Comment&#125;</span></div><div class="line">    <span class="keyword">this</span>._fragmentEnd = <span class="literal">null</span> <span class="comment">// @type &#123;Text|Comment&#125;</span></div><div class="line"></div><div class="line">    <span class="comment">// 当前实例的声明周期状态记录，命名含义清晰的，不多做解释</span></div><div class="line">    <span class="keyword">this</span>._isCompiled =</div><div class="line">    <span class="keyword">this</span>._isDestroyed =</div><div class="line">    <span class="keyword">this</span>._isReady =</div><div class="line">    <span class="keyword">this</span>._isAttached =</div><div class="line">    <span class="keyword">this</span>._isBeingDestroyed =</div><div class="line">    <span class="keyword">this</span>._vForRemoving = <span class="literal">false</span> <span class="comment">// </span></div><div class="line">    <span class="keyword">this</span>._unlinkFn = <span class="literal">null</span> <span class="comment">// </span></div><div class="line"></div><div class="line">    <span class="keyword">this</span>._context = options._context || <span class="keyword">this</span>.$parent</div><div class="line">    <span class="keyword">this</span>._scope = options._scope</div><div class="line">    <span class="keyword">this</span>._frag = options._frag</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>._frag) &#123;</div><div class="line">      <span class="keyword">this</span>._frag.children.push(<span class="keyword">this</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 如果当前实例存在对父级实例的引用，则将自己推入父级实例的$children数组中</span></div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.$parent) &#123;</div><div class="line">      <span class="keyword">this</span>.$parent.$children.push(<span class="keyword">this</span>)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 参数扩展，将类上参数扩展到实例中，不仅仅是简单的扩展，还会做一些特殊处理</span></div><div class="line">    options = <span class="keyword">this</span>.$options = mergeOptions(</div><div class="line">      <span class="keyword">this</span>.<span class="keyword">constructor</span>.options, <span class="comment">// 挂载在Vue类(或子类)上的options，主要存放组件、指令、元素指令、过滤器、自定义元素、过渡定义和replace的值</span></div><div class="line">      options,</div><div class="line">      <span class="keyword">this</span></div><div class="line">    )</div><div class="line"></div><div class="line">    <span class="comment">// 将自己放入$parent的$refs中，前提是当前Vue实例存在_ref属性(使用v-ref:xxx定义过)</span></div><div class="line">    <span class="comment">// 功能在/src/instance/internal/lifecycle.js中，提取到本文下面解读</span></div><div class="line">    <span class="keyword">this</span>._updateRef()</div><div class="line"></div><div class="line">    <span class="comment">// 初始化_data为空对象，等待_initData时被赋值</span></div><div class="line">    <span class="keyword">this</span>._data = &#123;&#125;</div><div class="line"></div><div class="line">    <span class="comment">// 触发生命周期中的第一个阶段：init。这里会同步执行参数中放入init字段的回调函数</span></div><div class="line">    <span class="comment">// 具体请看 Vue源码解读-生命周期</span></div><div class="line">    <span class="keyword">this</span>._callHook(<span class="string">'init'</span>)</div><div class="line"></div><div class="line">    <span class="comment">// 处理参数中的props/data/meta/methods/computed，</span></div><div class="line">    <span class="keyword">this</span>._initState()</div><div class="line"></div><div class="line">    <span class="comment">// 处理参数中的events/watch</span></div><div class="line">    <span class="keyword">this</span>._initEvents()</div><div class="line"></div><div class="line">    <span class="comment">// 触发生命周期：created</span></div><div class="line">    <span class="keyword">this</span>._callHook(<span class="string">'created'</span>)</div><div class="line"></div><div class="line">    <span class="comment">// 开始编译，处理视图相关的东东</span></div><div class="line">    <span class="keyword">if</span> (options.el) &#123;</div><div class="line">      <span class="keyword">this</span>.$mount(options.el)</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="相关源码解读"><a href="#相关源码解读" class="headerlink" title="相关源码解读"></a>相关源码解读</h3><ul>
+<li>_updateRef()，存在于声明周期功能中</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// remove：boolean类型，true表示删除，false表示添加</span></div><div class="line">Vue.prototype._updateRef = function (<span class="keyword">remove</span>) &#123;</div><div class="line">    <span class="comment">// 如果当前实例的$options中存在_ref参数。</span></div><div class="line">    <span class="comment">// 可能存在的情况是组件实例化过程中</span></div><div class="line">    <span class="keyword">var</span> <span class="keyword">ref</span> = <span class="keyword">this</span>.$options._<span class="function"><span class="keyword">ref</span></span></div><div class="line">    <span class="title">if</span> (<span class="params"><span class="keyword">ref</span></span>) &#123;</div><div class="line">        <span class="comment">// 将当前实例添加到父级实例的$refs中。</span></div><div class="line">        <span class="comment">// 这里需要考虑的是为什么不是添加到this.$parent.$refs中。。暂时不知道</span></div><div class="line">        <span class="keyword">var</span> refs = (<span class="keyword">this</span>._scope || <span class="keyword">this</span>._context).$<span class="function">refs</span></div><div class="line">        <span class="title">if</span> (<span class="params"><span class="keyword">remove</span></span>) &#123;</div><div class="line">            <span class="keyword">if</span> (refs[<span class="keyword">ref</span>] === <span class="keyword">this</span>) &#123;</div><div class="line">                refs[<span class="keyword">ref</span>] = <span class="literal">null</span></div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            refs[<span class="keyword">ref</span>] = <span class="keyword">this</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>_callHook()，存在于事件处理功能中</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Vue.prototype._callHook = function (hook) &#123;</div><div class="line">    <span class="comment">// 触发声明周期`前`事件，如：`pre-hook:init`，希望在当前阶段之前被执行的逻辑可以绑定在此事件中</span></div><div class="line">    <span class="keyword">this</span>.$emit(<span class="string">'pre-hook:'</span> + hook)</div><div class="line">    <span class="keyword">var</span> handlers = <span class="keyword">this</span>.$options[hook]</div><div class="line">    <span class="comment">// 在当前实例中遍历执行绑定的当前阶段的处理逻辑</span></div><div class="line">    <span class="keyword">if</span> (handlers) &#123;</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, j = handlers.length; i &lt; j; i++) &#123;</div><div class="line">            handlers[i].call(<span class="keyword">this</span>)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 触发声明周期`后`事件，如：`hook:init`，希望在当前阶段的所有钩子函数全部被执行完成之后被执行的逻辑可以绑定在此事件中</span></div><div class="line">    <span class="keyword">this</span>.$emit(<span class="string">'hook:'</span> + hook)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="相关源码解读文章"><a href="#相关源码解读文章" class="headerlink" title="相关源码解读文章"></a>相关源码解读文章</h3><p><a href="">Vue源码解读-生命周期</a>  </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vue/" rel="tag">#Vue</a>
+          
+            <a href="/tags/MVVM/" rel="tag">#MVVM</a>
+          
+            <a href="/tags/MVC/" rel="tag">#MVC</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Vue源码解读-Watchers-数据订阅者-异步执行队列/" rel="next" title="Vue源码解读-Watchers(数据订阅者)异步执行队列">
+                <i class="fa fa-chevron-left"></i> Vue源码解读-Watchers(数据订阅者)异步执行队列
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Vue源码解读-源码入口/" rel="prev" title="Vue源码解读-源码入口">
+                Vue源码解读-源码入口 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#源码解读"><span class="nav-number">1.</span> <span class="nav-text">源码解读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关源码解读"><span class="nav-number">2.</span> <span class="nav-text">相关源码解读</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关源码解读文章"><span class="nav-number">3.</span> <span class="nav-text">相关源码解读文章</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'Vue源码解读-实例化入口/';
+      var disqus_title = "Vue源码解读-实例化入口";
+      var disqus_url = 'http://yoursite.com/Vue源码解读-实例化入口/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

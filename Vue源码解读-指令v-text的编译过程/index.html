@@ -1,0 +1,837 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Vue,MVVM,MVC," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头本文以一个v-text的用例为demo，讲解Vue内部的处理过程文中重点解释v-text的编译过程。对data的处理过程将被简化如果对data处理部分不够清楚的。请看$watch的内部实现或者数据双向绑定简化版   
+
+Demo
+template
+
+123&amp;lt;div id">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码解读-指令V-Text的编译过程">
+<meta property="og:url" content="http://yoursite.com/Vue源码解读-指令v-text的编译过程/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头本文以一个v-text的用例为demo，讲解Vue内部的处理过程文中重点解释v-text的编译过程。对data的处理过程将被简化如果对data处理部分不够清楚的。请看$watch的内部实现或者数据双向绑定简化版   
+
+Demo
+template
+
+123&amp;lt;div id">
+<meta property="og:updated_time" content="2016-09-26T10:28:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码解读-指令V-Text的编译过程">
+<meta name="twitter:description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头本文以一个v-text的用例为demo，讲解Vue内部的处理过程文中重点解释v-text的编译过程。对data的处理过程将被简化如果对data处理部分不够清楚的。请看$watch的内部实现或者数据双向绑定简化版   
+
+Demo
+template
+
+123&amp;lt;div id">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Vue源码解读-指令v-text的编译过程/"/>
+
+  <title> Vue源码解读-指令V-Text的编译过程 | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Vue源码解读-指令V-Text的编译过程
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-22T16:34:10+08:00" content="2016-07-22">
+              2016-07-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/Vue源码解读-指令v-text的编译过程/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Vue源码解读-指令v-text的编译过程/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>version: 1.0.24<br>对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头<br>本文以一个v-text的用例为demo，讲解Vue内部的处理过程<br>文中重点解释v-text的编译过程。对data的处理过程将被简化<br>如果对data处理部分不够清楚的。请看<code>$watch的内部实现</code>或者<code>数据双向绑定简化版</code>   </p>
+</blockquote>
+<h3 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h3><ul>
+<li>template</li>
+</ul>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;<span class="keyword">div</span> <span class="built_in">id</span>=<span class="string">"demo"</span>&gt;</div><div class="line">    &lt;p v-<span class="built_in">text</span>=<span class="string">"msg"</span>&gt;&lt;/p&gt;</div><div class="line">&lt;/<span class="keyword">div</span>&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>Vue实例</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">var demo = <span class="keyword">new</span> Vue(&#123;</div><div class="line">    <span class="keyword">e</span><span class="variable">l:</span> <span class="string">'#demo'</span>,</div><div class="line">    dat<span class="variable">a:</span> &#123;</div><div class="line">        ms<span class="variable">g:</span> <span class="string">'Hello Vue!'</span></div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h3 id="Vue实例对data的处理"><a href="#Vue实例对data的处理" class="headerlink" title="Vue实例对data的处理"></a>Vue实例对data的处理</h3><ul>
+<li>在之前的文章中已经对data的处理进行了很多次的解释(其实就是设置setter&amp;getter，同时创建一个订阅者管理员的过程)。</li>
+<li>看看message被处理成啥样了哈。只给一个样例，就不多做解释了。</li>
+</ul>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> dep = <span class="keyword">new</span> Dep()</div><div class="line">&#123;</div><div class="line">    msg: <span class="string">'Hello Vue!'</span>,</div><div class="line">    <span class="function"><span class="keyword">get</span> <span class="title">msg</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        <span class="keyword">if</span>(Dep.target)&#123;</div><div class="line">            dep.<span class="keyword">add</span>(Dep.target)</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> msg</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">set</span> <span class="title">msg</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        dep.notify()</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="模板的编译过程"><a href="#模板的编译过程" class="headerlink" title="模板的编译过程"></a>模板的编译过程</h3><ul>
+<li>编译元素</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">compileElement</span> <span class="params">(el, options)</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> hasAttrs = el.hasAttributes()</div><div class="line">    <span class="keyword">var</span> attrs = hasAttrs &amp;&amp; toArray(el.attributes)</div><div class="line">    <span class="keyword">var</span> linkFn = compileDirectives(attrs, options)</div><div class="line">    <span class="keyword">return</span> linkFn</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>编译指令。这里解释了各种指令的匹配过程，可以只看<code>v-text</code>匹配到的部分</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 匹配修改器，如：`.async`</span></div><div class="line"><span class="keyword">const</span> modifierRE = <span class="regexp">/\.[^\.]+/g</span></div><div class="line"><span class="comment">// 匹配transition指令。</span></div><div class="line"><span class="comment">// 动态绑定：`v-bind:transition=""`或`:transition=""`</span></div><div class="line"><span class="comment">// 静态绑定：`transition`</span></div><div class="line"><span class="keyword">const</span> transitionRE = <span class="regexp">/^(v-bind:|:)?transition$/</span></div><div class="line"><span class="comment">// 匹配动态绑定 `v-bind:`或`:`</span></div><div class="line"><span class="keyword">const</span> bindRE = <span class="regexp">/^v-bind:|^:/</span></div><div class="line"><span class="comment">// 匹配普通指令`v-text` `v-ref:xxx` 或`v-el:xxx`</span></div><div class="line"><span class="keyword">const</span> dirAttrRE = <span class="regexp">/^v-([^:]+)(?:$|:(.*)$)/</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">compileDirectives</span> (<span class="params">attrs, options</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> i = attrs.length</div><div class="line">    <span class="keyword">var</span> dirs = [] <span class="comment">// 存储当前元素上的所有属性解析之后的值</span></div><div class="line">    <span class="keyword">var</span> attr, name, value, rawName, rawValue, dirName, arg, modifiers, dirDef, tokens, matched</div><div class="line">    <span class="comment">// 遍历元素上的属性</span></div><div class="line">    <span class="keyword">while</span> (i--) &#123;</div><div class="line">        attr = attrs[i]</div><div class="line">        name = rawName = attr.name</div><div class="line">        value = rawValue = attr.value</div><div class="line">        <span class="comment">// 解析属性的值，看是否有`&#123;&#123;xxx&#125;&#125;`或者`&#123;&#123;&#123;xxx&#125;&#125;&#125;`</span></div><div class="line">        tokens = parseText(value)</div><div class="line">        <span class="comment">// 重置arg</span></div><div class="line">        arg = <span class="literal">null</span></div><div class="line">        <span class="comment">// 解析修改器</span></div><div class="line">        modifiers = parseModifiers(name)</div><div class="line">        <span class="comment">// 删除修改器</span></div><div class="line">        name = name.replace(modifierRE, <span class="string">''</span>)</div><div class="line">        <span class="comment">// 处理`&#123;&#123;&#125;&#125;`类型的值</span></div><div class="line">        <span class="keyword">if</span> (tokens) &#123;</div><div class="line">            value = tokensToExp(tokens)</div><div class="line">            arg = name</div><div class="line">            pushDir(<span class="string">'bind'</span>, publicDirectives.bind, tokens)</div><div class="line">        <span class="comment">// 处理过渡类型的指令</span></div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (transitionRE.test(name)) &#123;</div><div class="line">            modifiers.literal = !bindRE.test(name)</div><div class="line">            pushDir(<span class="string">'transition'</span>, internalDirectives.transition)</div><div class="line">        <span class="comment">// 处理`on`类型的指令</span></div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (onRE.test(name)) &#123;</div><div class="line">            arg = name.replace(onRE, <span class="string">''</span>)</div><div class="line">            pushDir(<span class="string">'on'</span>, publicDirectives.on)</div><div class="line">        <span class="comment">// 处理bind类型的指令</span></div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (bindRE.test(name)) &#123;</div><div class="line">            dirName = name.replace(bindRE, <span class="string">''</span>)</div><div class="line">            <span class="keyword">if</span> (dirName === <span class="string">'style'</span> || dirName === <span class="string">'class'</span>) &#123;</div><div class="line">                pushDir(dirName, internalDirectives[dirName])</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                arg = dirName</div><div class="line">                pushDir(<span class="string">'bind'</span>, publicDirectives.bind)</div><div class="line">            &#125;</div><div class="line">        <span class="comment">// 处理其他类型的指令。v-text指令将在这里被匹配</span></div><div class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> ((matched = name.match(dirAttrRE))) &#123;</div><div class="line">            <span class="comment">// 指令名</span></div><div class="line">            dirName = matched[<span class="number">1</span>]</div><div class="line">            <span class="comment">// 指令值</span></div><div class="line">            arg = matched[<span class="number">2</span>]</div><div class="line">            <span class="comment">// 匹配到对应的指令处理逻辑，指令处理逻辑中包含</span></div><div class="line">            <span class="comment">/* &#123;</span></div><div class="line">                bind()&#123;&#125;,</div><div class="line">                updata()&#123;&#125;</div><div class="line">            &#125; */</div><div class="line">            dirDef = resolveAsset(options, <span class="string">'directives'</span>, dirName, <span class="literal">true</span>)</div><div class="line">            <span class="keyword">if</span> (dirDef) &#123;</div><div class="line">                pushDir(dirName, dirDef)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">pushDir</span> (<span class="params">dirName, def, interpTokens</span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> parsed = parseDirective(value)</div><div class="line">        dirs.push(&#123;</div><div class="line">            <span class="attr">name</span>: dirName, <span class="comment">// 指令名称 `text`</span></div><div class="line">            attr: rawName, <span class="comment">// 指令原始名 `v-text`</span></div><div class="line">            raw: rawValue, <span class="comment">// 指令原始值 `msg`</span></div><div class="line">            def: def, <span class="comment">// 指令定义&#123;bind(), update()&#125;</span></div><div class="line">            arg: arg, <span class="comment">// 参数。`v-ref:xxx`中的`xxx`部分</span></div><div class="line">            modifiers: modifiers, <span class="comment">// 修改器</span></div><div class="line">            expression: parsed &amp;&amp; parsed.expression, <span class="comment">// 指令原始值中的表达式部分</span></div><div class="line">            filters: parsed &amp;&amp; parsed.filters, <span class="comment">// 指令原始值中的过滤器部分</span></div><div class="line">            interp: interpTokens,</div><div class="line">            <span class="attr">hasOneTime</span>: hasOneTimeToken</div><div class="line">        &#125;)</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 返回一个方法，用于指令和Vue实例的绑定</span></div><div class="line">    <span class="keyword">if</span> (dirs.length) &#123;</div><div class="line">        <span class="keyword">return</span> makeNodeLinkFn(dirs)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>指令和DOM的绑定</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeNodeLinkFn</span> <span class="params">(directives)</span> </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">nodeLinkFn</span> <span class="params">(vm, el, host, scope, frag)</span> </span>&#123;</div><div class="line">        <span class="keyword">var</span> i = directives.length</div><div class="line">        <span class="keyword">while</span> (i--) &#123;</div><div class="line">            vm._bindDir(directives[i], el, host, scope, frag)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 绑定的过程其实就是将指令实例化并存储到Vue实例的_directives数组中的过程</span></div><div class="line">Vue.prototype._bindDir = <span class="function"><span class="keyword">function</span> <span class="params">(descriptor, node, host, scope, frag)</span> </span>&#123;</div><div class="line">    <span class="keyword">this</span>._directives.push(</div><div class="line">        <span class="comment">// 实例化指令</span></div><div class="line">        <span class="keyword">new</span> Directive(descriptor, <span class="keyword">this</span>, node, host, scope, frag)</div><div class="line">    )</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vue/" rel="tag">#Vue</a>
+          
+            <a href="/tags/MVVM/" rel="tag">#MVVM</a>
+          
+            <a href="/tags/MVC/" rel="tag">#MVC</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Vue源码解读-get-set的内部实现/" rel="next" title="Vue源码解读-$Get & $Set的内部实现">
+                <i class="fa fa-chevron-left"></i> Vue源码解读-$Get & $Set的内部实现
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Vue源码解读-watch的内部实现/" rel="prev" title="Vue源码解读-$Watch的内部实现">
+                Vue源码解读-$Watch的内部实现 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Demo"><span class="nav-number">1.</span> <span class="nav-text">Demo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Vue实例对data的处理"><span class="nav-number">2.</span> <span class="nav-text">Vue实例对data的处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板的编译过程"><span class="nav-number">3.</span> <span class="nav-text">模板的编译过程</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'Vue源码解读-指令v-text的编译过程/';
+      var disqus_title = "Vue源码解读-指令V-Text的编译过程";
+      var disqus_url = 'http://yoursite.com/Vue源码解读-指令v-text的编译过程/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

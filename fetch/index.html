@@ -1,0 +1,867 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ES6,fetch," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="事实标准，并不存在与ES6规范中，基于Promise实现。目前项目中对Promise的兼容性尚存在问题，如果在项目中应用fetch，需要引入es6-promise和fetch。以下提到为了浏览器兼容而引入的fech组件时统一使用’fech组件’代替。该文档重点针对fetch组件进行详细说明。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fetch">
+<meta property="og:url" content="http://yoursite.com/fetch/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="事实标准，并不存在与ES6规范中，基于Promise实现。目前项目中对Promise的兼容性尚存在问题，如果在项目中应用fetch，需要引入es6-promise和fetch。以下提到为了浏览器兼容而引入的fech组件时统一使用’fech组件’代替。该文档重点针对fetch组件进行详细说明。">
+<meta property="og:updated_time" content="2016-09-26T10:28:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fetch">
+<meta name="twitter:description" content="事实标准，并不存在与ES6规范中，基于Promise实现。目前项目中对Promise的兼容性尚存在问题，如果在项目中应用fetch，需要引入es6-promise和fetch。以下提到为了浏览器兼容而引入的fech组件时统一使用’fech组件’代替。该文档重点针对fetch组件进行详细说明。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/fetch/"/>
+
+  <title> Fetch | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Fetch
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-28T17:08:11+08:00" content="2016-06-28">
+              2016-06-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ES6/" itemprop="url" rel="index">
+                    <span itemprop="name">ES6</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/fetch/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="fetch/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>事实标准，并不存在与ES6规范中，基于Promise实现。<br>目前项目中对Promise的<a href="http://caniuse.com/#search=promise" target="_blank" rel="external">兼容性</a>尚存在问题，如果在项目中应用fetch，需要引入<a href="https://github.com/stefanpenner/es6-promise" target="_blank" rel="external">es6-promise</a>和<a href="https://github.com/github/fetch" target="_blank" rel="external">fetch</a>。<br>以下提到为了浏览器兼容而引入的fech组件时统一使用’fech组件’代替。<br>该文档重点针对fetch组件进行详细说明。</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="相关概念"><a href="#相关概念" class="headerlink" title="相关概念"></a>相关概念</h3><ul>
+<li>Request、Response、Header、Body：事实标准中暴露在window对象中，但在fetch组件中没有对外暴露接口，项目中不能使用，因此暂不做深入了解。在RN中可以直接使用</li>
+<li>返回Promise对象</li>
+</ul>
+<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><ul>
+<li>get</li>
+</ul>
+<figure class="highlight scilab"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">fetch(<span class="string">'/test/content.json'</span>).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">(data)</span>&#123;</span></div><div class="line">    <span class="keyword">return</span> data.json();</div><div class="line">&#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">(data)</span>&#123;</span></div><div class="line">    console.<span class="built_in">log</span>(data);</div><div class="line">&#125;).<span class="keyword">catch</span>(<span class="function"><span class="keyword">function</span><span class="params">(error)</span>&#123;</span></div><div class="line">    console.<span class="built_in">log</span>(<span class="built_in">error</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<ul>
+<li>post</li>
+</ul>
+<figure class="highlight scilab"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">fetch(<span class="string">'/test/content.json'</span>, &#123; <span class="comment">// url: fetch事实标准中可以通过Request相关api进行设置</span></div><div class="line">    method: <span class="string">'POST'</span>,</div><div class="line">    mode: <span class="string">'same-origin'</span>, <span class="comment">// same-origin|no-cors（默认）|cors</span></div><div class="line">    credentials: <span class="string">'include'</span>, <span class="comment">// omit（默认，不带cookie）|same-origin(同源带cookie)|include(总是带cookie)</span></div><div class="line">    headers: &#123; <span class="comment">// headers: fetch事实标准中可以通过Header相关api进行设置</span></div><div class="line">        <span class="string">'Content-Type'</span>: <span class="string">'application/x-www-form-urlencoded'</span> <span class="comment">// default: 'application/json'</span></div><div class="line">    &#125;,</div><div class="line">    body: <span class="string">'a=1&amp;b=2'</span> <span class="comment">// body: fetch事实标准中可以通过Body相关api进行设置</span></div><div class="line">&#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">(res)</span>&#123; <span class="title">res</span>: <span class="title">fetch</span>事实标准中可以通过<span class="title">Response</span>相关<span class="title">api</span>进行设置</span></div><div class="line">    <span class="keyword">return</span> res.json();</div><div class="line">&#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">(data)</span>&#123;</span></div><div class="line">    console.<span class="built_in">log</span>(data);</div><div class="line">&#125;).<span class="keyword">catch</span>(<span class="function"><span class="keyword">function</span><span class="params">(error)</span>&#123;</span></div><div class="line">    </div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="Response相关属性及方法"><a href="#Response相关属性及方法" class="headerlink" title="Response相关属性及方法"></a>Response相关属性及方法</h3><h4 id="bodyUsed"><a href="#bodyUsed" class="headerlink" title="bodyUsed"></a>bodyUsed</h4><ul>
+<li>标记返回值是否被使用过</li>
+<li>这样设计的目的是为了之后兼容基于流的API，让应用一次消费data，这样就允许了JavaScript处理大文件例如视频，并且可以支持实时压缩和编辑</li>
+</ul>
+<figure class="highlight scilab"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">fetch(<span class="string">'/test/content.json'</span>).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">(res)</span>&#123;</span></div><div class="line">    console.<span class="built_in">log</span>(res.bodyUsed); <span class="comment">// false</span></div><div class="line">    var data = res.json();</div><div class="line">    console.<span class="built_in">log</span>(res.bodyUsed); <span class="comment">//true</span></div><div class="line">    <span class="keyword">return</span> data;</div><div class="line">&#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">(data)</span>&#123;</span></div><div class="line">    console.<span class="built_in">log</span>(data);</div><div class="line">&#125;).<span class="keyword">catch</span>(<span class="function"><span class="keyword">function</span><span class="params">(error)</span>&#123;</span></div><div class="line">    console.<span class="built_in">log</span>(<span class="built_in">error</span>);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h4 id="headers"><a href="#headers" class="headerlink" title="headers"></a>headers</h4><ul>
+<li>返回Headers对象，该对象实现了Iterator，可通过for…of遍历</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">fetch(<span class="string">'/test/content.json'</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">res</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> headers = res.headers;</div><div class="line">    <span class="built_in">console</span>.log(headers.get(<span class="string">'Content-Type'</span>)); <span class="comment">// application/json</span></div><div class="line">    <span class="built_in">console</span>.log(headers.has(<span class="string">'Content-Type'</span>)); <span class="comment">// true</span></div><div class="line">    <span class="built_in">console</span>.log(headers.getAll(<span class="string">'Content-Type'</span>)); <span class="comment">// ["application/json"]</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> key <span class="keyword">of</span> headers.keys())&#123;</div><div class="line">        <span class="built_in">console</span>.log(key); <span class="comment">// datelast-modified server accept-ranges etag content-length content-type</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> value <span class="keyword">of</span> headers.values())&#123;</div><div class="line">        <span class="built_in">console</span>.log(value);</div><div class="line">    &#125;</div><div class="line">    headers.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">value, key, arr</span>)</span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(value); <span class="comment">// 对应values()的返回值</span></div><div class="line">        <span class="built_in">console</span>.log(key); <span class="comment">// 对应keys()的返回值</span></div><div class="line">    &#125;);</div><div class="line">    <span class="keyword">return</span> res.json();</div><div class="line">&#125;).then(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(data);</div><div class="line">&#125;).catch(<span class="function"><span class="keyword">function</span>(<span class="params">error</span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(error);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h4 id="ok"><a href="#ok" class="headerlink" title="ok"></a>ok</h4><ul>
+<li>是否正常返回</li>
+<li>代表状态码在<code>200-299</code>之间</li>
+</ul>
+<h4 id="status"><a href="#status" class="headerlink" title="status"></a>status</h4><ul>
+<li>状态码<ul>
+<li>200 成功</li>
+<li></li>
+</ul>
+</li>
+</ul>
+<h4 id="statusText"><a href="#statusText" class="headerlink" title="statusText"></a>statusText</h4><ul>
+<li>状态描述<ul>
+<li>‘OK’ 成功</li>
+</ul>
+</li>
+</ul>
+<h4 id="type"><a href="#type" class="headerlink" title="type"></a>type</h4><ul>
+<li><code>basic</code>：正常的，同域的请求，包含所有的headers。排除<code>Set-Cookie</code>和<code>Set-Cookie2</code>。</li>
+<li><code>cors</code>：Response从一个合法的跨域请求获得，一部分header和body可读。</li>
+<li><code>error</code>：网络错误。Response的status是0，Headers是空的并且不可写。当Response是从Response.error()中得到时，就是这种类型。</li>
+<li><code>opaque</code>： Response从”no-cors”请求了跨域资源。依靠Server端来做限制。</li>
+</ul>
+<h4 id="url"><a href="#url" class="headerlink" title="url"></a>url</h4><ul>
+<li>返回完整的url字符串。如：’<a href="http://xxx.com/xx?a=1" target="_blank" rel="external">http://xxx.com/xx?a=1</a>‘</li>
+</ul>
+<h4 id="arrayBuffer"><a href="#arrayBuffer" class="headerlink" title="arrayBuffer()"></a>arrayBuffer()</h4><ul>
+<li>返回ArrayBuffer类型的数据的Promise对象</li>
+</ul>
+<h4 id="blob"><a href="#blob" class="headerlink" title="blob()"></a>blob()</h4><ul>
+<li>返回Blob类型的数据的Promise对象</li>
+</ul>
+<h4 id="clone"><a href="#clone" class="headerlink" title="clone()"></a>clone()</h4><ul>
+<li>生成一个Response的克隆</li>
+<li>body只能被读取一次，但clone方法就可以得到body的一个备份</li>
+<li>克隆体仍然具有bodyUsed属性，如果被使用过一次，依然会失效</li>
+</ul>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">fetch(<span class="string">'/test/content.json'</span>).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">(data)</span></span>&#123;</div><div class="line">    var d = <span class="keyword">data</span>.clone();</div><div class="line">    d.text().<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">(text)</span></span>&#123;</div><div class="line">        console.<span class="built_in">log</span>(JSON.parse(text));</div><div class="line">    &#125;);</div><div class="line">    <span class="keyword">return</span> <span class="keyword">data</span>.json();</div><div class="line">&#125;).<span class="keyword">then</span>(<span class="function"><span class="keyword">function</span><span class="params">(data)</span></span>&#123;</div><div class="line">    console.<span class="built_in">log</span>(<span class="keyword">data</span>);</div><div class="line">&#125;).catch(<span class="function"><span class="keyword">function</span><span class="params">(error)</span></span>&#123;</div><div class="line">    console.<span class="built_in">log</span>(error);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h4 id="json"><a href="#json" class="headerlink" title="json()"></a>json()</h4><ul>
+<li>返回JSON类型的数据的Promise对象</li>
+</ul>
+<h4 id="text"><a href="#text" class="headerlink" title="text()"></a>text()</h4><ul>
+<li>返回Text类型的数据的Promise对象</li>
+</ul>
+<h4 id="formData"><a href="#formData" class="headerlink" title="formData()"></a>formData()</h4><ul>
+<li>返回FormData类型的数据的Promise对象</li>
+</ul>
+<h3 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h3><ul>
+<li>无法监控读取进度</li>
+<li>无法中断请求</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ES6/" rel="tag">#ES6</a>
+          
+            <a href="/tags/fetch/" rel="tag">#fetch</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Class/" rel="next" title="Class">
+                <i class="fa fa-chevron-left"></i> Class
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Function/" rel="prev" title="Function">
+                Function <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#相关概念"><span class="nav-number">1.</span> <span class="nav-text">相关概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基本用法"><span class="nav-number">2.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Response相关属性及方法"><span class="nav-number">3.</span> <span class="nav-text">Response相关属性及方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#bodyUsed"><span class="nav-number">3.1.</span> <span class="nav-text">bodyUsed</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#headers"><span class="nav-number">3.2.</span> <span class="nav-text">headers</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ok"><span class="nav-number">3.3.</span> <span class="nav-text">ok</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#status"><span class="nav-number">3.4.</span> <span class="nav-text">status</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#statusText"><span class="nav-number">3.5.</span> <span class="nav-text">statusText</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#type"><span class="nav-number">3.6.</span> <span class="nav-text">type</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#url"><span class="nav-number">3.7.</span> <span class="nav-text">url</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#arrayBuffer"><span class="nav-number">3.8.</span> <span class="nav-text">arrayBuffer()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#blob"><span class="nav-number">3.9.</span> <span class="nav-text">blob()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#clone"><span class="nav-number">3.10.</span> <span class="nav-text">clone()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#json"><span class="nav-number">3.11.</span> <span class="nav-text">json()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#text"><span class="nav-number">3.12.</span> <span class="nav-text">text()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#formData"><span class="nav-number">3.13.</span> <span class="nav-text">formData()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#缺陷"><span class="nav-number">4.</span> <span class="nav-text">缺陷</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'fetch/';
+      var disqus_title = "Fetch";
+      var disqus_url = 'http://yoursite.com/fetch/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,819 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Vue,MVVM,MVC," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头
+
+将参数data整体代理到实例上，暴露在$data上
+此方法出现在/src/instance/internal/state.js文件中，而这个文件是提供内部方法的，理论上这个方法应该放在/src/instance/api/state.js，暂时未明白作者为什么这么处理。
+此">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码解读-对参数Data的处理">
+<meta property="og:url" content="http://yoursite.com/Vue源码解读-对参数data的处理/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头
+
+将参数data整体代理到实例上，暴露在$data上
+此方法出现在/src/instance/internal/state.js文件中，而这个文件是提供内部方法的，理论上这个方法应该放在/src/instance/api/state.js，暂时未明白作者为什么这么处理。
+此">
+<meta property="og:updated_time" content="2016-09-26T10:28:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码解读-对参数Data的处理">
+<meta name="twitter:description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头
+
+将参数data整体代理到实例上，暴露在$data上
+此方法出现在/src/instance/internal/state.js文件中，而这个文件是提供内部方法的，理论上这个方法应该放在/src/instance/api/state.js，暂时未明白作者为什么这么处理。
+此">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Vue源码解读-对参数data的处理/"/>
+
+  <title> Vue源码解读-对参数Data的处理 | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Vue源码解读-对参数Data的处理
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-22T16:38:49+08:00" content="2016-07-22">
+              2016-07-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/Vue源码解读-对参数data的处理/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Vue源码解读-对参数data的处理/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>version: 1.0.24<br>对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头</p>
+</blockquote>
+<h3 id="将参数data整体代理到实例上，暴露在-data上"><a href="#将参数data整体代理到实例上，暴露在-data上" class="headerlink" title="将参数data整体代理到实例上，暴露在$data上"></a>将参数data整体代理到实例上，暴露在<code>$data</code>上</h3><ul>
+<li>此方法出现在<code>/src/instance/internal/state.js</code>文件中，而这个文件是提供内部方法的，理论上这个方法应该放在<code>/src/instance/api/state.js</code>，暂时未明白作者为什么这么处理。</li>
+<li>此方法提供用户使用新的data代替旧data的机会</li>
+<li>下面部分源码解释了为什么用户可以调用$data给实例重新赋值或拿到值，以及重新给$data赋值之后Vue做了哪些事情。</li>
+</ul>
+<a id="more"></a>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Object</span>.defineProperty(Vue.prototype, <span class="string">'$data'</span>, &#123;</div><div class="line">    get () &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>._data</div><div class="line">    &#125;,</div><div class="line">    set (newData) &#123;</div><div class="line">        <span class="keyword">if</span> (newData !== <span class="keyword">this</span>._data) &#123;</div><div class="line">            <span class="comment">// 这并不是上面提到的疑问的答案，就算放在api中的文件里，依然可以调用到内部方法，因为此时_setData已经被挂载到prototype上了</span></div><div class="line">            <span class="keyword">this</span>._setData(newData)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line"><span class="comment">// 当用户调用$data给data重新赋值时的处理逻辑</span></div><div class="line">Vue.prototype._setData = <span class="function"><span class="keyword">function</span> (<span class="params">newData</span>) </span>&#123;</div><div class="line">    newData = newData || &#123;&#125;</div><div class="line">    <span class="keyword">var</span> oldData = <span class="keyword">this</span>._data</div><div class="line">    <span class="keyword">this</span>._data = newData</div><div class="line">    <span class="keyword">var</span> keys, key, i</div><div class="line">    <span class="comment">// 遍历旧的data中的所有属性，如果某些属性不存在于新的data中，将其从实例代理中删除</span></div><div class="line">    keys = <span class="built_in">Object</span>.keys(oldData)</div><div class="line">    i = keys.length</div><div class="line">    <span class="keyword">while</span> (i--) &#123;</div><div class="line">        key = keys[i]</div><div class="line">        <span class="keyword">if</span> (!(key <span class="keyword">in</span> newData)) &#123;</div><div class="line">            <span class="keyword">this</span>._unproxy(key)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 遍历新的data中的所有属性，将实例没有代理的属性添加到实例中</span></div><div class="line">    keys = <span class="built_in">Object</span>.keys(newData)</div><div class="line">    i = keys.length</div><div class="line">    <span class="keyword">while</span> (i--) &#123;</div><div class="line">        key = keys[i]</div><div class="line">        <span class="keyword">if</span> (!hasOwn(<span class="keyword">this</span>, key)) &#123;</div><div class="line">            <span class="keyword">this</span>._proxy(key)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// __ob__用于维护数据对应的Observer实例</span></div><div class="line">    oldData.__ob__.removeVm(<span class="keyword">this</span>)</div><div class="line">    <span class="comment">// 监听新数据，具体逻辑可以查看 `Vue源码解读-数据双向绑定简化版`</span></div><div class="line">    observe(newData, <span class="keyword">this</span>)</div><div class="line">    <span class="comment">// 将所有的数据订阅者(Watchers)都推入队列中等待执行</span></div><div class="line">    <span class="keyword">this</span>._digest()</div><div class="line">&#125;</div><div class="line"><span class="comment">// data中的属性代理到实例上的处理逻辑</span></div><div class="line">Vue.prototype._proxy = <span class="function"><span class="keyword">function</span> (<span class="params">key</span>) </span>&#123;</div><div class="line">    <span class="comment">// 对$或者_开头的属性不做处理。也就是说，data中的属性名不允许以$或_开头</span></div><div class="line">    <span class="keyword">if</span> (!isReserved(key)) &#123;</div><div class="line">        <span class="comment">// 这里为什么要将this存储到self中。源码中的注释解释是：这些属性可能会在子实例中被调用</span></div><div class="line">        <span class="keyword">var</span> self = <span class="keyword">this</span></div><div class="line">        <span class="built_in">Object</span>.defineProperty(self, key, &#123;</div><div class="line">            <span class="attr">configurable</span>: <span class="literal">true</span>,</div><div class="line">            <span class="attr">enumerable</span>: <span class="literal">true</span>,</div><div class="line">            <span class="comment">// 这里的get和set虽然只是简单的返回数据，但是在_data中对数据进行读写时，进行了逻辑处理。</span></div><div class="line">            get: <span class="function"><span class="keyword">function</span> <span class="title">proxyGetter</span> (<span class="params"></span>) </span>&#123;</div><div class="line">                <span class="keyword">return</span> self._data[key]</div><div class="line">            &#125;,</div><div class="line">            <span class="attr">set</span>: <span class="function"><span class="keyword">function</span> <span class="title">proxySetter</span> (<span class="params">val</span>) </span>&#123;</div><div class="line">                self._data[key] = val</div><div class="line">            &#125;</div><div class="line">        &#125;)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 解除属性在实例上的代理</span></div><div class="line">Vue.prototype._unproxy = <span class="function"><span class="keyword">function</span> (<span class="params">key</span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (!isReserved(key)) &#123;</div><div class="line">        <span class="keyword">delete</span> <span class="keyword">this</span>[key]</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 将所有的数据订阅者都推入队列中等待被执行，只有通过$data改变数据时才会触发。</span></div><div class="line">Vue.prototype._digest = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, l = <span class="keyword">this</span>._watchers.length; i &lt; l; i++) &#123;</div><div class="line">        <span class="comment">// 传入参数true，保证复杂数据类型(Object/Array)的Watchers不会被触发</span></div><div class="line">        <span class="comment">// 暂时没理解为啥不需要复杂数据类型不需要被触发</span></div><div class="line">        <span class="keyword">this</span>._watchers[i].update(<span class="literal">true</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 工具方法，存在于`/src/util/lang.js`中，用于判断字符串是否以`$`或`_`开头</span></div><div class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">isReserved</span> (<span class="params">str</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> c = (str + <span class="string">''</span>).charCodeAt(<span class="number">0</span>)</div><div class="line">    <span class="keyword">return</span> c === <span class="number">0x24</span> || c === <span class="number">0x5F</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="实例化过程中对data的初始化"><a href="#实例化过程中对data的初始化" class="headerlink" title="实例化过程中对data的初始化"></a>实例化过程中对data的初始化</h3><ul>
+<li>Vue源码解读-参数合并中已经解释过，在对data进行初始化之前，已经对参数中的data做了处理，使其并不直接指向具体数据，而是指向一个获取数据的方法</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 该方法在实例化入口中被调用</span></div><div class="line">Vue.prototype._initState = function () &#123;</div><div class="line">    <span class="comment">// this._initProps()</span></div><div class="line">    <span class="comment">// this._initMeta()</span></div><div class="line">    <span class="comment">// this._initMethods()</span></div><div class="line">    <span class="keyword">this</span>._initData() <span class="comment">// 本文只关注对数据的处理</span></div><div class="line">    <span class="comment">// this._initComputed()</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// 对数据设置实例代理，并设置监听</span></div><div class="line">Vue.prototype._initData = function () &#123;</div><div class="line">    <span class="keyword">var</span> dataFn = <span class="keyword">this</span>.$options.<span class="keyword">data</span></div><div class="line">    <span class="keyword">var</span> <span class="keyword">data</span> = <span class="keyword">this</span>._data = dataFn ? dataFn() : &#123;&#125;</div><div class="line">    <span class="keyword">if</span> (!isPlainObject(<span class="keyword">data</span>)) &#123;</div><div class="line">       <span class="keyword">data</span> = &#123;&#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> props = <span class="keyword">this</span>._props</div><div class="line">    <span class="keyword">var</span> keys = Object.keys(<span class="keyword">data</span>)</div><div class="line">    <span class="keyword">var</span> i, key</div><div class="line">    i = keys.length</div><div class="line">    <span class="keyword">while</span> (i--) &#123;</div><div class="line">        <span class="comment">// 当props中没有同名属性名时，设置实例代理</span></div><div class="line">        <span class="keyword">if</span> (!props || !hasOwn(props, key)) &#123;</div><div class="line">            <span class="keyword">this</span>._proxy(key)</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 设置对数据的监听(深度监听，设置set&amp;get方法)</span></div><div class="line">    <span class="comment">// 具体可查看 Vue源码解读-数据双向绑定简化版</span></div><div class="line">    observe(<span class="keyword">data</span>, <span class="keyword">this</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vue/" rel="tag">#Vue</a>
+          
+            <a href="/tags/MVVM/" rel="tag">#MVVM</a>
+          
+            <a href="/tags/MVC/" rel="tag">#MVC</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Vue源码解读-watch的内部实现/" rel="next" title="Vue源码解读-$Watch的内部实现">
+                <i class="fa fa-chevron-left"></i> Vue源码解读-$Watch的内部实现
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/AnimationLib-PreloadJS基本用法/" rel="prev" title="♏️  AnimationLib-PreloadJS基本用法">
+                ♏️  AnimationLib-PreloadJS基本用法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#将参数data整体代理到实例上，暴露在-data上"><span class="nav-number">1.</span> <span class="nav-text">将参数data整体代理到实例上，暴露在$data上</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实例化过程中对data的初始化"><span class="nav-number">2.</span> <span class="nav-text">实例化过程中对data的初始化</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'Vue源码解读-对参数data的处理/';
+      var disqus_title = "Vue源码解读-对参数Data的处理";
+      var disqus_url = 'http://yoursite.com/Vue源码解读-对参数data的处理/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

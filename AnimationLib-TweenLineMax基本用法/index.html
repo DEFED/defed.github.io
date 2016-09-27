@@ -1,0 +1,977 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="AnimationLib," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="version: 1.18.6TweenLineMax的基本用法，更多详细内容可参考官网API传送门：http://greensock.com/timelinemax">
+<meta property="og:type" content="article">
+<meta property="og:title" content="♏️  AnimationLib-TweenLineMax基本用法">
+<meta property="og:url" content="http://yoursite.com/AnimationLib-TweenLineMax基本用法/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="version: 1.18.6TweenLineMax的基本用法，更多详细内容可参考官网API传送门：http://greensock.com/timelinemax">
+<meta property="og:image" content="http://yoursite.com/images/Animation/1.jpg">
+<meta property="og:image" content="http://yoursite.com/images/Animation/2.jpg">
+<meta property="og:image" content="http://yoursite.com/images/Animation/3.jpg">
+<meta property="og:image" content="http://yoursite.com/images/Animation/4.jpg">
+<meta property="og:image" content="http://yoursite.com/images/Animation/5.jpg">
+<meta property="og:image" content="http://yoursite.com/images/Animation/6.jpg">
+<meta property="og:image" content="http://yoursite.com/images/Animation/7.jpg">
+<meta property="og:image" content="http://yoursite.com/images/Animation/8.jpg">
+<meta property="og:image" content="http://yoursite.com/images/Animation/9.jpg">
+<meta property="og:image" content="http://yoursite.com/images/Animation/10.jpg">
+<meta property="og:image" content="http://yoursite.com/images/Animation/11.jpg">
+<meta property="og:updated_time" content="2016-09-27T08:21:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="♏️  AnimationLib-TweenLineMax基本用法">
+<meta name="twitter:description" content="version: 1.18.6TweenLineMax的基本用法，更多详细内容可参考官网API传送门：http://greensock.com/timelinemax">
+<meta name="twitter:image" content="http://yoursite.com/images/Animation/1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/AnimationLib-TweenLineMax基本用法/"/>
+
+  <title> ♏️  AnimationLib-TweenLineMax基本用法 | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ♏️  AnimationLib-TweenLineMax基本用法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-26T21:03:47+08:00" content="2016-09-26">
+              2016-09-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/AnimationLib/" itemprop="url" rel="index">
+                    <span itemprop="name">AnimationLib</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/AnimationLib-TweenLineMax基本用法/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="AnimationLib-TweenLineMax基本用法/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>version: 1.18.6<br>TweenLineMax的基本用法，更多详细内容可参考官网API<br>传送门：<a href="http://greensock.com/timelinemax" target="_blank" rel="external">http://greensock.com/timelinemax</a></p>
+</blockquote>
+<a id="more"></a>
+<h3 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h3><figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建实例</span></div><div class="line">var motion = <span class="keyword">new</span> TimelineMax();</div><div class="line"></div><div class="line"><span class="comment">//添加动画</span></div><div class="line">motion.add(TweenMax.from(<span class="string">'.p1'</span>, <span class="number">1</span>, &#123;<span class="string">scale:</span><span class="number">1.2</span>, <span class="string">alpha:</span><span class="number">0</span>, <span class="string">ease:</span>Linear.easeInout, <span class="string">onStart:</span> function()&#123;&#125;&#125;));</div><div class="line">motion.add(TweenMax.to(<span class="string">'.p2'</span>, <span class="number">1</span>, &#123;<span class="string">scale:</span><span class="number">1.2</span>, <span class="string">alpha:</span><span class="number">0</span>, <span class="string">ease:</span>Linear.easeInout, <span class="string">onComplete:</span> function()&#123;&#125;&#125;));</div><div class="line">motion.pause();</div><div class="line"></div><div class="line"><span class="comment">//动画操作</span></div><div class="line">motion.play(); <span class="comment">//播放动画</span></div><div class="line">motion.pause(); <span class="comment">//暂停动画</span></div><div class="line">motion.restart(); <span class="comment">//重新播放动画</span></div></pre></td></tr></table></figure>
+<h3 id="API详解"><a href="#API详解" class="headerlink" title="API详解"></a>API详解</h3><h4 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h4><blockquote>
+<p>♏️  构造函数 TweenMax(target:Object, duration:Number, vars:Object)</p>
+</blockquote>
+<ul>
+<li>target: Object – 需要缓动的对象</li>
+<li>duration: Number – 缓动持续时间</li>
+<li>vars: Object – 其它参数(特有属性29个，插件17个，公共属性10个，公共方法20个)</li>
+</ul>
+<h4 id="第三个参数（vars）的特有属性"><a href="#第三个参数（vars）的特有属性" class="headerlink" title="第三个参数（vars）的特有属性"></a>第三个参数（vars）的特有属性</h4><blockquote>
+<p>♏️ 第三个参数（vars）的特有属性</p>
+</blockquote>
+<ol>
+<li>delay : Number：延迟开始，在TweenMax动画开始前延迟的秒数。</li>
+<li>useFrames : Boolean：当设置为True时，对这个TweenMax Object的时间计算方式就是基于帧frame的。</li>
+<li>ease : Function：缓动方式。可以使用com.greensock.easing包下的缓动函数。</li>
+<li>easeParams : Array：缓动函数参数。某些缓动函数需要传入一些参数来进行额外的控制。</li>
+<li>onInit : Function：初始化函数。在TweenMax开始前，所有参数还没被传入TweenMax Object时触发。可以用来初始化运动对象的状态。</li>
+<li>onInitParams : Array：初始化函数参数。</li>
+<li>onStart : Function：开始函数。跟初始化函数不同，开始函数在TweenMax Object的值改变之后才触发，而且不同于初始化函数。开始函数可以被触发多次。</li>
+<li>onStartParams : Array：开始函数参数。</li>
+<li>onUpdate : Function：更新函数。当每次TweenMax Object数值更新的时候触发。</li>
+<li>onUpdateParams : Array：更新函数参数。</li>
+<li>onComplete : Function：完成函数。当TweenMax Object完成缓动后触发。</li>
+<li><p>onCompleteParams : Array：完成函数参数。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="attribute">x</span>:<span class="number">333</span>, y:<span class="number">333</span>, onComplete:onCompleteHander, onCompleteParam:[<span class="string">"wn"</span>,<span class="string">"334"</span>]&#125;</div><div class="line"></div><div class="line"><span class="selector-tag">function</span> <span class="selector-tag">onCompletHandler</span>(<span class="selector-tag">value1</span><span class="selector-pseudo">:Object</span>,<span class="selector-tag">value2</span><span class="selector-pseudo">:objet)</span>&#123;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>onReverseComplete : Function：回放完成函数。当TweenMax Object处于回放状态，并且回到起点时触发。</p>
+</li>
+<li>onReverseCompleteParams : Array：回放完成函数参数。</li>
+<li>onRepeat : Function：重放函数。当TweenMax Object每次重放的时候触发。</li>
+<li>onRepeatParams : Array：重放函数参数。</li>
+<li>immediateRender : Boolean：立即渲染。一般来说，TweenMax Object会在下一个渲染周期（也就是下一帧）被渲染到场景中。如果想强制立即渲染，可以把这个参数设为true。另外如果想阻止一个运动周期为0的运动物体被渲染，也可以把这个参数设为false。</li>
+<li>paused : Boolean：暂停。这个很好理解，设为true时TweenMax Object就会暂停缓动。</li>
+<li>reversed : Boolean：反转。不知道为什么跟说明文档里的不同。我的理解是将TweenMax Object的缓动反过来播放。</li>
+<li>overwrite : int：覆盖处理。定义了当对同一个物体使用TweenMax时发生冲突的处理方法。有6种模式。</li>
+</ol>
+<ul>
+<li>模式0：NONE。不做任何处理。性能Excellent。</li>
+<li>模式1：ALL_IMMEDIATE。设为该模式的TweenMax Object运动具有最高的优先级，会覆盖掉运动物体之前所有的缓动。新的TweenMax Object创建时覆盖旧的TweenMax Object。性能Excellent。</li>
+<li>模式2：AUTO。是TweenMax的默认模式（原来我之前的痛苦都是因为它···）。在新的TweenMax Object第一次渲染时覆盖重复的属性（模式1是覆盖掉全部属性）。只要不是具有太多的属性需要覆盖，性能还是不错的。</li>
+<li>模式3：CONCURRENT。这个单词的意思是“同时发生”。跟模式1很相似。唯一的不同是他只覆盖掉正在运行的TweenMax Object。而放过其他的没有启动的TweenMax Object。性能Very Good。</li>
+<li>模式4：ALL_ONSTART。也是跟模式1非常像。两点不同是他是在TweenMax Object第一次渲染时才覆盖掉其他所有的TweenMax Object，而且这个会把在他之后创建的TweenMax Object也覆盖掉。性能Very Good。</li>
+<li>模式5：PREEXISTING。这个单词一看上去很迷糊，其实是pre-existing，囧。唯一的不同是他是在TweenMax Object第一次渲染时才覆盖掉其他所有的TweenMax Object。性能Very Good。</li>
+<li>如果想改变全局的TweenMax Object默认overwrite属性，可以调用哪个OverWriteManager类的全局方法init()。<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">OverwriteManager</span><span class="selector-class">.init</span>(<span class="selector-tag">OverwriteManager</span><span class="selector-class">.XXXX</span>);]</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<ol>
+<li>repeat : int：循环次数。设置为-1为无限循环。</li>
+<li>repeatDelay : Number：循环延迟的时间。</li>
+<li>yoyo : Boolean：YOYO球。另外一种循环的方式。像我们玩的YOYO球一样，从头到尾，再从尾到头的往返运动。PS:要与repeat同时设置。</li>
+<li>onStartListener : Function：注册一个TweenEvent的监听，跟开始函数在同一时刻派发（不影响效果）。</li>
+<li>onUpdateListener : Function：注册一个TweenEvent的监听，跟更新函数在同一时刻派发（不影响效果）。</li>
+<li>onCompleteListener : Function：注册一个TweenEvent的监听，跟完成函数在同一时刻派发（不影响效果）。</li>
+<li>onReverseCompleteListener : Function：注册一个TweenEvent的监听，跟回放完成函数在同一时刻派发（不影响效果）。</li>
+<li>onRepeatListener : Function：注册一个TweenEvent的监听，跟重放函数在同一时刻派发（不影响效果）。</li>
+<li>startAt : Object：重设初始值。一般TweenMax Object使用运动物体的当前状态来做初始值。但是可以使用这个参数重新设置运动物体的初始状态。</li>
+</ol>
+<h4 id="公共属性"><a href="#公共属性" class="headerlink" title="公共属性"></a>公共属性</h4><blockquote>
+<p>♏️ 公共属性</p>
+</blockquote>
+<ol>
+<li>动画进度<br>　　currentProgress : Number<br>　　缓动动画的进度，从0～1。</li>
+<li>动画时间<br>　　currentTime : Number<br>　　与totalDuartion不同，currentTime只表示了一个TweenMax周期的时间。</li>
+<li>全局缓动速度倍数<br>　　globalTimeScale : Number<br>　　类似与按XX倍速播放缓动动画，用法：TweenMax.globalTimeScale = XXX;</li>
+<li>取消作用在运动物体上的所有TweenMax动画<br>　　killTweensOf : Function<br>　　这是一个对TweenLite中killTweensOf函数的引用，可以直接使用。</li>
+<li>重放次数<br>　　repeat : int<br>　　跟直接在TweenMax的构造函数中传入效果一样。</li>
+<li>重放延迟时间<br>　　repeatDelay : Number<br>　　跟直接在TweenMax的构造函数中传入效果一样。</li>
+<li>个体缓动速度倍数<br>　　timeScale : Number<br>　　与globalTimeScale用法一样，只是这个是对单个TweenMax Object调用的。</li>
+<li>总缓动进度<br>　　totalProgress : Number<br>　　这个计算的是总的缓动时间，包含了重放和重放延迟的时间。从0～1。</li>
+<li>总缓动时间<br>　　totalDuration : Number<br>　　这个计算的是总的缓动时间，包含了重放和重放延迟的时间。</li>
+<li>yoyo<br>　　yoyo : Boolean<br>　　跟直接在TweenMax的构造函数中传入效果一样。</li>
+</ol>
+<h4 id="公共方法"><a href="#公共方法" class="headerlink" title="公共方法"></a>公共方法</h4><blockquote>
+<p>♏️ 公共方法</p>
+</blockquote>
+<ol>
+<li><p>构造方法。</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//三个参数分别是运动物体，周期，参数。</span></div><div class="line"><span class="selector-tag">TweenMax</span>(<span class="attribute">target</span>:Object, <span class="attribute">duration</span>:Number, <span class="attribute">vars</span>:Object)</div></pre></td></tr></table></figure>
+</li>
+<li><p>allTo（静态方法）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//头三个参数分别是：1个数组保存了多个要进行缓动的对象，周期，参数；</span></div><div class="line"><span class="comment">//后三个参数为可选，分别是：间隔时间，完成调用的函数，函数参数。</span></div><div class="line"><span class="comment">//返回的是一个数组保存了创建的所有TweenMax Object。</span></div><div class="line">allTo(</div><div class="line">    targets:<span class="built_in">Array</span>,</div><div class="line">    <span class="attr">duration</span>:<span class="built_in">Number</span>,</div><div class="line">    <span class="attr">vars</span>:<span class="built_in">Object</span>,</div><div class="line">    <span class="attr">stagger</span>:<span class="built_in">Number</span> = <span class="number">0</span>,</div><div class="line">    <span class="attr">onCompleteAll</span>:<span class="built_in">Function</span> = <span class="literal">null</span>,</div><div class="line">    <span class="attr">onCompleteAllParams</span>:<span class="built_in">Array</span> = <span class="literal">null</span>)</div></pre></td></tr></table></figure>
+</li>
+<li><p>allFromTo（静态方法）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//跟allTo一样，只是多了一个参数对象可以用与定义起始状态。</span></div><div class="line">allFromTo(</div><div class="line">    targets:<span class="built_in">Array</span>,</div><div class="line">    <span class="attr">duration</span>:<span class="built_in">Number</span>,</div><div class="line">    <span class="attr">fromVars</span>:<span class="built_in">Object</span>,</div><div class="line">    <span class="attr">toVars</span>:<span class="built_in">Object</span>,</div><div class="line">    <span class="attr">stagger</span>:<span class="built_in">Number</span> = <span class="number">0</span>,</div><div class="line">    <span class="attr">onCompleteAll</span>:<span class="built_in">Function</span> = <span class="literal">null</span>,</div><div class="line">    <span class="attr">onCompleteAllParams</span>:<span class="built_in">Array</span> = <span class="literal">null</span>)</div></pre></td></tr></table></figure>
+</li>
+<li><p>allFrom（静态方法）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//跟allTo一样，只是定义的是运动对象的初始状态，运动到当前状态。</span></div><div class="line">allFrom(</div><div class="line">    targets:<span class="built_in">Array</span>,</div><div class="line">    <span class="attr">duration</span>:<span class="built_in">Number</span>,</div><div class="line">    <span class="attr">vars</span>:<span class="built_in">Object</span>,</div><div class="line">    <span class="attr">stagger</span>:<span class="built_in">Number</span> = <span class="number">0</span>,</div><div class="line">    <span class="attr">onCompleteAll</span>:<span class="built_in">Function</span> = <span class="literal">null</span>,</div><div class="line">    <span class="attr">onCompleteAllParams</span>:<span class="built_in">Array</span> = <span class="literal">null</span>)</div></pre></td></tr></table></figure>
+</li>
+<li><p>to（静态方法）</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//是allTo的简化版，也是很多人用TweenMax的主要目的，定义了运动物体，周期，和参数。</span></div><div class="line"><span class="comment">//返回一个TweenMax Object。</span></div><div class="line"><span class="selector-tag">to</span>(<span class="attribute">target</span>:Object, <span class="attribute">duration</span>:Number, <span class="attribute">vars</span>:Object)</div></pre></td></tr></table></figure>
+</li>
+<li><p>fromTo（静态方法）</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//与to一样，不过多了一个参数定义运动物体的初始状态。</span></div><div class="line"><span class="selector-tag">fromTo</span>(<span class="attribute">target</span>:Object, <span class="attribute">duration</span>:Number, <span class="attribute">fromVars</span>:Object, <span class="attribute">toVars</span>:Object)</div></pre></td></tr></table></figure>
+</li>
+<li><p>from（静态方法）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//跟to一样，只是定义的是运动对象的初始状态，运动到当前状态。</span></div><div class="line"><span class="keyword">from</span>(target:<span class="built_in">Object</span>, <span class="attr">duration</span>:<span class="built_in">Number</span>, <span class="attr">vars</span>:<span class="built_in">Object</span>)</div></pre></td></tr></table></figure>
+</li>
+<li><p>强制完成</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//强制TweenMax到最后结束部分。如果第一个参数设为true，则不会渲染，TweenMax将停在调用那一刻。</span></div><div class="line"><span class="comment">//如果第二个参数设为true则不会触发onCompelte,onUpdate等事件。</span></div><div class="line">complete(skipRender:<span class="keyword">Boolean</span> = <span class="keyword">false</span>, suppressEvents:<span class="keyword">Boolean</span> = <span class="keyword">false</span>)</div></pre></td></tr></table></figure>
+</li>
+<li><p>延迟执行函数</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//跟AS3自带的setTimeout几乎一样，是他们的AS3版。</span></div><div class="line">delayedCall(</div><div class="line">    delay:<span class="built_in">Number</span>,</div><div class="line">    <span class="attr">onComplete</span>:<span class="built_in">Function</span>,</div><div class="line">    <span class="attr">onCompleteParams</span>:<span class="built_in">Array</span> = <span class="literal">null</span>,</div><div class="line">    <span class="attr">useFrames</span>:<span class="built_in">Boolean</span> = <span class="literal">false</span>)</div></pre></td></tr></table></figure>
+</li>
+<li><p>返回正在运行的的所有TweenMax Object（静态方法）</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　<span class="selector-tag">getAllTweens</span>()</div></pre></td></tr></table></figure>
+</li>
+<li><p>返回运动物体正在运行的的TweenMax Object（静态方法）</p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">　　getTweensOf(<span class="name">target</span><span class="symbol">:Object</span>)</div></pre></td></tr></table></figure>
+</li>
+<li><p>清除初始值</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//当从新播放一段TweenMax Object时（即调用restart()方法），</span></div><div class="line"><span class="comment">//如果想从新设置新的初始值，可以调用此方法清空原有初始值。</span></div><div class="line"><span class="comment">//调用后此TweenMax Object会将当前位置作为新的初始值。</span></div><div class="line"><span class="function"><span class="title">invalidate</span><span class="params">()</span></span></div></pre></td></tr></table></figure>
+</li>
+<li><p>判断是否正在缓动（静态方法）</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//正在缓动返回true,否则false。</span></div><div class="line"><span class="selector-tag">isTweening</span>(<span class="attribute">target</span>:Object)<span class="selector-pseudo">:Boolean</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>清除所有TweenMax Object（静态方法）　　</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//三个参数，第一个设为true可以强制先完成再清除，</span></div><div class="line"><span class="comment">//第二个是清除所有的缓动，</span></div><div class="line"><span class="comment">//第三个是清除所有的函数延迟执行。</span></div><div class="line">killAll(</div><div class="line">    complete:<span class="keyword">Boolean</span> = <span class="keyword">false</span>,</div><div class="line">    tweens:<span class="keyword">Boolean</span> = <span class="keyword">true</span>,</div><div class="line">    delayedCalls:<span class="keyword">Boolean</span> = <span class="keyword">true</span>):<span class="keyword">void</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>清除所有子对象的TweenMax Object（静态方法）</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//将一个DisplayObjectContainer的所有子对象的TweenMax Object。可以选择先强制完成。</span></div><div class="line">killChildTweensOf(parentisplayObjectContainer, complete:<span class="keyword">Boolean</span> = <span class="keyword">false</span>):<span class="keyword">void</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>清除某个属性的缓动</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//传入的是一个数组，以字符串的形式。</span></div><div class="line"><span class="comment">//例：_tweenMax.killProperties(["x"]);</span></div><div class="line"><span class="selector-tag">killProperties</span>(<span class="attribute">names</span>:Array)<span class="selector-pseudo">:void</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>全部暂停（静态方法）</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//全部暂停TweenMax Object(可选)，函数延迟执行（可选）。</span></div><div class="line">pauseAll(tweens:<span class="keyword">Boolean</span> = <span class="keyword">true</span>, delayedCalls:<span class="keyword">Boolean</span> = <span class="keyword">true</span>):<span class="keyword">void</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>全部恢复（静态方法）<br>全部恢复TweenMax Object(可选)，函数延迟执行（可选）。</p>
+</li>
+<li><p>重定向终点</p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//第一个参数是对应的属性值，</span></div><div class="line"><span class="comment">//第二个是要设置的新值，</span></div><div class="line"><span class="comment">//第三个参数是是否要对应调整起点，让转变看起来没那么 skipping/jerking（意会吧，突兀？），</span></div><div class="line"><span class="comment">//就是要注意如果是要反播缓动动画的话可能会无法重定向到起点。一般不建议和updateTo一起用。</span></div><div class="line"><span class="selector-tag">setDestination</span>(</div><div class="line">    <span class="attribute">property</span>:String, <span class="attribute">value</span>:*,</div><div class="line">    <span class="attribute">adjustStartValues</span>:Boolen = true)<span class="selector-pseudo">:void</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>重定向属性</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//可以在运行中新增或改变原有的属性变化值。</span></div><div class="line"><span class="comment">//第二个参数设为false时将不重播缓动，而继续缓动到新的值；</span></div><div class="line"><span class="comment">//设为true将中断并重播缓动。</span></div><div class="line">updateTo(<span class="string">vars:</span>Object, <span class="string">resetDuration:</span>Boolean = <span class="literal">false</span>):<span class="keyword">void</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="Ease动画效果"><a href="#Ease动画效果" class="headerlink" title="Ease动画效果"></a>Ease动画效果</h4><blockquote>
+<p>♏️ Ease动画效果</p>
+</blockquote>
+<ol>
+<li>Linear线性变化<br>字面意思就很好理解，线性变化，就是匀速。<br> <img src="/images/Animation/1.jpg" alt="1"></li>
+<li>Back变化<br>不知道怎么解释好，Back有回来的意思，在缓动前，会先往回运动一段距离。<br> <img src="/images/Animation/2.jpg" alt="2"></li>
+<li>Bounce弹跳变化<br>顾名思义，在变化前会几次回归原点，好像在弹一样。<br> <img src="/images/Animation/3.jpg" alt="3"></li>
+<li>Circ圆形变化<br>这个翻译···我…将就吧…，运动的曲线是一个圆形的弧度。<br> <img src="/images/Animation/4.jpg" alt="4"></li>
+<li>Cubic立方体变化<br>这个更晕，跟圆形变化差不多，不过更平滑些。<br> <img src="/images/Animation/5.jpg" alt="5"></li>
+<li>Elastic橡皮圈变化<br>这个···翻译，我麻木了···跟Back变化有点像，但是会有一个很强的波动。在EaseIn和EaseOut时尤为明显。<br> <img src="/images/Animation/6.jpg" alt="6"></li>
+<li>Expo爆炸变化<br>一直很平缓，在最后一点完成所有变化。<br> <img src="/images/Animation/7.jpg" alt="7"></li>
+<li>Quad变化<br>不知道Quad代表什么意思，不过是比较普通的缓动。Quadratic平方缓动？？。<br> <img src="/images/Animation/8.jpg" alt="8"></li>
+<li>Quart四分之一变化。<br>我猜Quart是Quarter的意思，有1/4的时间是没有缓动。<br> <img src="/images/Animation/9.jpg" alt="9"></li>
+<li>Quint变化<br>百度一下是什么五胞胎之一？晕了，是1/5时间没有缓动吗？<br><img src="/images/Animation/10.jpg" alt="10"></li>
+<li>Sine正弦变化<br>像正弦一样的变化～？猜得····<br><img src="/images/Animation/11.jpg" alt="11"></li>
+<li>Strong变化。<br>这个没有图···因为他没有图···汗···字面意思理解就是很强的变化。<hr>
+以上是12种内置的变化，所以准确来说是有36种的，那剩下的4个类是做什么的呢。<hr>
+</li>
+<li><p>EaseLookup<br>包含一个静态方法fine(),可以通过字符串String直接取得ease的实例。方便一些反射操作的需要。例：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">TweenMax</span><span class="selector-class">.to</span>(<span class="selector-tag">ball</span>, 1, &#123; <span class="attribute">x</span>:<span class="number">200</span>,ease:EaseLookup.<span class="built_in">find</span>(<span class="string">"backEaseInOut"</span>) &#125; );</div></pre></td></tr></table></figure>
+</li>
+<li><p>FastEase<br>AS3的TweenMax版本有内置的算法可以加速缓动效果。需要用这个类的静态方法activate()手动打开。可以提高35%～80%的缓动计算，提高2%～15%的整个缓动效率。<br>可以被加速的缓动变化包括：Linear Quad Cubic Quart Quint Strong这六种而已。打开方法，例：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">FastEase</span><span class="selector-class">.activate</span>(<span class="selector-attr">[Strong, Linear, Quad]</span>);</div></pre></td></tr></table></figure>
+<p>还有另外一个静态方法activateEase(ease:Function, type:int, power:uint):void，是用来把这种优化方法用在非com.greensock的缓动上的，例如用在AS3自带的缓动类。</p>
+</li>
+<li><p>RoughEase</p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">RoughEase(</div><div class="line">    strength:Number = <span class="number">1</span>,</div><div class="line">    points:uint = <span class="number">20</span>,</div><div class="line">    restrictMaxAndMin:<span class="built_in">Boolean</span> = <span class="literal">false</span>,</div><div class="line">    templateEase:Function = <span class="built_in">null</span>,</div><div class="line">    taper:<span class="built_in">String</span> = <span class="string">"none"</span>,</div><div class="line">    randomize:<span class="built_in">Boolean</span> = <span class="literal">true</span>,</div><div class="line">    name:<span class="built_in">String</span> = <span class="string">""</span>)</div><div class="line"><span class="comment">/**</span></div><div class="line"> * 通常的缓动变化都是很平滑的，如果想要一个不平滑的效果，就可以使用RoughEase。</div><div class="line"> * 这里列出的是他的构造方法，其中：</div><div class="line"> * strength:Number：随机点的幅度。</div><div class="line"> * points:uint：随机点的数量。</div><div class="line"> * restrictMaxAndMin:Boolean: 当设为true时，随机数的变化会在初始值和终点值之间波动。</div><div class="line"> * 							  当为false时，随机数的变化可能会超过这个区间。</div><div class="line"> * templateEase:Function：随机点作用的缓动模板。默认是Linear.easeNone。</div><div class="line"> * taper:String：随机变化趋向那一端，"in”的话趋向于起点，"out"的话趋向于终点。默认是"none"。</div><div class="line"> * randomize:Boolean：设为true时，缓动位置将会随机变化。如果为false时，缓动位置将会锯齿型变化。</div><div class="line"> * name:String ：为roughEase实例命名，这样以后可以使用静态方法byName()获取引用。</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="comment">//用法：</span></div><div class="line"></div><div class="line"><span class="comment">//例1，直接使用：</span></div><div class="line"></div><div class="line">TweenLite.<span class="keyword">to</span>(ball, <span class="number">2</span>, &#123;y:<span class="number">0</span>, ease:RoughEase.create(<span class="number">1</span>, <span class="number">20</span>, <span class="literal">true</span>, Bounce.easeInOut)&#125;);</div><div class="line"></div><div class="line"><span class="comment">//例2，生成实例调用：</span></div><div class="line"></div><div class="line"><span class="built_in">var</span> _roughEase:RoughEase = <span class="literal">new</span> RoughEase(<span class="number">1</span>,<span class="number">20</span>,<span class="literal">true</span>, Strong.easeOut, <span class="string">"none"</span>, <span class="literal">true</span>, <span class="string">"superRoughEase"</span>);</div><div class="line"></div><div class="line"><span class="comment">//然后直接调用：</span></div><div class="line"></div><div class="line">TweenLite.<span class="keyword">to</span>(mc, <span class="number">3</span>, &#123;y:<span class="number">300</span>, ease:rough.ease&#125;);</div><div class="line"></div><div class="line"><span class="comment">//或者：</span></div><div class="line"></div><div class="line">TweenLite.<span class="keyword">to</span>(mc, <span class="number">3</span>, &#123;y:<span class="number">300</span>, ease:RoughEase.byName(<span class="string">"superRoughEase"</span>)&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>CustumEase<br>自建缓动效果。基本不能直接编写。需要登录这个网址 (<a href="http://blog.greensock.com/customease/" target="_blank" rel="external">http://blog.greensock.com/customease/</a>) 使用图形界面工具生成代码。然后COPY代码到你的项目中应用。例：<br>创建：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">CustomEase.create(</div><div class="line">    <span class="string">"myCustomEase"</span>,</div><div class="line">    [</div><div class="line">        &#123;<span class="string">s:</span><span class="number">0</span>,<span class="string">cp:</span><span class="number">0.814</span>,<span class="string">e:</span><span class="number">0.908</span>&#125;,</div><div class="line">        &#123;<span class="string">s:</span><span class="number">0.908</span>,<span class="string">cp:</span><span class="number">1.002</span>,<span class="string">e:</span><span class="number">0.376</span>&#125;,</div><div class="line">        &#123;<span class="string">s:</span><span class="number">0.376</span>,<span class="string">cp:</span><span class="number">-0.25</span>,<span class="string">e:</span><span class="number">1</span>&#125;</div><div class="line">    ]</div><div class="line">);</div><div class="line"><span class="comment">//使用：</span></div><div class="line">TweenMax.to(mc, <span class="number">2</span>, &#123;<span class="string">x:</span><span class="string">"250"</span>, <span class="string">ease:</span>CustomEase.byName(<span class="string">"myCustomEase"</span>)&#125;);</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>这一篇有点长。感兴趣的同学可以耐心看一下。有什么问题和建议可以随时和我聊一聊 ♏️</p>
+</blockquote>
+
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/AnimationLib/" rel="tag">#AnimationLib</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/AnimationLib-PreloadJS基本用法/" rel="next" title="♏️  AnimationLib-PreloadJS基本用法">
+                <i class="fa fa-chevron-left"></i> ♏️  AnimationLib-PreloadJS基本用法
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/AnimationLib-Hammer-js基本用法/" rel="prev" title="♏️  AnimationLib-Hammer.js基本用法">
+                ♏️  AnimationLib-Hammer.js基本用法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本用法"><span class="nav-number">1.</span> <span class="nav-text">基本用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API详解"><span class="nav-number">2.</span> <span class="nav-text">API详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#构造函数"><span class="nav-number">2.1.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三个参数（vars）的特有属性"><span class="nav-number">2.2.</span> <span class="nav-text">第三个参数（vars）的特有属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#公共属性"><span class="nav-number">2.3.</span> <span class="nav-text">公共属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#公共方法"><span class="nav-number">2.4.</span> <span class="nav-text">公共方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Ease动画效果"><span class="nav-number">2.5.</span> <span class="nav-text">Ease动画效果</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'AnimationLib-TweenLineMax基本用法/';
+      var disqus_title = "♏️  AnimationLib-TweenLineMax基本用法";
+      var disqus_url = 'http://yoursite.com/AnimationLib-TweenLineMax基本用法/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

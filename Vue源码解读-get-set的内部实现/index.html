@@ -1,0 +1,895 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Vue,MVVM,MVC," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头$get &amp;amp; $set是Vue对外暴露给用户使用的，用于对data的内容进行获取和设置的api。出现在instance/api/data.js中，但调用的方法并不一定都在该文件中。本文主要按方法的执行流程分析源码。  
+
+$getDemo
+使用demo
+
+123456">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue源码解读-$Get & $Set的内部实现">
+<meta property="og:url" content="http://yoursite.com/Vue源码解读-get-set的内部实现/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头$get &amp;amp; $set是Vue对外暴露给用户使用的，用于对data的内容进行获取和设置的api。出现在instance/api/data.js中，但调用的方法并不一定都在该文件中。本文主要按方法的执行流程分析源码。  
+
+$getDemo
+使用demo
+
+123456">
+<meta property="og:updated_time" content="2016-09-26T10:28:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Vue源码解读-$Get & $Set的内部实现">
+<meta name="twitter:description" content="version: 1.0.24对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头$get &amp;amp; $set是Vue对外暴露给用户使用的，用于对data的内容进行获取和设置的api。出现在instance/api/data.js中，但调用的方法并不一定都在该文件中。本文主要按方法的执行流程分析源码。  
+
+$getDemo
+使用demo
+
+123456">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Vue源码解读-get-set的内部实现/"/>
+
+  <title> Vue源码解读-$Get & $Set的内部实现 | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Vue源码解读-$Get & $Set的内部实现
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-07-15T18:37:42+08:00" content="2016-07-15">
+              2016-07-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Vue/" itemprop="url" rel="index">
+                    <span itemprop="name">Vue</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/Vue源码解读-get-set的内部实现/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Vue源码解读-get-set的内部实现/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>version: 1.0.24<br>对源码的解析部分，纯属个人理解(不是纯属虚构)，理解有误或者没有理解透彻的地方，欢迎多拍砖头<br>$get &amp; $set是Vue对外暴露给用户使用的，用于对data的内容进行获取和设置的api。<br>出现在instance/api/data.js中，但调用的方法并不一定都在该文件中。<br>本文主要按方法的执行流程分析源码。  </p>
+</blockquote>
+<h3 id="get"><a href="#get" class="headerlink" title="$get"></a>$get</h3><h4 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h4><ul>
+<li>使用demo</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">var</span> demo = new Vue(&#123;</div><div class="line">    data: &#123;</div><div class="line">        <span class="selector-tag">a</span>: <span class="number">1</span>,</div><div class="line">        <span class="selector-tag">b</span>: <span class="number">2</span></div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line">demo.<span class="variable">$get</span>(<span class="string">'a + b'</span>)</div></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="入口"><a href="#入口" class="headerlink" title="入口"></a>入口</h4><ul>
+<li>将字符串表达式处理成一个对象，并调用对象的get方法返回结果。解构如下：</li>
+</ul>
+<figure class="highlight openscad"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    <span class="built_in">exp</span>: <span class="built_in">exp</span> <span class="comment">// 字符串表达式</span></div><div class="line">    get: <span class="function"><span class="keyword">function</span><span class="params">()</span>&#123;</span>&#125; <span class="comment">// 针对该表达式的get方法，用于返回该表达式的值</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>源代码</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">// 第一个参数：待处理的字符串表达式</div><div class="line">// 第二个参数：对外api文档中并未提到第二个参数，暂时先不考虑</div><div class="line">Vue.prototype.$<span class="built_in">get</span> = <span class="function"><span class="keyword">function</span> <span class="params">(exp, asStatement)</span> &#123;</span></div><div class="line">    // 解析表达式，并返回一个包含<span class="built_in">get</span>方法的对象。</div><div class="line">    var <span class="keyword">res</span> = parseExpression(<span class="built_in">exp</span>)</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">res</span>) &#123;</div><div class="line">        // 这里不能保证在执行<span class="built_in">get</span>时不报错，因此需要放入<span class="keyword">try</span>/<span class="keyword">catch</span>中</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            // <span class="built_in">get</span>方法接收一个参数作为它的参数</div><div class="line">            <span class="keyword">return</span> <span class="keyword">res</span>.<span class="built_in">get</span>.<span class="keyword">call</span>(this, this)</div><div class="line">        &#125; <span class="keyword">catch</span> (<span class="keyword">e</span>) &#123;&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="处理字符串表达式-parseExpression"><a href="#处理字符串表达式-parseExpression" class="headerlink" title="处理字符串表达式(parseExpression)"></a>处理字符串表达式(parseExpression)</h4><ul>
+<li>首先检查该字符串表达式是否存在于缓存中。如果存在，直接取出。否则开始解析，将结果返回，并存放于缓存中</li>
+<li>此方法不进为$get &amp; $set提供服务，因此以下的处理流程可能并不仅限于处理$get &amp; $set时</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">// <span class="built_in">exp</span> 表达式</div><div class="line">// needSet 是否需要<span class="keyword">set</span>对表达式进行赋值。使用$<span class="built_in">get</span>获取表达式的值时，此值为false。因此这部分逻辑被剔除</div><div class="line">export <span class="function"><span class="keyword">function</span> <span class="title">parseExpression</span> <span class="params">(exp, needSet)</span> &#123;</span></div><div class="line">    // 去掉前后空字符</div><div class="line">    <span class="built_in">exp</span> = <span class="built_in">exp</span>.trim()</div><div class="line">    // 尝试从缓存获取。因为表达式可能会被不止一次的用到。缓存类部分容我稍后再禀。可暂时理解为它维护了一个存放键值对的<span class="keyword">map</span>表</div><div class="line">    var hit = expressionCache.<span class="built_in">get</span>(<span class="built_in">exp</span>)</div><div class="line">    <span class="keyword">if</span> (hit) &#123;</div><div class="line">        <span class="keyword">return</span> hit</div><div class="line">    &#125;</div><div class="line">    // 存放解析之后的结果</div><div class="line">    var <span class="keyword">res</span> = &#123; <span class="built_in">exp</span>: <span class="built_in">exp</span> &#125;</div><div class="line">    // 每个<span class="built_in">exp</span>表达式的解析结果中必须有<span class="built_in">get</span>方法</div><div class="line">    <span class="keyword">res</span>.<span class="built_in">get</span> = isSimplePath(<span class="built_in">exp</span>) &amp;&amp; <span class="built_in">exp</span>.indexOf(<span class="string">'['</span>) &lt; <span class="number">0</span></div><div class="line">        // 如果是简单表达式，并且表达式中不包含中括号</div><div class="line">        // 简单不需要处理，直接返回表达式的执行方法即可</div><div class="line">        // 简单的表达式直接返回等待执行即可，不需要走下面复杂的处理逻辑，提升性能</div><div class="line">        ? makeGetterFn(<span class="string">'scope.'</span> + <span class="built_in">exp</span>)</div><div class="line">        // 否则对<span class="built_in">exp</span>进行处理并最终返回在当前实例下的一个执行常规表达式的方法</div><div class="line">        : compileGetter(<span class="built_in">exp</span>)</div><div class="line">    expressionCache.<span class="keyword">put</span>(<span class="built_in">exp</span>, <span class="keyword">res</span>)</div><div class="line">    <span class="keyword">return</span> <span class="keyword">res</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="判断是否为简单路径-isSimplePath"><a href="#判断是否为简单路径-isSimplePath" class="headerlink" title="判断是否为简单路径(isSimplePath)"></a>判断是否为简单路径(isSimplePath)</h4><p>大部分路径都是简单路径，如：a.b、a[‘b’]、a[‘’]。<br>少部分路径比较复杂，如：a.b + a.c + 1。<br>复杂路径的处理逻辑虽然也能处理简单路径，但流程会比较复杂。为了性能考虑，才有了这个判断。  </p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">// 以下是对正则的解释：</div><div class="line">// 以大小写字母或者_$开头</div><div class="line">// 中间是常规字符(字母数字下划线)</div><div class="line">// 以 .加上任意个大小写字母或者<span class="emphasis">_$ 或者 ['加上尽可能少的任一个字符加上'] 或者 ["加上尽可能少的任一个字符加上"] 或者 [加上任一个数字加] 或者 [加上以大小写字母或者_</span>$开头以任意个字母数字_$结尾] 的任意序列结尾</div><div class="line">// 如：<span class="code">`obj.a["b"]['c'][1]`</span></div><div class="line">const pathTestRE = /^[<span class="string">A-Za-z_$</span>][<span class="symbol">\w$</span>]<span class="emphasis">*(?:\.[A-Za-z_$][\w$]*</span>|\[<span class="string">'.*?'\</span>]|\[<span class="string">".*?"\</span>]|\[<span class="string">\d+\</span>]|\[<span class="string">[A-Za-z_$</span>][<span class="symbol">\w$</span>]<span class="emphasis">*\])*</span>$/</div><div class="line"></div><div class="line">// 如：<span class="code">`true`</span> <span class="code">`false`</span> <span class="code">`'true'`</span> <span class="code">`'false'`</span></div><div class="line">const booleanLiteralRE = /^(?:true|false)$/</div><div class="line"></div><div class="line">export function isSimplePath (exp) &#123;</div><div class="line"><span class="code">    return pathTestRE.test(exp) &amp;&amp;</span></div><div class="line"><span class="code">        // 不将true/false作为简单表达式路径</span></div><div class="line"><span class="code">        !booleanLiteralRE.test(exp) &amp;&amp;</span></div><div class="line"><span class="code">        排除`Math.`开头的字符串</span></div><div class="line"><span class="code">        exp.slice(0, 5) !== 'Math.'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="给表达式返回对应的get方法-makeGetterFn"><a href="#给表达式返回对应的get方法-makeGetterFn" class="headerlink" title="给表达式返回对应的get方法(makeGetterFn)"></a>给表达式返回对应的get方法(makeGetterFn)</h4><p>简单表达式时，直接返回该方法的执行结果<br>复杂表达式时，对表达式进行各种处理(继续看可以看到做了哪些处理)之后，仍然会返回该方法的执行结果  </p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// scope: 当前方法的执行环境。但部分时候为当前Vue实例，for循环时猜测为当前循环所对应的数据对象(猜测，尚未看for指令的实现)</span></div><div class="line"><span class="comment">// body，如：scope.a.b(简单表达式)、scope.a + scope.b(复杂表达式)</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeGetterFn</span> <span class="params">(body)</span> </span>&#123;</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="comment">// scope是函数的参数；body是方法体。将此方法赋值给表达式的get方法，就可以方便的拿到表达式的值</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="function"><span class="keyword">Function</span><span class="params">(<span class="string">'scope'</span>, <span class="string">'return '</span> + body + <span class="string">';'</span>)</span></span></div><div class="line">    &#125; <span class="title">catch</span> <span class="params">(e)</span> &#123;</div><div class="line">        <span class="keyword">return</span> noop</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="对复杂表达式进行编译，获得get方法-compileGetter"><a href="#对复杂表达式进行编译，获得get方法-compileGetter" class="headerlink" title="对复杂表达式进行编译，获得get方法(compileGetter)"></a>对复杂表达式进行编译，获得get方法(compileGetter)</h4><ul>
+<li>此方法可能会处理的情况有：$get、指令解析等</li>
+<li>它主要的功能是对表达式进行拆分之后，在需要执行环境的变量前面加上执行环境<code>scope</code></li>
+<li>当然表达式中还存在部分不需要添加执行环境的变量，所以在添加之前，先将这部分放到save的数组中</li>
+</ul>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> improperKeywords =</div><div class="line">    '<span class="keyword">break</span>,case,<span class="keyword">class</span>,catch,<span class="keyword">const</span>,<span class="keyword">continue</span>,debugger,default,' +</div><div class="line">    'delete,<span class="keyword">do</span>,<span class="keyword">else</span>,export,extends,finally,<span class="keyword">for</span>,function,<span class="keyword">if</span>,' +</div><div class="line">    'import,<span class="keyword">in</span>,instanceof,let,<span class="keyword">return</span>,super,switch,throw,try,' +</div><div class="line">    '<span class="keyword">var</span>,<span class="keyword">while</span>,with,yield,enum,await,implements,package,' +</div><div class="line">    'protected,static,interface,private,public'</div><div class="line"></div><div class="line"><span class="comment">// 匹配上述任意关键字</span></div><div class="line"><span class="keyword">const</span> improperKeywordsRE =</div><div class="line">    new RegExp('^(' + improperKeywords.<span class="keyword">replace</span>(/,/<span class="keyword">g</span>, '\\b|') + '\\b)')</div><div class="line"></div><div class="line"><span class="comment">// &#123;或, 加任意字母 加 至少一个任意大小写字符数字或$_加任意空格加: 或者 '加不是'和\或者任意个非元字符加' 或者 "加不是"和\或者任意个非元字符加" 或者 `加不是`和\或者任意个非元字符加$&#123; 或者 &#125;加不是`\或者任意个非元字符加` 或者 `加不是`和\或者任意个非元字符  或者 new 或者 typeof 或者 void</span></div><div class="line"><span class="comment">// 如`&#123;id :` `'abc'&#125;`  `typeof `  </span></div><div class="line"><span class="keyword">const</span> saveRE = /[\&#123;,]\s*[\w\<span class="variable">$_</span>]+\s*:|('(?:[^'\\]|\\.)*'|<span class="string">"(?:[^"</span>\\]|\\.)*"|`(?:[^`\\]|\\.)*\$\&#123;|\&#125;(?:[^`\\]|\\.)*`|`(?:[^`\\]|\\.)*`)|new |<span class="keyword">typeof</span> |void /<span class="keyword">g</span></div><div class="line"></div><div class="line"><span class="comment">// 任意空白字符</span></div><div class="line"><span class="keyword">const</span> wsRE = /\s/<span class="keyword">g</span></div><div class="line"></div><div class="line"><span class="comment">// 不能以大小写字母数字_$.开头，后面跟大小写字母_$，后面再跟任意大小写字母数字_$</span></div><div class="line"><span class="comment">// 此表达式可以将一个表达式中的不同变量进行拆解。想想上一行解释和js中字面量命名规范的关系</span></div><div class="line"><span class="keyword">const</span> identRE = /[^\w$\.](?:[A-Za-z_$][\w$]*)/<span class="keyword">g</span></div><div class="line"></div><div class="line"><span class="comment">// 匹配一个被双引号引起来的数字</span></div><div class="line"><span class="keyword">const</span> restoreRE = /<span class="string">"(\d+)"</span>/<span class="keyword">g</span></div><div class="line"></div><div class="line">let saved = []</div><div class="line"></div><div class="line">function compileGetter (exp) &#123;</div><div class="line">    <span class="comment">// 不允许在表达式中使用js保留字</span></div><div class="line">    <span class="keyword">if</span> (improperKeywordsRE.<span class="keyword">test</span>(exp)) &#123;</div><div class="line">        process.env.NODE_ENV !== 'production' &amp;&amp; warn(</div><div class="line">            'Avoid using reserved keywords <span class="keyword">in</span> expression: ' + <span class="built_in">exp</span></div><div class="line">        )</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 一个新的表达式编译开始时，重置saved数组为空</span></div><div class="line">    saved.length = 0</div><div class="line">    <span class="keyword">var</span> body = <span class="built_in">exp</span></div><div class="line">        <span class="comment">// 将匹配到的字符传给save方法，并将匹配到的部分替换为save方法的返回值，最后去除空格</span></div><div class="line">        <span class="comment">// 避免这部分变量被添加执行环境</span></div><div class="line">        .<span class="keyword">replace</span>(saveRE, <span class="keyword">save</span>)</div><div class="line">        <span class="comment">// 删除字符串中的所有空格</span></div><div class="line">        .<span class="keyword">replace</span>(wsRE, '')</div><div class="line">    <span class="comment">// 在表达式之前加上一个空格，方便被identRE匹配为一个独立的字面量</span></div><div class="line">    body = (' ' + body)</div><div class="line">        <span class="comment">// 将匹配到的字面量(开头是个非字面量部分的字符)进行处理并回填，如` callHandler` `(item`，做了哪些处理，请看对rewrite的解释</span></div><div class="line">        .<span class="keyword">replace</span>(identRE, rewrite)</div><div class="line">        <span class="comment">// 将不需要添加执行环境的变量替换回来</span></div><div class="line">        .<span class="keyword">replace</span>(restoreRE, <span class="keyword">restore</span>)</div><div class="line">    <span class="keyword">return</span> makeGetterFn(body)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="给表达式中的字面量加上执行环境限制-rewrite"><a href="#给表达式中的字面量加上执行环境限制-rewrite" class="headerlink" title="给表达式中的字面量加上执行环境限制(rewrite)"></a>给表达式中的字面量加上执行环境限制(rewrite)</h4><ul>
+<li>只有加上了执行环境，表达式才能正常，顺利的执行</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 不需要被加上执行环境的字面量</span></div><div class="line"><span class="keyword">const</span> allowedKeywords =</div><div class="line">  <span class="string">'Math,Date,this,true,false,null,undefined,Infinity,NaN,'</span> +</div><div class="line">  <span class="string">'isNaN,isFinite,decodeURI,decodeURIComponent,encodeURI,'</span> +</div><div class="line">  <span class="string">'encodeURIComponent,parseInt,parseFloat'</span></div><div class="line"></div><div class="line"><span class="comment">// 匹配是以上述字面量中的一个开头，有独立边界的字符串</span></div><div class="line"><span class="keyword">const</span> allowedKeywordsRE =</div><div class="line">  <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">'^('</span> + allowedKeywords.replace(<span class="regexp">/,/g</span>, <span class="string">'\\b|'</span>) + <span class="string">'\\b)'</span>)</div><div class="line"></div><div class="line"><span class="comment">// 匹配一个被双引号引起来的数字</span></div><div class="line"><span class="keyword">const</span> restoreRE = <span class="regexp">/"(\d+)"/g</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">rewrite</span> (<span class="params">raw</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> c = raw.charAt(<span class="number">0</span>)</div><div class="line">    <span class="comment">// 去掉开头部分被额外添加的那个空格</span></div><div class="line">    <span class="keyword">var</span> path = raw.slice(<span class="number">1</span>)</div><div class="line">    <span class="comment">// 如果是js原始方法或对象，如Math.cell()等，直接返回即可。不需要加上`scope`,因为他们都是全局的</span></div><div class="line">    <span class="keyword">if</span> (allowedKeywordsRE.test(path)) &#123;</div><div class="line">        <span class="keyword">return</span> raw</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="comment">// 如果被匹配到的字符串中(这个字符串是由一个或多个非变量字符串和变量组成的)</span></div><div class="line">        <span class="comment">// 如果字符串中存在双引号，先将字符串中匹配到`"123"`形式的字符串替换为原始字符串</span></div><div class="line">        path = path.indexOf(<span class="string">'"'</span>) &gt; <span class="number">-1</span></div><div class="line">            ? path.replace(restoreRE, restore)</div><div class="line">            : path</div><div class="line">        <span class="keyword">return</span> c + <span class="string">'scope.'</span> + path</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="存储不需要加执行环境的变量"><a href="#存储不需要加执行环境的变量" class="headerlink" title="存储不需要加执行环境的变量"></a>存储不需要加执行环境的变量</h4><ul>
+<li>先存起来，等需要添加执行环境的变量都加上之后，再替换回来</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 匹配`\n`</span></div><div class="line"><span class="keyword">const</span> newlineRE = <span class="regexp">/\n/g</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> saved = []</div><div class="line"></div><div class="line"><span class="comment">// 将上面匹配到的字符串进行一点处理之后存入saved数组，并返回这个字符串在数组中的位置</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">save</span> (<span class="params">str, isString</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> i = saved.length</div><div class="line">    saved[i] = isString</div><div class="line">        ? str.replace(newlineRE, <span class="string">'\\n'</span>)</div><div class="line">        : str</div><div class="line">    <span class="comment">// 需要用`"`等不能构成变量的元素将`i`包裹起来，因为正常变量中也是可能包含数字的</span></div><div class="line">    <span class="keyword">return</span> <span class="string">'"'</span> + i + <span class="string">'"'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="set"><a href="#set" class="headerlink" title="$set"></a>$set</h3><h4 id="什么场景下会用到它呢？"><a href="#什么场景下会用到它呢？" class="headerlink" title="什么场景下会用到它呢？"></a>什么场景下会用到它呢？</h4><ul>
+<li>修改数组的某一项时</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">var</span> demo = new Vue(&#123;</div><div class="line">    data: &#123;</div><div class="line">        <span class="selector-tag">a</span>: [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]</div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line">demo<span class="selector-class">.a</span>[<span class="number">1</span>] = <span class="string">'1'</span> <span class="comment">// 由于在设置a属性的set方法时，判断a的值是否发生变化是通过内存中的存储位置来进行的，因此直接操作数组的某一项时，不会触发a属性的订阅者的执行</span></div><div class="line">demo.<span class="variable">$set</span>(<span class="string">'a[1]'</span>, <span class="string">'1'</span>) <span class="comment">// 这样就没问题啦</span></div></pre></td></tr></table></figure>
+<ul>
+<li>设置不存在的属性时</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">var</span> demo = new Vue(&#123;</div><div class="line">    data: &#123;</div><div class="line">    &#125;</div><div class="line">&#125;)</div><div class="line">demo<span class="selector-class">.a</span><span class="selector-class">.b</span> = <span class="number">2</span> <span class="comment">// 此时连a都没有，肯定不能直接这么赋值</span></div><div class="line">demo.<span class="variable">$set</span>(<span class="string">'a.b'</span>, <span class="number">2</span>) <span class="comment">// 这样就没问题啦</span></div></pre></td></tr></table></figure>
+<h4 id="入口-1"><a href="#入口-1" class="headerlink" title="入口"></a>入口</h4><ul>
+<li>将字符串表达式处理成一个对象，并调用对象的set方法进行赋值。解构如下：</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">    exp: exp <span class="comment">// 字符串表达式</span></div><div class="line">    <span class="keyword">get</span>: <span class="function"><span class="keyword">function</span><span class="params">()</span></span>&#123;&#125; <span class="comment">// 针对该表达式的get方法，用于返回该表达式的值</span></div><div class="line">    <span class="keyword">set</span>: <span class="function"><span class="keyword">function</span><span class="params">(val)</span></span>&#123;&#125; <span class="comment">// 针对该表达式的get方法，用于给表达式赋值</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>源代码</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Vue.prototype.$<span class="keyword">set</span> = <span class="function"><span class="keyword">function</span> <span class="params">(exp, val)</span> &#123;</span></div><div class="line">    // 和$<span class="built_in">get</span>中不同的是，需要传入第二个参数true，接下来就看parseExpression的了</div><div class="line">    var <span class="keyword">res</span> = parseExpression(<span class="built_in">exp</span>, true)</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">res</span> &amp;&amp; <span class="keyword">res</span>.<span class="keyword">set</span>) &#123;</div><div class="line">        // 看来解析之后的结果中出了上面出现的<span class="built_in">get</span>，又多了一个<span class="keyword">set</span>方法</div><div class="line">        <span class="keyword">res</span>.<span class="keyword">set</span>.<span class="keyword">call</span>(this, this, val)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="处理字符串表达式-parseExpression-1"><a href="#处理字符串表达式-parseExpression-1" class="headerlink" title="处理字符串表达式(parseExpression)"></a>处理字符串表达式(parseExpression)</h4><ul>
+<li>同$get中调用的是同一个方法，只不过将这个方法拆成了两部分</li>
+</ul>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">// 为了精简逻辑，这里将源码中的缓存逻辑和<span class="built_in">get</span>方法的处理删除了</div><div class="line">export <span class="function"><span class="keyword">function</span> <span class="title">parseExpression</span> <span class="params">(exp, needSet)</span> &#123;</span></div><div class="line">    <span class="built_in">exp</span> = <span class="built_in">exp</span>.trim()</div><div class="line">    var <span class="keyword">res</span> = &#123; <span class="built_in">exp</span>: <span class="built_in">exp</span> &#125;</div><div class="line">    <span class="keyword">if</span> (needSet) &#123;</div><div class="line">        // 发现主要处理逻辑又封装了一个方法，讨厌！</div><div class="line">        <span class="keyword">res</span>.<span class="keyword">set</span> = compileSetter(<span class="built_in">exp</span>)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">res</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="编译字符串，得到字符串的set方法-compileSetter"><a href="#编译字符串，得到字符串的set方法-compileSetter" class="headerlink" title="编译字符串，得到字符串的set方法(compileSetter)"></a>编译字符串，得到字符串的set方法(compileSetter)</h4><ul>
+<li>源代码</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">compileSetter</span> <span class="params">(exp)</span> </span>&#123;</div><div class="line">    <span class="comment">// 先解析exp，需要用到parsers中封装的功能了</span></div><div class="line">    <span class="keyword">var</span> path = parsePath(exp)</div><div class="line">    <span class="keyword">if</span> (path) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="params">(scope, val)</span> </span>&#123;</div><div class="line">            setPath(scope, path, val)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="再看看路径解析吧"><a href="#再看看路径解析吧" class="headerlink" title="再看看路径解析吧"></a>再看看路径解析吧</h4><ul>
+<li>先从缓存取，如果缓存里没有，那就自己动手解析吧</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 我们发现暴露在外面的这部分接口主要处理缓存问题，嘎嘎。</span></div><div class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">parsePath</span> (<span class="params">path</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> hit = pathCache.get(path)</div><div class="line">    <span class="keyword">if</span> (!hit) &#123;</div><div class="line">        hit = parse(path)</div><div class="line">        <span class="keyword">if</span> (hit) &#123;</div><div class="line">            pathCache.put(path, hit)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> hit</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="解析路径，将路径解析成由字面量组成的数组-parsePath"><a href="#解析路径，将路径解析成由字面量组成的数组-parsePath" class="headerlink" title="解析路径，将路径解析成由字面量组成的数组(parsePath)"></a>解析路径，将路径解析成由字面量组成的数组(parsePath)</h4><ul>
+<li>得到一个由路径拆解成的字面量的数组，同时数组中维护着原始路径，如：<code>a[&quot;b&quot;][&#39;c&#39;].d</code>最终会被解析成</li>
+</ul>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">var</span> res = [<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>]</div><div class="line">res<span class="selector-class">.raw</span> = <span class="selector-tag">a</span>[<span class="string">"b"</span>][<span class="string">'c'</span>]<span class="selector-class">.d</span> <span class="comment">// 字符串</span></div></pre></td></tr></table></figure>
+<ul>
+<li>源码，这部分不看也罢，比较复杂。只需要知道它干了什么就好。但如果感兴趣，可以继续往下看。</li>
+</ul>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 解析路径如：a / a.b / a['b'].c / a["b"].c</span></div><div class="line"><span class="comment">// 行为</span></div><div class="line"><span class="keyword">var</span> APPEND = <span class="number">0</span> <span class="comment">// 字符串拼接</span></div><div class="line"><span class="keyword">var</span> PUSH = <span class="number">1</span> <span class="comment">// 当一个变量或属性被解析完整之后就会被推入数组</span></div><div class="line"><span class="keyword">var</span> INC_SUB_PATH_DEPTH = <span class="number">2</span> <span class="comment">// </span></div><div class="line"><span class="keyword">var</span> PUSH_SUB_PATH = <span class="number">3</span></div><div class="line"></div><div class="line"><span class="comment">// 当前解析所处的状态</span></div><div class="line"><span class="keyword">var</span> BEFORE_PATH = <span class="number">0</span></div><div class="line"><span class="keyword">var</span> IN_PATH = <span class="number">1</span></div><div class="line"><span class="keyword">var</span> BEFORE_IDENT = <span class="number">2</span></div><div class="line"><span class="keyword">var</span> IN_IDENT = <span class="number">3</span></div><div class="line"><span class="keyword">var</span> IN_SUB_PATH = <span class="number">4</span></div><div class="line"><span class="keyword">var</span> IN_SINGLE_QUOTE = <span class="number">5</span></div><div class="line"><span class="keyword">var</span> IN_DOUBLE_QUOTE = <span class="number">6</span></div><div class="line"><span class="keyword">var</span> AFTER_PATH = <span class="number">7</span></div><div class="line"><span class="keyword">var</span> ERROR = <span class="number">8</span></div><div class="line"><span class="comment">// 当状态为BEFORE_PATH时，解析到下一个字符时状态及需要执行的动作</span></div><div class="line">pathStateMachine[BEFORE_PATH] = &#123;</div><div class="line">    <span class="string">'ws'</span>: [BEFORE_PATH], <span class="comment">// 解析到的下一个字符如果是空格则状态仍为BEFORE_PATH</span></div><div class="line">    <span class="string">'ident'</span>: [IN_IDENT, APPEND], <span class="comment">// 解析到的下一个字符如果是[_$a-zA-Z]，状态改为IN_IDENT，并执行APPEND动作</span></div><div class="line">    <span class="string">'['</span>: [IN_SUB_PATH], <span class="comment">// 解析到下一个字符时如果是[，则将状态改为IN_SUB_PATH，没有动作</span></div><div class="line">    <span class="string">'eof'</span>: [AFTER_PATH] <span class="comment">// 解析到下一个字符发现已经结束了，则状态改为AFTER_PATH</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// 当状态为IN_PATH时，解析到下一个字符时状态及需要执行的动作</span></div><div class="line">pathStateMachine[IN_PATH] = &#123;</div><div class="line">    <span class="string">'ws'</span>: [IN_PATH], <span class="comment">// 仍然是IN_PATH状态，无动作</span></div><div class="line">    <span class="string">'.'</span>: [BEFORE_IDENT], <span class="comment">// BEFORE_IDENT状态，无动作</span></div><div class="line">    <span class="string">'['</span>: [IN_SUB_PATH], <span class="comment">// IN_SUB_PATH状态，无动作</span></div><div class="line">    <span class="string">'eof'</span>: [AFTER_PATH] <span class="comment">// AFTER_PATH状态，无动作</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// 上一个字符是'.'时，下一个状态会变成BEFORE_IDENT</span></div><div class="line">pathStateMachine[BEFORE_IDENT] = &#123;</div><div class="line">    <span class="string">'ws'</span>: [BEFORE_IDENT],</div><div class="line">    <span class="string">'ident'</span>: [IN_IDENT, APPEND]</div><div class="line">&#125;</div><div class="line"></div><div class="line">pathStateMachine[IN_IDENT] = &#123;</div><div class="line">    <span class="string">'ident'</span>: [IN_IDENT, APPEND],</div><div class="line">    <span class="string">'0'</span>: [IN_IDENT, APPEND],</div><div class="line">    <span class="string">'number'</span>: [IN_IDENT, APPEND],</div><div class="line">    <span class="string">'ws'</span>: [IN_PATH, PUSH],</div><div class="line">    <span class="string">'.'</span>: [BEFORE_IDENT, PUSH],</div><div class="line">    <span class="string">'['</span>: [IN_SUB_PATH, PUSH],</div><div class="line">    <span class="string">'eof'</span>: [AFTER_PATH, PUSH]</div><div class="line">&#125;</div><div class="line"><span class="comment">// 在子路径中遇到单引号和双引号时，将单引号和双引号也一起放入字符串中，后面会再进行处理</span></div><div class="line">pathStateMachine[IN_SUB_PATH] = &#123;</div><div class="line">    <span class="string">"'"</span>: [IN_SINGLE_QUOTE, APPEND],</div><div class="line">    <span class="string">'"'</span>: [IN_DOUBLE_QUOTE, APPEND],</div><div class="line">    <span class="string">'['</span>: [IN_SUB_PATH, INC_SUB_PATH_DEPTH],</div><div class="line">    <span class="string">']'</span>: [IN_PATH, PUSH_SUB_PATH],</div><div class="line">    <span class="string">'eof'</span>: ERROR,</div><div class="line">    <span class="string">'else'</span>: [IN_SUB_PATH, APPEND]</div><div class="line">&#125;</div><div class="line"><span class="comment">// 当遇到单引号是，状态变为IN_SINGLE_QUOTE，除非遇到下一个单引号，或者报错，否则一直处于IN_SINGLE_QUOTE状态，并执行APPEND动作</span></div><div class="line">pathStateMachine[IN_SINGLE_QUOTE] = &#123;</div><div class="line">    <span class="string">"'"</span>: [IN_SUB_PATH, APPEND],</div><div class="line">    <span class="string">'eof'</span>: ERROR,</div><div class="line">    <span class="string">'else'</span>: [IN_SINGLE_QUOTE, APPEND]</div><div class="line">&#125;</div><div class="line"><span class="comment">// 同单引号</span></div><div class="line">pathStateMachine[IN_DOUBLE_QUOTE] = &#123;</div><div class="line">    <span class="string">'"'</span>: [IN_SUB_PATH, APPEND],</div><div class="line">    <span class="string">'eof'</span>: ERROR,</div><div class="line">    <span class="string">'else'</span>: [IN_DOUBLE_QUOTE, APPEND]</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">parse</span> <span class="params">(path)</span> </span>&#123;</div><div class="line">    <span class="keyword">var</span> keys = [] <span class="comment">// 记录解析之后的路径的数组，如：a['b'].c，会解析成[a, b, c]</span></div><div class="line">    <span class="keyword">var</span> index = <span class="number">-1</span> <span class="comment">// 记录当前解析到的字符的index</span></div><div class="line">    <span class="keyword">var</span> mode = BEFORE_PATH <span class="comment">// 记录当前解析所处的状态，默认处于解析开始状态</span></div><div class="line">    <span class="keyword">var</span> subPathDepth = <span class="number">0</span> <span class="comment">// </span></div><div class="line">    <span class="keyword">var</span> c, newChar, key, type, transition, action, typeMap</div><div class="line">    <span class="keyword">var</span> actions = [] <span class="comment">// 行为数组，不同状态时，会调用不同的行为</span></div><div class="line">    <span class="comment">// 将解析好的一个字符串放入数组</span></div><div class="line">    actions[PUSH] = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (key !== <span class="literal">undefined</span>) &#123;</div><div class="line">            keys.push(key)</div><div class="line">            key = <span class="literal">undefined</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 将正在被解析的字符串连接到已解析的字符串的后面</span></div><div class="line">    actions[APPEND] = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (key === <span class="literal">undefined</span>) &#123;</div><div class="line">            key = newChar</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            key += newChar</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    actions[INC_SUB_PATH_DEPTH] = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">        actions[APPEND]()</div><div class="line">        subPathDepth++</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 路径中包含字符串时，先去除字符串再推入数组中</span></div><div class="line">    actions[PUSH_SUB_PATH] = <span class="function"><span class="keyword">function</span> <span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (subPathDepth &gt; <span class="number">0</span>) &#123;</div><div class="line">            subPathDepth--</div><div class="line">            mode = IN_SUB_PATH</div><div class="line">            actions[APPEND]()</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            subPathDepth = <span class="number">0</span></div><div class="line">            key = formatSubPath(key)</div><div class="line">            <span class="keyword">if</span> (key === <span class="literal">false</span>) &#123;</div><div class="line">                <span class="keyword">return</span> <span class="literal">false</span></div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                actions[PUSH]()</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">maybeUnescapeQuote</span> <span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">var</span> nextChar = path[index + <span class="number">1</span>]</div><div class="line">        <span class="keyword">if</span> ((mode === IN_SINGLE_QUOTE &amp;&amp; nextChar === <span class="string">"'"</span>) ||</div><div class="line">            (mode === IN_DOUBLE_QUOTE &amp;&amp; nextChar === <span class="string">'"'</span>)) &#123;</div><div class="line">            index++</div><div class="line">            newChar = <span class="string">'\\'</span> + nextChar</div><div class="line">            actions[APPEND]()</div><div class="line">            <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">while</span> (mode != <span class="literal">null</span>) &#123;</div><div class="line">        index++ <span class="comment">// 记录当前字符的index</span></div><div class="line">        c = path[index] <span class="comment">// 拿到当前字符</span></div><div class="line"></div><div class="line">        <span class="keyword">if</span> (c === <span class="string">'\\'</span> &amp;&amp; maybeUnescapeQuote()) &#123;</div><div class="line">            <span class="keyword">continue</span></div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 拿到当前字符的类型</span></div><div class="line">        type = getPathCharType(c)</div><div class="line">        <span class="comment">// 根据上一个状态，拿到当前可能出现的类型的全部处理逻辑和状态</span></div><div class="line">        typeMap = pathStateMachine[mode]</div><div class="line">        <span class="comment">// 匹配到当前类型的处理逻辑和状态</span></div><div class="line">        transition = typeMap[type] || typeMap[<span class="string">'else'</span>] || ERROR</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (transition === ERROR) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="comment">// parse error</span></div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 将状态改为当前的状态</span></div><div class="line">        mode = transition[<span class="number">0</span>]</div><div class="line">        action = actions[transition[<span class="number">1</span>]]</div><div class="line">        <span class="keyword">if</span> (action) &#123;</div><div class="line">            <span class="comment">// 状态机中没有任何一个状态维护了数组的第三数据，因此目前来看没啥卵用</span></div><div class="line">            newChar = transition[<span class="number">2</span>]</div><div class="line">            <span class="comment">// 这里拿到的一定是当前被解析的这个字符串</span></div><div class="line">            newChar = newChar === <span class="literal">undefined</span></div><div class="line">                ? c</div><div class="line">                : newChar</div><div class="line">            <span class="comment">// 执行动作</span></div><div class="line">            <span class="keyword">if</span> (action() === <span class="literal">false</span>) &#123;</div><div class="line">                <span class="keyword">return</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 如果是最后一步，也就是所有字符都解析完之后的一次循环</span></div><div class="line">        <span class="keyword">if</span> (mode === AFTER_PATH) &#123;</div><div class="line">            keys.raw = path</div><div class="line">            <span class="keyword">return</span> keys</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="最后再看set方法的调用-入口中被调用-，逻辑封装在setPath中"><a href="#最后再看set方法的调用-入口中被调用-，逻辑封装在setPath中" class="headerlink" title="最后再看set方法的调用(入口中被调用)，逻辑封装在setPath中"></a>最后再看set方法的调用(入口中被调用)，逻辑封装在setPath中</h4><ul>
+<li>源码</li>
+</ul>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">export function setPath (obj, path, val) &#123;</div><div class="line">    var original = obj</div><div class="line">    <span class="comment">// 如果传进来的path是字符串，先去解析path</span></div><div class="line">    <span class="keyword">if</span> (typeof path === <span class="string">'string'</span>) &#123;</div><div class="line">        path = parse(path)</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (!path || !isObject(obj)) &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span></div><div class="line">    &#125;</div><div class="line">    var last, <span class="built_in">key</span></div><div class="line">    <span class="keyword">for</span> (var i = <span class="number">0</span>, l = path.length; i &lt; l; i++) &#123;</div><div class="line">        last = obj <span class="comment">// 记录上一次遍历处理之后的值</span></div><div class="line">        <span class="built_in">key</span> = path[i]</div><div class="line">        <span class="comment">// 这部分逻辑，抱歉暂时还不知道执行场景</span></div><div class="line">        <span class="keyword">if</span> (<span class="built_in">key</span>.charAt(<span class="number">0</span>) === <span class="string">'*'</span>) &#123;</div><div class="line">            <span class="built_in">key</span> = parseExpression(<span class="built_in">key</span>.slice(<span class="number">1</span>)).<span class="built_in">get</span>.call(original, original)</div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 如果当前处理的不是数组的最后一项</span></div><div class="line">        <span class="keyword">if</span> (i &lt; l - <span class="number">1</span>) &#123;</div><div class="line">            obj = obj[<span class="built_in">key</span>]</div><div class="line">            <span class="comment">// 如果不是对象时，也就是说目前尚没有这个属性，或者属性不是对象类型</span></div><div class="line">            <span class="keyword">if</span> (!isObject(obj)) &#123;</div><div class="line">                obj = &#123;&#125;</div><div class="line">                <span class="comment">// 在上一次遍历处理的结果上进行属性扩展，同时在这个方法中会进行数据监听</span></div><div class="line">                <span class="built_in">set</span>(last, <span class="built_in">key</span>, obj)</div><div class="line">            &#125;</div><div class="line">        <span class="comment">// 处理到最后一项时</span></div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="comment">// 如果上一次遍历的结果是数组</span></div><div class="line">            <span class="keyword">if</span> (isArray(obj)) &#123;</div><div class="line">                <span class="comment">// 调用数组的$set方法(Vue从Array的原型链上扩展了此方法)</span></div><div class="line">                obj.$<span class="built_in">set</span>(<span class="built_in">key</span>, val)</div><div class="line">            <span class="comment">// 如果上一次遍历的结果是对象，并且属性存在该对象中</span></div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="built_in">key</span> in obj) &#123;</div><div class="line">                <span class="comment">// 直接赋值就行啦</span></div><div class="line">                obj[<span class="built_in">key</span>] = val</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                <span class="comment">// 否则就是调用set了，当然也是为了添加对此属性的监控</span></div><div class="line">                <span class="built_in">set</span>(obj, <span class="built_in">key</span>, val)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="对数组进行赋值时-数组的-set方法"><a href="#对数组进行赋值时-数组的-set方法" class="headerlink" title="对数组进行赋值时(数组的$set方法)"></a>对数组进行赋值时(数组的$set方法)</h4><ul>
+<li>源码</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">def( <span class="comment">// Object.defineProperty的简写</span></div><div class="line">    arrayProto, <span class="comment">// Array.prototype</span></div><div class="line">    <span class="string">'$set'</span>,</div><div class="line">    function $<span class="keyword">set</span> (index, <span class="keyword">val</span>) &#123;</div><div class="line">        <span class="keyword">if</span> (index &gt;= <span class="keyword">this</span>.length) &#123;</div><div class="line">            <span class="keyword">this</span>.length = Number(index) + <span class="number">1</span></div><div class="line">        &#125;</div><div class="line">        <span class="comment">// 这一句是关键，splice会改变原始数组，从而触发数组的Watchers逻辑执行</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.splice(index, <span class="number">1</span>, <span class="keyword">val</span>)[<span class="number">0</span>]</div><div class="line">    &#125;</div><div class="line">)</div></pre></td></tr></table></figure>
+<h4 id="对尚不存在的属性进行赋值时-set"><a href="#对尚不存在的属性进行赋值时-set" class="headerlink" title="对尚不存在的属性进行赋值时(set)"></a>对尚不存在的属性进行赋值时(set)</h4><ul>
+<li>如此啰嗦的处理，主要是为了给新属性添加监控，方便订阅者可以订阅该属性</li>
+</ul>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">export function <span class="keyword">set</span> (obj, key, <span class="keyword">val</span>) &#123;</div><div class="line">    <span class="comment">// 如果obj已经包含key属性了，说明属性监控什么的都已经处理好了，直接改变值就行了</span></div><div class="line">    <span class="keyword">if</span> (hasOwn(obj, key)) &#123;</div><div class="line">        obj[key] = <span class="keyword">val</span></div><div class="line">        <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 如果obj是Vue实例，那实际上操作的数据是保存在_data中的，对它执行set</span></div><div class="line">    <span class="keyword">if</span> (obj._isVue) &#123;</div><div class="line">        <span class="keyword">set</span>(obj._data, key, <span class="keyword">val</span>)</div><div class="line">        <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    <span class="keyword">var</span> ob = obj.__ob__</div><div class="line">    <span class="comment">// 如果当前obj没有有__ob__属性，说明这个对象不需要被监听，也是直接赋值就行了</span></div><div class="line">    <span class="keyword">if</span> (!ob) &#123;</div><div class="line">        obj[key] = <span class="keyword">val</span></div><div class="line">        <span class="keyword">return</span></div><div class="line">    &#125;</div><div class="line">    <span class="comment">// 对obj添加key属性，同时给key属性设置getter&amp;setter</span></div><div class="line">    ob.convert(key, <span class="keyword">val</span>)</div><div class="line">    <span class="comment">// 触发obj上添加的监控，因为此时obj已经发生变化了</span></div><div class="line">    ob.dep.notify()</div><div class="line">    <span class="comment">// 如果Observer监听的是最外层数据($data引用的数据)，它会维护它所监听的数据所在的Vue实例的引用</span></div><div class="line">    <span class="keyword">if</span> (ob.vms) &#123;</div><div class="line">        <span class="keyword">var</span> i = ob.vms.length</div><div class="line">        <span class="keyword">while</span> (i--) &#123;</div><div class="line">            <span class="keyword">var</span> vm = ob.vms[i]</div><div class="line">            <span class="comment">// 在实例上进行数据代理</span></div><div class="line">            vm._proxy(key)</div><div class="line">            <span class="comment">// 在当前实例下触发所有的监听</span></div><div class="line">            vm._digest()</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">val</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="接下来的处理逻辑请看数据双线绑定简化版和Watchers-数据订阅者-异步执行队列"><a href="#接下来的处理逻辑请看数据双线绑定简化版和Watchers-数据订阅者-异步执行队列" class="headerlink" title="接下来的处理逻辑请看数据双线绑定简化版和Watchers(数据订阅者)异步执行队列"></a>接下来的处理逻辑请看<code>数据双线绑定简化版</code>和<code>Watchers(数据订阅者)异步执行队列</code></h4>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Vue/" rel="tag">#Vue</a>
+          
+            <a href="/tags/MVVM/" rel="tag">#MVVM</a>
+          
+            <a href="/tags/MVC/" rel="tag">#MVC</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/Vue源码解读-参数合并-mergeOptions/" rel="next" title="Vue源码解读-参数合并(mergeOptions)">
+                <i class="fa fa-chevron-left"></i> Vue源码解读-参数合并(mergeOptions)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Vue源码解读-指令v-text的编译过程/" rel="prev" title="Vue源码解读-指令V-Text的编译过程">
+                Vue源码解读-指令V-Text的编译过程 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#get"><span class="nav-number">1.</span> <span class="nav-text">$get</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Demo"><span class="nav-number">1.1.</span> <span class="nav-text">Demo</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#入口"><span class="nav-number">1.2.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理字符串表达式-parseExpression"><span class="nav-number">1.3.</span> <span class="nav-text">处理字符串表达式(parseExpression)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#判断是否为简单路径-isSimplePath"><span class="nav-number">1.4.</span> <span class="nav-text">判断是否为简单路径(isSimplePath)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#给表达式返回对应的get方法-makeGetterFn"><span class="nav-number">1.5.</span> <span class="nav-text">给表达式返回对应的get方法(makeGetterFn)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对复杂表达式进行编译，获得get方法-compileGetter"><span class="nav-number">1.6.</span> <span class="nav-text">对复杂表达式进行编译，获得get方法(compileGetter)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#给表达式中的字面量加上执行环境限制-rewrite"><span class="nav-number">1.7.</span> <span class="nav-text">给表达式中的字面量加上执行环境限制(rewrite)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#存储不需要加执行环境的变量"><span class="nav-number">1.8.</span> <span class="nav-text">存储不需要加执行环境的变量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set"><span class="nav-number">2.</span> <span class="nav-text">$set</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#什么场景下会用到它呢？"><span class="nav-number">2.1.</span> <span class="nav-text">什么场景下会用到它呢？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#入口-1"><span class="nav-number">2.2.</span> <span class="nav-text">入口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#处理字符串表达式-parseExpression-1"><span class="nav-number">2.3.</span> <span class="nav-text">处理字符串表达式(parseExpression)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译字符串，得到字符串的set方法-compileSetter"><span class="nav-number">2.4.</span> <span class="nav-text">编译字符串，得到字符串的set方法(compileSetter)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#再看看路径解析吧"><span class="nav-number">2.5.</span> <span class="nav-text">再看看路径解析吧</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解析路径，将路径解析成由字面量组成的数组-parsePath"><span class="nav-number">2.6.</span> <span class="nav-text">解析路径，将路径解析成由字面量组成的数组(parsePath)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#最后再看set方法的调用-入口中被调用-，逻辑封装在setPath中"><span class="nav-number">2.7.</span> <span class="nav-text">最后再看set方法的调用(入口中被调用)，逻辑封装在setPath中</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对数组进行赋值时-数组的-set方法"><span class="nav-number">2.8.</span> <span class="nav-text">对数组进行赋值时(数组的$set方法)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对尚不存在的属性进行赋值时-set"><span class="nav-number">2.9.</span> <span class="nav-text">对尚不存在的属性进行赋值时(set)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#接下来的处理逻辑请看数据双线绑定简化版和Watchers-数据订阅者-异步执行队列"><span class="nav-number">2.10.</span> <span class="nav-text">接下来的处理逻辑请看数据双线绑定简化版和Watchers(数据订阅者)异步执行队列</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'Vue源码解读-get-set的内部实现/';
+      var disqus_title = "Vue源码解读-$Get & $Set的内部实现";
+      var disqus_url = 'http://yoursite.com/Vue源码解读-get-set的内部实现/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>

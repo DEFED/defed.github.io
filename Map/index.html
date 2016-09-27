@@ -1,0 +1,866 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ES6,Map," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="键值对的集合
+
+基本概念
+“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
+
+123456789var m = new Map();var o = &amp;#123;p: &quot;Hello World&quot;&amp;#125;;m.set(o, &quot;content&quot;)m.get(o) // &quot;content&quot;m.has(o) // truem.delete(o) // truem.has(o) // f">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Map">
+<meta property="og:url" content="http://yoursite.com/Map/index.html">
+<meta property="og:site_name" content="滴滴商业FED">
+<meta property="og:description" content="键值对的集合
+
+基本概念
+“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
+
+123456789var m = new Map();var o = &amp;#123;p: &quot;Hello World&quot;&amp;#125;;m.set(o, &quot;content&quot;)m.get(o) // &quot;content&quot;m.has(o) // truem.delete(o) // truem.has(o) // f">
+<meta property="og:updated_time" content="2016-09-26T10:28:50.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Map">
+<meta name="twitter:description" content="键值对的集合
+
+基本概念
+“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。
+
+123456789var m = new Map();var o = &amp;#123;p: &quot;Hello World&quot;&amp;#125;;m.set(o, &quot;content&quot;)m.get(o) // &quot;content&quot;m.has(o) // truem.delete(o) // truem.has(o) // f">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: 'DEFED'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/Map/"/>
+
+  <title> Map | 滴滴商业FED </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?a15447c466ba6f0e8ae55be1dd1e6c2d";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">滴滴商业FED</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">滴滴商业事业部前端研发组</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="#" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Map
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-06-28T17:15:46+08:00" content="2016-06-28">
+              2016-06-28
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/ES6/" itemprop="url" rel="index">
+                    <span itemprop="name">ES6</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/Map/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="Map/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>键值对的集合</p>
+</blockquote>
+<h3 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h3><ul>
+<li>“键”的范围不限于字符串，各种类型的值（包括对象）都可以当作键。</li>
+</ul>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> m = <span class="keyword">new</span> <span class="built_in">Map</span>();</div><div class="line"><span class="keyword">var</span> o = &#123;p: <span class="string">"Hello World"</span>&#125;;</div><div class="line"></div><div class="line">m.<span class="keyword">set</span>(o, <span class="string">"content"</span>)</div><div class="line">m.<span class="keyword">get</span>(o) <span class="comment">// "content"</span></div><div class="line"></div><div class="line">m.has(o) <span class="comment">// true</span></div><div class="line">m.delete(o) <span class="comment">// true</span></div><div class="line">m.has(o) <span class="comment">// false</span></div></pre></td></tr></table></figure>
+<a id="more"></a>
+<ul>
+<li>作为构造函数，Map也可以接受一个数组作为参数。该数组的成员是一个个表示键值对的数组。</li>
+</ul>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var <span class="built_in">map</span> = <span class="keyword">new</span> Map([[<span class="string">"name"</span>, <span class="string">"张三"</span>], [<span class="string">"title"</span>, <span class="string">"Author"</span>]]);</div><div class="line"></div><div class="line"><span class="built_in">map</span>.<span class="built_in">size</span> <span class="comment">// 2</span></div><div class="line"><span class="built_in">map</span>.has(<span class="string">"name"</span>) <span class="comment">// true</span></div><div class="line"><span class="built_in">map</span>.<span class="built_in">get</span>(<span class="string">"name"</span>) <span class="comment">// "张三"</span></div><div class="line"><span class="built_in">map</span>.has(<span class="string">"title"</span>) <span class="comment">// true</span></div><div class="line"><span class="built_in">map</span>.<span class="built_in">get</span>(<span class="string">"title"</span>) <span class="comment">// "Author"</span></div></pre></td></tr></table></figure>
+<ul>
+<li>只有对同一个对象的引用，Map结构才将其视为同一个键。这一点要非常小心。</li>
+</ul>
+<figure class="highlight processing"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">var <span class="built_in">map</span> = <span class="keyword">new</span> Map();</div><div class="line">var arr1 = [<span class="string">'a'</span>];</div><div class="line">var arr2 = arr1;</div><div class="line"></div><div class="line"><span class="built_in">map</span>.<span class="built_in">set</span>(arr1, <span class="number">111</span>);</div><div class="line"><span class="built_in">map</span>.<span class="built_in">get</span>(arr1); <span class="comment">// 111</span></div><div class="line"><span class="built_in">map</span>.<span class="built_in">set</span>(arr2, <span class="number">222</span>);</div><div class="line"><span class="built_in">map</span>.<span class="built_in">get</span>(arr1); <span class="comment">// 222</span></div><div class="line"><span class="built_in">map</span>.<span class="built_in">get</span>(arr2); <span class="comment">// 222</span></div><div class="line"><span class="built_in">map</span>.<span class="built_in">set</span>([<span class="string">'a'</span>], <span class="number">555</span>);</div><div class="line"><span class="built_in">map</span>.<span class="built_in">get</span>([<span class="string">'a'</span>]) <span class="comment">// undefined</span></div></pre></td></tr></table></figure>
+<ul>
+<li>Map的键实际上是跟内存地址绑定的，只要内存地址不一样，就视为两个键。</li>
+</ul>
+<h3 id="属性及方法"><a href="#属性及方法" class="headerlink" title="属性及方法"></a>属性及方法</h3><h4 id="size"><a href="#size" class="headerlink" title="size"></a>size</h4><ul>
+<li>返回Map结构的成员总数。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="built_in">Map</span>([[<span class="string">'a'</span>, <span class="string">'A'</span>], [<span class="string">'b'</span>, <span class="string">'B'</span>]]);</div><div class="line"><span class="built_in">console</span>.log(a.size); <span class="comment">// 2</span></div></pre></td></tr></table></figure>
+<h4 id="set-key-val"><a href="#set-key-val" class="headerlink" title="set(key, val)"></a>set(key, val)</h4><ul>
+<li>方法返回的是Map本身，因此可以采用链式写法。</li>
+</ul>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> <span class="built_in">map</span> = <span class="literal">new</span> <span class="built_in">Map</span>()</div><div class="line">  .<span class="built_in">set</span>(<span class="number">1</span>, <span class="string">'a'</span>)</div><div class="line">  .<span class="built_in">set</span>(<span class="number">2</span>, <span class="string">'b'</span>)</div><div class="line">  .<span class="built_in">set</span>(<span class="number">3</span>, <span class="string">'c'</span>);</div></pre></td></tr></table></figure>
+<h4 id="get-key"><a href="#get-key" class="headerlink" title="get(key)"></a>get(key)</h4><ul>
+<li>读取key对应的键值，如果找不到key，返回undefined。</li>
+</ul>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = <span class="literal">new</span> <span class="built_in">Map</span>().<span class="built_in">set</span>(<span class="string">'a'</span>, <span class="string">'A'</span>);</div><div class="line">console.<span class="keyword">log</span>(a.get(<span class="string">'a'</span>)); <span class="comment">// 'A'</span></div><div class="line">console.<span class="keyword">log</span>(a.get(<span class="string">'b'</span>)); <span class="comment">// undefined</span></div></pre></td></tr></table></figure>
+<h4 id="has-key"><a href="#has-key" class="headerlink" title="has(key)"></a>has(key)</h4><ul>
+<li>返回一个布尔值，表示某个键是否在Map数据结构中。</li>
+</ul>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = <span class="literal">new</span> <span class="built_in">Map</span>().<span class="built_in">set</span>(<span class="string">'a'</span>, <span class="string">'A'</span>);</div><div class="line">console.<span class="keyword">log</span>(a.has(<span class="string">'a'</span>)); <span class="comment">// true</span></div><div class="line">console.<span class="keyword">log</span>(a.has(<span class="string">'b'</span>)); <span class="comment">// false</span></div></pre></td></tr></table></figure>
+<h4 id="delete-key"><a href="#delete-key" class="headerlink" title="delete(key)"></a>delete(key)</h4><ul>
+<li>方法删除某个键，返回true。如果删除失败，返回false。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">let a = <span class="keyword">new</span> Map().<span class="built_in">set</span>(<span class="string">'a'</span>, <span class="string">'A'</span>);</div><div class="line">console.<span class="built_in">log</span>(a.<span class="keyword">delete</span>(<span class="string">'a'</span>)); <span class="comment">// true</span></div><div class="line">console.<span class="built_in">log</span>(a.<span class="keyword">delete</span>(<span class="string">'b'</span>)); <span class="comment">// false</span></div></pre></td></tr></table></figure>
+<h4 id="clear"><a href="#clear" class="headerlink" title="clear()"></a>clear()</h4><ul>
+<li>清除所有成员，没有返回值。</li>
+</ul>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = <span class="literal">new</span> <span class="built_in">Map</span>().<span class="built_in">set</span>(<span class="string">'a'</span>, <span class="string">'A'</span>);</div><div class="line">console.<span class="keyword">log</span>(a.clear()); <span class="comment">// undefined</span></div><div class="line">console.<span class="keyword">log</span>(a); <span class="comment">// Map &#123;&#125;</span></div></pre></td></tr></table></figure>
+<h4 id="keys"><a href="#keys" class="headerlink" title="keys()"></a>keys()</h4><ul>
+<li>返回键名的遍历器。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="built_in">Map</span>().set(<span class="string">'a'</span>, <span class="string">'A'</span>).set(<span class="string">'b'</span>, <span class="string">'B'</span>);</div><div class="line"><span class="built_in">console</span>.log(a.keys()); <span class="comment">// MapIterator &#123;'a', 'b'&#125;</span></div><div class="line"></div><div class="line"><span class="keyword">for</span>(<span class="keyword">let</span> k <span class="keyword">of</span> a.keys())&#123;</div><div class="line">  <span class="built_in">console</span>.log(k); <span class="comment">// 'a'、 'b'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="values"><a href="#values" class="headerlink" title="values()"></a>values()</h4><ul>
+<li>返回键值的遍历器。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="built_in">Map</span>().set(<span class="string">'a'</span>, <span class="string">'A'</span>).set(<span class="string">'b'</span>, <span class="string">'B'</span>);</div><div class="line"><span class="built_in">console</span>.log(a.values()); <span class="comment">// MapIterator &#123;'A', 'B'&#125;</span></div><div class="line"></div><div class="line"><span class="keyword">for</span>(<span class="keyword">let</span> k <span class="keyword">of</span> a.values())&#123;</div><div class="line">  <span class="built_in">console</span>.log(k); <span class="comment">// 'A'、 'B'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="entries"><a href="#entries" class="headerlink" title="entries()"></a>entries()</h4><ul>
+<li>返回所有成员的遍历器。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="built_in">Map</span>().set(<span class="string">'a'</span>, <span class="string">'A'</span>).set(<span class="string">'b'</span>, <span class="string">'B'</span>);</div><div class="line"><span class="built_in">console</span>.log(a.entries()); <span class="comment">// MapIterator &#123;['a', 'A'], ['b', 'B']&#125;</span></div><div class="line"></div><div class="line"><span class="keyword">for</span>(<span class="keyword">let</span> k <span class="keyword">of</span> a.entries())&#123;</div><div class="line">  <span class="built_in">console</span>.log(k); <span class="comment">// ['a', 'A']、 ['b', 'B']</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="forEach"><a href="#forEach" class="headerlink" title="forEach()"></a>forEach()</h4><ul>
+<li>遍历Map的所有成员。</li>
+</ul>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = new Map().set(<span class="string">'a'</span>, <span class="string">'A'</span>).set(<span class="string">'b'</span>, <span class="string">'B'</span>);</div><div class="line">a.forEach(<span class="keyword">function</span>(<span class="keyword">value</span>, key, <span class="keyword">map</span>)&#123;</div><div class="line">  console.log(value, key, map); // <span class="string">'A'</span>, <span class="string">'a'</span>, Map &#123;<span class="string">'a'</span> =&gt; <span class="string">'A'</span>, <span class="string">'b'</span> =&gt; <span class="string">'B'</span>&#125;  <span class="string">'B'</span>, <span class="string">'b'</span>, Map &#123;<span class="string">'a'</span> =&gt; <span class="string">'A'</span>, <span class="string">'b'</span> =&gt; <span class="string">'B'</span>&#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h3 id="应用"><a href="#应用" class="headerlink" title="应用"></a>应用</h3><h4 id="Map结构转为数组结构"><a href="#Map结构转为数组结构" class="headerlink" title="Map结构转为数组结构"></a>Map结构转为数组结构</h4><figure class="highlight prolog"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">let map = new <span class="symbol">Map</span>([</div><div class="line">  [<span class="number">1</span>, <span class="string">'one'</span>],</div><div class="line">  [<span class="number">2</span>, <span class="string">'two'</span>],</div><div class="line">  [<span class="number">3</span>, <span class="string">'three'</span>],</div><div class="line">]);</div><div class="line"></div><div class="line">[...map.keys()] // [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</div><div class="line">[...map.values()] // [<span class="string">'one'</span>, <span class="string">'two'</span>, <span class="string">'three'</span>]</div><div class="line">[...map.entries()] // [[<span class="number">1</span>,<span class="string">'one'</span>], [<span class="number">2</span>, <span class="string">'two'</span>], [<span class="number">3</span>, <span class="string">'three'</span>]]</div><div class="line">[...map] // [[<span class="number">1</span>,<span class="string">'one'</span>], [<span class="number">2</span>, <span class="string">'two'</span>], [<span class="number">3</span>, <span class="string">'three'</span>]]</div></pre></td></tr></table></figure>
+<h4 id="结合数组的map方法、filter方法，可以实现Map的遍历和过滤（Map本身没有map和filter方法）。"><a href="#结合数组的map方法、filter方法，可以实现Map的遍历和过滤（Map本身没有map和filter方法）。" class="headerlink" title="结合数组的map方法、filter方法，可以实现Map的遍历和过滤（Map本身没有map和filter方法）。"></a>结合数组的map方法、filter方法，可以实现Map的遍历和过滤（Map本身没有map和filter方法）。</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> map0 = <span class="keyword">new</span> <span class="built_in">Map</span>()</div><div class="line">  .set(<span class="number">1</span>, <span class="string">'a'</span>)</div><div class="line">  .set(<span class="number">2</span>, <span class="string">'b'</span>)</div><div class="line">  .set(<span class="number">3</span>, <span class="string">'c'</span>);</div><div class="line"></div><div class="line"><span class="keyword">let</span> map1 = <span class="keyword">new</span> <span class="built_in">Map</span>(</div><div class="line">  [...map0].filter(<span class="function">(<span class="params">[k, v]</span>) =&gt;</span> k &lt; <span class="number">3</span>)</div><div class="line">); <span class="comment">// 产生Map结构 &#123;1 =&gt; 'a', 2 =&gt; 'b'&#125;</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> map2 = <span class="keyword">new</span> <span class="built_in">Map</span>(</div><div class="line">  [...map0].map(<span class="function">(<span class="params">[k, v]</span>) =&gt;</span> [k * <span class="number">2</span>, <span class="string">'^'</span> + v])</div><div class="line">); <span class="comment">// 产生Map结构 &#123;2 =&gt; '^a', 4 =&gt; '^b', 6 =&gt; '^c'&#125;</span></div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ES6/" rel="tag">#ES6</a>
+          
+            <a href="/tags/Map/" rel="tag">#Map</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/let-const/" rel="next" title="Let & Const">
+                <i class="fa fa-chevron-left"></i> Let & Const
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/Object/" rel="prev" title="Object">
+                Object <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="DEFED" />
+          <p class="site-author-name" itemprop="name">DEFED</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">29</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#属性及方法"><span class="nav-number">2.</span> <span class="nav-text">属性及方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#size"><span class="nav-number">2.1.</span> <span class="nav-text">size</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#set-key-val"><span class="nav-number">2.2.</span> <span class="nav-text">set(key, val)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#get-key"><span class="nav-number">2.3.</span> <span class="nav-text">get(key)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#has-key"><span class="nav-number">2.4.</span> <span class="nav-text">has(key)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#delete-key"><span class="nav-number">2.5.</span> <span class="nav-text">delete(key)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#clear"><span class="nav-number">2.6.</span> <span class="nav-text">clear()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#keys"><span class="nav-number">2.7.</span> <span class="nav-text">keys()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#values"><span class="nav-number">2.8.</span> <span class="nav-text">values()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#entries"><span class="nav-number">2.9.</span> <span class="nav-text">entries()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#forEach"><span class="nav-number">2.10.</span> <span class="nav-text">forEach()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用"><span class="nav-number">3.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Map结构转为数组结构"><span class="nav-number">3.1.</span> <span class="nav-text">Map结构转为数组结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#结合数组的map方法、filter方法，可以实现Map的遍历和过滤（Map本身没有map和filter方法）。"><span class="nav-number">3.2.</span> <span class="nav-text">结合数组的map方法、filter方法，可以实现Map的遍历和过滤（Map本身没有map和filter方法）。</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">DEFED</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ddefed';
+      var disqus_identifier = 'Map/';
+      var disqus_title = "Map";
+      var disqus_url = 'http://yoursite.com/Map/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';                
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+                            
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').mousedown(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+  
+
+  
+
+  
+
+</body>
+</html>
