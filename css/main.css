@@ -466,6 +466,9 @@ body {
   padding-bottom: 150px;
 }
 .main-inner {
+  z-index: 3;
+  position: relative;
+  background: #FFF;
   margin: 0 auto;
   width: 700px;
 }
